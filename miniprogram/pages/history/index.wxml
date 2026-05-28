@@ -1,0 +1,233 @@
+<view class="page-history">
+  <!-- 目标筛选 -->
+  <view class="goal-filter" wx:if="{{goals.length > 0}}">
+    <scroll-view scroll-x class="filter-scroll">
+      <view class="filter-item {{selectedGoalId === '' ? 'active' : ''}}" bindtap="selectGoal" data-goal-id="">
+        <text>全部</text>
+      </view>
+      <view
+        class="filter-item {{selectedGoalId === item.id ? 'active' : ''}}"
+        wx:for="{{goals}}"
+        wx:key="id"
+        bindtap="selectGoal"
+        data-goal-id="{{item.id}}"
+      >
+        <text class="filter-icon">{{item.icon}}</text>
+        <text>{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-card card">
+    <view class="stats-header">
+      <text class="stats-title">{{selectedGoalId ? '目标统计' : '本月打卡统计'}}</text>
+      <text class="stats-month">{{currentMonth}}</text>
+    </view>
+
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{monthCheckins}}</text>
+        <text class="stat-label">打卡天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{currentStreak}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{longestStreak}}</text>
+        <text class="stat-label">最长连续</text>
+      </view>
+    </view>
+
+    <!-- 最近7天 -->
+    <view class="week-section">
+      <text class="week-title">最近7天</text>
+      <view class="week-grid">
+        <view
+          class="week-day {{item.checked ? 'checked' : ''}} {{item.isToday ? 'today' : ''}}"
+          wx:for="{{weekData}}"
+          wx:key="date"
+        >
+          <text class="day-name">{{item.day}}</text>
+          <view class="day-dot"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 全部模式：各目标统计 ===== -->
+  <view class="goal-stats-section" wx:if="{{!selectedGoalId && goalStats.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">各目标统计</text>
+    </view>
+    <view class="goal-stat-list">
+      <view class="goal-stat-item card" wx:for="{{goalStats}}" wx:key="id">
+        <view class="goal-stat-left">
+          <view class="goal-stat-icon" style="background: {{item.color}}20;">
+            <text>{{item.icon}}</text>
+          </view>
+          <view class="goal-stat-info">
+            <text class="goal-stat-name">{{item.name}}</text>
+            <text class="goal-stat-detail">连续{{item.currentStreak}}天 · 累计{{item.totalDays}}天</text>
+          </view>
+        </view>
+        <view class="goal-stat-streak">
+          <text class="streak-value">{{item.longestStreak}}</text>
+          <text class="streak-label">最长连续</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 时长目标分析（全部 或 选中时长目标） ===== -->
+  <view class="duration-section" wx:if="{{durationStats}}">
+    <view class="section-header">
+      <text class="section-title">时长分析</text>
+      <text class="section-sub">{{durationStats.days}}天总览</text>
+    </view>
+
+    <!-- 总览 -->
+    <view class="dur-overview card">
+      <view class="dur-ov-item">
+        <text class="dur-ov-value">{{durationStats.grandTotalStr}}</text>
+        <text class="dur-ov-label">总投入时长</text>
+      </view>
+      <view class="dur-ov-divider"></view>
+      <view class="dur-ov-item">
+        <text class="dur-ov-value">{{durationStats.goalDistribution.length}}</text>
+        <text class="dur-ov-label">时长目标</text>
+      </view>
+    </view>
+
+    <!-- 每日柱状图 -->
+    <view class="dur-chart card">
+      <text class="dur-chart-title">每日投入时长</text>
+      <view class="bar-chart-wrap">
+        <canvas type="2d" id="barCanvas" class="bar-canvas"></canvas>
+      </view>
+    </view>
+
+    <!-- 扇形图（仅全部模式，多目标时显示） -->
+    <view class="dur-chart card" wx:if="{{showPie}}">
+      <text class="dur-chart-title">时长分布</text>
+      <view class="pie-chart-wrap">
+        <canvas type="2d" id="pieCanvas" class="pie-canvas"></canvas>
+      </view>
+      <view class="pie-legend">
+        <view class="legend-item" wx:for="{{durationStats.goalDistribution}}" wx:key="id">
+          <view class="legend-dot" style="background: {{item.color}};"></view>
+          <text class="legend-name">{{item.icon}} {{item.name}}</text>
+          <text class="legend-value">{{item.totalStr}}</text>
+          <text class="legend-percent">{{item.percent}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 各目标详情 -->
+    <view class="dur-goals">
+      <text class="dur-goals-title">各目标详情</text>
+      <view class="dur-goal-item card" wx:for="{{durationStats.goalDistribution}}" wx:key="id">
+        <view class="dg-header">
+          <view class="dg-icon-wrap" style="background: {{item.color}}20;">
+            <text class="dg-icon">{{item.icon}}</text>
+          </view>
+          <view class="dg-info">
+            <text class="dg-name">{{item.name}}</text>
+            <text class="dg-detail">{{item.sessionCount}}次会话 · {{item.totalDays}}天</text>
+          </view>
+          <view class="dg-stat">
+            <text class="dg-total">{{item.totalStr}}</text>
+            <text class="dg-avg">日均 {{item.avgPerDayStr}}</text>
+          </view>
+        </view>
+        <view class="dg-bars">
+          <view class="dg-bar-col" wx:for="{{item.recent7}}" wx:for-item="day" wx:key="date">
+            <view class="dg-bar-track">
+              <view class="dg-bar-fill" style="height: {{day.minutes > 0 ? (day.minutes > 1 ? day.minutes / 60 * 100 : 8) : 0}}%; background: {{item.color}};"></view>
+            </view>
+            <text class="dg-bar-label">{{day.date}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 数据分析 -->
+    <view class="dur-analysis card" wx:if="{{durationStats.analysis.length > 0}}">
+      <text class="dur-analysis-title">数据分析</text>
+      <view class="dur-analysis-item" wx:for="{{durationStats.analysis}}" wx:key="index">
+        <text class="dur-analysis-icon">💡</text>
+        <text class="dur-analysis-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 计数目标分析 ===== -->
+  <view class="count-section" wx:if="{{countStats}}">
+    <view class="section-header">
+      <text class="section-title">计数分析</text>
+      <text class="section-sub">{{countStats.days}}天总览</text>
+    </view>
+
+    <view class="count-goal-item card" wx:for="{{countStats.goalDetails}}" wx:key="id">
+      <view class="cg-header">
+        <view class="cg-icon-wrap" style="background: {{item.color}}20;">
+          <text class="cg-icon">{{item.icon}}</text>
+        </view>
+        <view class="cg-info">
+          <text class="cg-name">{{item.name}}</text>
+          <text class="cg-detail">目标每日{{item.targetCount}}次</text>
+        </view>
+        <view class="cg-stat">
+          <text class="cg-total">{{item.totalCheckins}}次</text>
+          <text class="cg-avg">日均 {{item.avgPerDay}}次</text>
+        </view>
+      </view>
+      <view class="cg-bars">
+        <view class="cg-bar-col" wx:for="{{item.recent7}}" wx:for-item="day" wx:key="date">
+          <view class="cg-bar-track">
+            <view class="cg-bar-fill" style="height: {{day.count > 0 ? day.count / item.targetCount * 100 : 0}}%; background: {{item.color}};"></view>
+          </view>
+          <text class="cg-bar-label">{{day.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日历视图 -->
+  <view class="calendar card">
+    <view class="calendar-header">
+      <view class="nav-btn" bindtap="prevMonth">
+        <text>‹</text>
+      </view>
+      <text class="calendar-title">{{calendarYear}}年{{calendarMonth}}月</text>
+      <view class="nav-btn" bindtap="nextMonth">
+        <text>›</text>
+      </view>
+    </view>
+
+    <view class="calendar-weekdays">
+      <text class="weekday" wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="calendar-days">
+      <view
+        class="calendar-day {{item.empty ? 'empty' : ''}} {{item.checked ? 'checked' : ''}} {{item.isToday ? 'today' : ''}}"
+        wx:for="{{calendarDays}}"
+        wx:key="date"
+      >
+        <text class="day-number">{{item.day}}</text>
+        <view class="check-dot" wx:if="{{item.checked}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 总计 -->
+  <view class="total-section card">
+    <text class="total-label">累计打卡</text>
+    <text class="total-value">{{totalCheckins}} 次</text>
+  </view>
+
+  <!-- 自定义TabBar -->
+  <tab-bar selected="{{1}}" />
+</view>

@@ -1,0 +1,28 @@
+<view class="page-share">
+  <!-- 海报预览 -->
+  <view class="poster-preview">
+    <canvas
+      type="2d"
+      id="posterCanvas"
+      class="poster-canvas"
+      style="width: 600rpx; height: 900rpx;"
+    ></canvas>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <button class="btn-save" bindtap="savePoster">
+      <text class="btn-icon">💾</text>
+      <text>保存到相册</text>
+    </button>
+    <button class="btn-share" open-type="share">
+      <text class="btn-icon">📤</text>
+      <text>分享给好友</text>
+    </button>
+  </view>
+
+  <!-- 提示 -->
+  <view class="tips">
+    <text class="tip-text">保存海报后可分享到朋友圈</text>
+  </view>
+</view>

@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/history/index",
+    "pages/challenge/index",
+    "pages/share/index",
+    "pages/profile/index",
+    "pages/timer/index"
+  ],
+  "window": {
+    "backgroundColor": "#F5F9F7",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#5B9A6F",
+    "navigationBarTitleText": "守心",
+    "navigationBarTextStyle": "white",
+    "backgroundColorTop": "#F5F9F7",
+    "backgroundColorBottom": "#F5F9F7"
+  },
+  "tabBar": {
+    "custom": true,
+    "backgroundColor": "#ffffff",
+    "color": "#7A8F7C",
+    "selectedColor": "#5B9A6F",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "主页"
+      },
+      {
+        "pagePath": "pages/history/index",
+        "text": "历史"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

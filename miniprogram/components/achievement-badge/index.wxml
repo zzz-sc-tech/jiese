@@ -1,0 +1,8 @@
+<view class="badge-item {{unlocked ? 'unlocked' : 'locked'}}" bindtap="onTap">
+  <view class="badge-icon-wrapper">
+    <view class="badge-glow" wx:if="{{unlocked}}"></view>
+    <text class="badge-icon">{{icon}}</text>
+  </view>
+  <text class="badge-name">{{name}}</text>
+  <text class="badge-desc">{{desc}}</text>
+</view>

@@ -1,0 +1,77 @@
+@import "../../styles/theme.wxss";
+
+.page-share {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.poster-preview {
+  width: 600rpx;
+  margin: 40rpx 0;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 16rpx 48rpx rgba(0, 0, 0, 0.15);
+}
+
+.poster-canvas {
+  width: 600rpx;
+  height: 900rpx;
+}
+
+.actions {
+  display: flex;
+  gap: 24rpx;
+  width: 100%;
+  margin-top: 40rpx;
+}
+
+.btn-save,
+.btn-share {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  color: #fff;
+  box-shadow: 0 8rpx 24rpx rgba(91, 154, 111, 0.35);
+}
+
+.btn-save::after {
+  display: none;
+}
+
+.btn-share {
+  background: #fff;
+  color: #5B9A6F;
+  border: 2rpx solid #5B9A6F;
+}
+
+.btn-share::after {
+  display: none;
+}
+
+.btn-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+.tips {
+  margin-top: 32rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}

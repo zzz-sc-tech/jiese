@@ -1,0 +1,112 @@
+<view class="page-challenge">
+  <!-- 进行中的挑战 -->
+  <view class="active-challenges" wx:if="{{activeChallenges.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">进行中的挑战</text>
+      <text class="section-count">{{activeChallenges.length}}个</text>
+    </view>
+
+    <view class="challenge-list">
+      <view class="challenge-item card" wx:for="{{activeChallenges}}" wx:key="_id">
+        <view class="challenge-top" bindtap="toggleChallengeDetail" data-id="{{item._id}}">
+          <view class="challenge-left">
+            <view class="challenge-icon-wrap" style="background: {{item.goalColor}}20;">
+              <text class="challenge-icon-text">{{item.goalIcon}}</text>
+            </view>
+            <view class="challenge-info">
+              <text class="challenge-name">{{item.goalName}} · {{item.targetDays}}天</text>
+              <view class="challenge-progress-bar">
+                <view class="progress-track">
+                  <view class="progress-fill" style="width: {{item.progress}}%; background: {{item.goalColor}};"></view>
+                </view>
+                <text class="progress-text">{{item.progress}}%</text>
+              </view>
+            </view>
+          </view>
+          <view class="challenge-right">
+            <view class="challenge-stat">
+              <text class="stat-num">{{item.completedDays}}</text>
+              <text class="stat-label">已完成</text>
+            </view>
+            <view class="challenge-stat">
+              <text class="stat-num">{{item.remainingDays}}</text>
+              <text class="stat-label">剩余</text>
+            </view>
+            <text class="expand-arrow {{item.expanded ? 'expanded' : ''}}">›</text>
+          </view>
+        </view>
+
+        <!-- 展开详情 -->
+        <view class="challenge-detail" wx:if="{{item.expanded}}">
+          <view class="timeline">
+            <view
+              class="timeline-item {{tl.passed ? 'passed' : ''}} {{tl.current ? 'current' : ''}}"
+              wx:for="{{item.timeline}}"
+              wx:for-item="tl"
+              wx:key="day"
+            >
+              <view class="timeline-dot"></view>
+              <view class="timeline-line" wx:if="{{index < item.timeline.length - 1}}"></view>
+              <view class="timeline-content">
+                <text class="timeline-day">第{{tl.day}}天</text>
+                <text class="timeline-desc">{{tl.desc}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 选择挑战 -->
+  <view class="select-challenge">
+    <view class="section-header">
+      <text class="section-title">新建挑战</text>
+      <text class="section-subtitle">设定目标，坚持完成</text>
+    </view>
+
+    <!-- 关联目标选择 -->
+    <view class="goal-selector" wx:if="{{goals.length > 0}}">
+      <text class="selector-label">选择关联目标</text>
+      <scroll-view scroll-x class="goal-scroll">
+        <view
+          class="goal-chip {{selectedGoalId === item.id ? 'selected' : ''}}"
+          wx:for="{{goals}}"
+          wx:key="id"
+          bindtap="selectGoal"
+          data-goal-id="{{item.id}}"
+        >
+          <text class="chip-icon">{{item.icon}}</text>
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="goal-selector" wx:else>
+      <text class="selector-label">请先创建一个目标</text>
+    </view>
+
+    <view class="challenge-grid">
+      <view
+        class="challenge-card {{item.selected ? 'selected' : ''}}"
+        wx:for="{{challengeOptions}}"
+        wx:key="days"
+        bindtap="selectChallenge"
+        data-days="{{item.days}}"
+      >
+        <text class="card-icon">{{item.icon}}</text>
+        <text class="card-days">{{item.days}}</text>
+        <text class="card-unit">天</text>
+        <text class="card-name">{{item.name}}</text>
+        <text class="card-desc">{{item.desc}}</text>
+      </view>
+    </view>
+
+    <button
+      class="btn-start"
+      bindtap="startChallenge"
+      disabled="{{!selectedDays || !selectedGoalId}}"
+    >
+      开始挑战
+    </button>
+  </view>
+</view>

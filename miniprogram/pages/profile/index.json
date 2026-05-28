@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "achievement-badge": "../../components/achievement-badge/index",
+    "tab-bar": "../../components/tab-bar/index"
+  },
+  "navigationBarTitleText": "我的"
+}

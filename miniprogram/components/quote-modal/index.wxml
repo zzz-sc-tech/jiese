@@ -1,0 +1,60 @@
+<view class="quote-modal {{show ? 'show' : ''}}" catchtouchmove="preventTouchMove">
+  <!-- 遮罩层 -->
+  <view class="mask" bindtap="onClose"></view>
+
+  <!-- 内容卡片 -->
+  <view class="modal-card {{show ? 'card-show' : ''}}">
+    <!-- 关闭按钮 -->
+    <view class="close-btn" bindtap="onClose">
+      <text class="close-icon">×</text>
+    </view>
+
+    <!-- 成就解锁提示 -->
+    <view class="achievement-tip" wx:if="{{newAchievements.length > 0}}">
+      <view class="achievement-icon">🏆</view>
+      <text class="achievement-text">解锁新成就：{{newAchievements[0].name}}</text>
+    </view>
+
+    <!-- 语录内容 -->
+    <view class="quote-section">
+      <view class="quote-mark">"</view>
+      <view class="quote-content">
+        <text class="quote-text">{{quote.content}}</text>
+      </view>
+      <view class="quote-author">
+        <view class="author-line"></view>
+        <text class="author-name">—— {{quote.author}}</text>
+      </view>
+    </view>
+
+    <!-- 打卡统计 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.currentStreak}}</text>
+        <text class="stat-label">连续打卡</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.totalDays}}</text>
+        <text class="stat-label">累计打卡</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-section">
+      <button class="btn-share" bindtap="onShare">
+        <text class="share-icon">📤</text>
+        <text>分享给好友</text>
+      </button>
+      <button class="btn-poster" bindtap="onPoster">
+        <text class="poster-icon">🖼️</text>
+        <text>生成海报</text>
+      </button>
+    </view>
+
+    <!-- 滑动提示 -->
+    <view class="swipe-hint" wx:if="{{quotes.length > 1}}">
+      <text class="hint-text">← 左右滑动切换语录 →</text>
+    </view>
+  </view>
+</view>

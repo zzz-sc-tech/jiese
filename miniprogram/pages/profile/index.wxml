@@ -1,0 +1,119 @@
+<view class="page-profile">
+  <!-- 用户信息卡 -->
+  <view class="user-card">
+    <view class="user-bg"></view>
+    <view class="user-info">
+      <view class="avatar-wrapper">
+        <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" bindtap="chooseAvatar"></image>
+      </view>
+      <view class="user-detail">
+        <view class="nickname-row" bindtap="editNickname">
+          <text class="nickname">{{nickname}}</text>
+          <text class="nickname-edit">✏️</text>
+        </view>
+        <text class="user-id">累计打卡 {{totalDays}} 天</text>
+      </view>
+    </view>
+
+    <view class="user-stats">
+      <view class="stat-item">
+        <text class="stat-value">{{currentStreak}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{longestStreak}}</text>
+        <text class="stat-label">最长连续</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{totalDays}}</text>
+        <text class="stat-label">累计打卡</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 成就墙 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">成就墙</text>
+      <text class="section-count">{{achievements.length}}/{{totalAchievements}}</text>
+    </view>
+
+    <view class="achievements-grid" wx:if="{{achievements.length > 0}}">
+      <achievement-badge
+        wx:for="{{achievements}}"
+        wx:key="id"
+        name="{{item.name}}"
+        desc="{{item.desc}}"
+        icon="{{item.icon}}"
+        unlocked="{{true}}"
+      />
+    </view>
+    <view class="empty-achievements" wx:else>
+      <text class="empty-icon">🏆</text>
+      <text class="empty-text">坚持打卡解锁成就</text>
+    </view>
+  </view>
+
+  <!-- 未解锁成就 -->
+  <view class="section" wx:if="{{lockedAchievements.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">待解锁</text>
+    </view>
+    <view class="achievements-grid">
+      <achievement-badge
+        wx:for="{{lockedAchievements}}"
+        wx:key="id"
+        name="{{item.name}}"
+        desc="{{item.desc}}"
+        icon="{{item.icon}}"
+        unlocked="{{false}}"
+      />
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goChallenge">
+      <view class="menu-left">
+        <text class="menu-icon">🎯</text>
+        <text class="menu-text">我的挑战</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goShare">
+      <view class="menu-left">
+        <text class="menu-icon">📤</text>
+        <text class="menu-text">分享海报</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="setReminder">
+      <view class="menu-left">
+        <text class="menu-icon">⏰</text>
+        <text class="menu-text">打卡提醒</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-value">{{remindEnabled ? remindTime : '未开启'}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <view class="menu-left">
+        <text class="menu-icon">ℹ️</text>
+        <text class="menu-text">关于</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text class="version-text">守心 v1.0.0</text>
+    <text class="version-slogan">自律给我自由</text>
+  </view>
+
+  <!-- 自定义TabBar -->
+  <tab-bar selected="{{2}}" />
+</view>

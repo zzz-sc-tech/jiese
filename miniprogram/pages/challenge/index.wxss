@@ -1,0 +1,368 @@
+@import "../../styles/theme.wxss";
+
+.page-challenge {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 32rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+/* 进行中的挑战 */
+.active-challenges {
+  margin-bottom: 40rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.section-count {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.section-subtitle {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  margin-top: 8rpx;
+  display: block;
+}
+
+.challenge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.challenge-item {
+  padding: 24rpx;
+  transition: all 0.3s ease;
+}
+
+.challenge-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
+}
+
+.challenge-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.challenge-icon-text {
+  font-size: 36rpx;
+}
+
+.challenge-info {
+  flex: 1;
+}
+
+.challenge-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.challenge-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.progress-track {
+  flex: 1;
+  height: 12rpx;
+  background: #E8F5E9;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 22rpx;
+  color: #5B9A6F;
+  font-weight: 600;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+.challenge-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
+.challenge-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #5B9A6F;
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: #7A8F7C;
+}
+
+.expand-arrow {
+  font-size: 32rpx;
+  color: #ccc;
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+.expand-arrow.expanded {
+  transform: rotate(270deg);
+}
+
+/* 展开详情 */
+.challenge-detail {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 2rpx solid #E8F5E9;
+}
+
+.timeline {
+  padding: 0;
+}
+
+.timeline-item {
+  display: flex;
+  position: relative;
+  padding-left: 40rpx;
+  padding-bottom: 24rpx;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 8rpx;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: #ddd;
+  z-index: 1;
+}
+
+.timeline-item.passed .timeline-dot {
+  background: #5B9A6F;
+}
+
+.timeline-item.current .timeline-dot {
+  background: #E8B86D;
+  box-shadow: 0 0 0 6rpx rgba(232, 184, 109, 0.2);
+}
+
+.timeline-line {
+  position: absolute;
+  left: 7rpx;
+  top: 24rpx;
+  width: 2rpx;
+  height: calc(100% - 16rpx);
+  background: #E8F5E9;
+}
+
+.timeline-item.passed .timeline-line {
+  background: rgba(91, 154, 111, 0.3);
+}
+
+.timeline-content {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.timeline-day {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  min-width: 80rpx;
+}
+
+.timeline-item.passed .timeline-day {
+  color: #5B9A6F;
+}
+
+.timeline-item.current .timeline-day {
+  color: #E8B86D;
+}
+
+.timeline-desc {
+  font-size: 22rpx;
+  color: #7A8F7C;
+}
+
+/* 目标选择器 */
+.goal-selector {
+  margin-bottom: 24rpx;
+}
+
+.selector-label {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.goal-scroll {
+  white-space: nowrap;
+}
+
+.goal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.goal-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 12rpx 24rpx;
+  margin-right: 12rpx;
+  border-radius: 24rpx;
+  background: #fff;
+  font-size: 24rpx;
+  color: #7A8F7C;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.goal-chip.selected {
+  background: rgba(91, 154, 111, 0.1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.chip-icon {
+  font-size: 24rpx;
+}
+
+/* 挑战卡片网格 */
+.challenge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.challenge-card {
+  width: calc(50% - 10rpx);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 32rpx 24rpx;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 2rpx solid transparent;
+  text-align: center;
+}
+
+.challenge-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: scale(1.02);
+}
+
+.challenge-card:active {
+  transform: scale(0.96);
+}
+
+.card-icon {
+  font-size: 48rpx;
+  margin-bottom: 12rpx;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80rpx;
+  height: 80rpx;
+}
+
+.card-days {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.card-unit {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.card-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-top: 12rpx;
+}
+
+.card-desc {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.btn-start {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  border: none;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-start[disabled] {
+  opacity: 0.5;
+}
+
+.btn-start::after {
+  display: none;
+}

@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "quote-modal": "../../components/quote-modal/index",
+    "tab-bar": "../../components/tab-bar/index"
+  },
+  "navigationStyle": "custom"
+}

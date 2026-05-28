@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>守心图标</title>
+<style>
+  body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f0f0f0; gap: 40px; }
+  .icon-wrap { text-align: center; }
+  .icon-wrap p { margin-top: 10px; font-family: sans-serif; color: #666; }
+  canvas { border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+</style>
+</head>
+<body>
+<div class="icon-wrap">
+  <canvas id="c144" width="144" height="144"></canvas>
+  <p>144 x 144（小程序图标）</p>
+</div>
+<div class="icon-wrap">
+  <canvas id="c256" width="256" height="256"></canvas>
+  <p>256 x 256（高清）</p>
+</div>
+<div class="icon-wrap">
+  <canvas id="c512" width="512" height="512"></canvas>
+  <p>512 x 512（应用市场）</p>
+</div>
+
+<script>
+function drawIcon(canvas) {
+  const ctx = canvas.getContext('2d');
+  const s = canvas.width;
+  const r = s * 0.22;
+
+  // 圆角方形背景
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.lineTo(s - r, 0);
+  ctx.arcTo(s, 0, s, r, r);
+  ctx.lineTo(s, s - r);
+  ctx.arcTo(s, s, s - r, s, r);
+  ctx.lineTo(r, s);
+  ctx.arcTo(0, s, 0, s - r, r);
+  ctx.lineTo(0, r);
+  ctx.arcTo(0, 0, r, 0, r);
+  ctx.closePath();
+
+  const bg = ctx.createLinearGradient(0, 0, s, s);
+  bg.addColorStop(0, '#5B9A6F');
+  bg.addColorStop(1, '#8BC4A0');
+  ctx.fillStyle = bg;
+  ctx.fill();
+
+  // 装饰圆
+  ctx.fillStyle = 'rgba(255,255,255,0.08)';
+  ctx.beginPath();
+  ctx.arc(s * 0.78, s * 0.23, s * 0.31, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(255,255,255,0.06)';
+  ctx.beginPath();
+  ctx.arc(s * 0.2, s * 0.82, s * 0.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 叶子
+  ctx.save();
+  ctx.translate(s * 0.5, s * 0.5);
+  ctx.rotate(-15 * Math.PI / 180);
+  const lr = s * 0.28;
+  ctx.beginPath();
+  ctx.moveTo(0, -lr);
+  ctx.bezierCurveTo(lr * 0.9, -lr, lr, -lr * 0.3, lr, 0);
+  ctx.bezierCurveTo(lr, lr * 0.5, lr * 0.3, lr, 0, lr);
+  ctx.bezierCurveTo(-lr * 0.3, lr, -lr, lr * 0.5, -lr, 0);
+  ctx.bezierCurveTo(-lr, -lr * 0.3, -lr * 0.9, -lr, 0, -lr);
+  const leafGrad = ctx.createLinearGradient(-lr, -lr, lr, lr);
+  leafGrad.addColorStop(0, '#ffffff');
+  leafGrad.addColorStop(1, '#E8F5E9');
+  ctx.fillStyle = leafGrad;
+  ctx.globalAlpha = 0.95;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // 叶脉
+  ctx.strokeStyle = '#5B9A6F';
+  ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.6;
+  ctx.lineWidth = s * 0.012;
+  ctx.beginPath();
+  ctx.moveTo(0, -lr * 0.65);
+  ctx.lineTo(0, lr * 0.65);
+  ctx.stroke();
+
+  ctx.globalAlpha = 0.5;
+  ctx.lineWidth = s * 0.01;
+  ctx.beginPath();
+  ctx.moveTo(0, -lr * 0.25);
+  ctx.quadraticCurveTo(lr * 0.45, -lr * 0.45, lr * 0.55, -lr * 0.15);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(0, lr * 0.1);
+  ctx.quadraticCurveTo(-lr * 0.45, -lr * 0.05, -lr * 0.55, lr * 0.2);
+  ctx.stroke();
+
+  ctx.globalAlpha = 0.4;
+  ctx.lineWidth = s * 0.008;
+  ctx.beginPath();
+  ctx.moveTo(0, lr * 0.4);
+  ctx.quadraticCurveTo(lr * 0.4, lr * 0.2, lr * 0.5, lr * 0.45);
+  ctx.stroke();
+
+  ctx.restore();
+
+  // 风的弧线
+  ctx.lineCap = 'round';
+  ctx.globalAlpha = 0.7;
+  ctx.lineWidth = s * 0.012;
+  ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+  ctx.beginPath();
+  ctx.moveTo(s * 0.27, s * 0.47);
+  ctx.quadraticCurveTo(s * 0.35, s * 0.41, s * 0.43, s * 0.45);
+  ctx.stroke();
+
+  ctx.globalAlpha = 0.5;
+  ctx.lineWidth = s * 0.01;
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+  ctx.beginPath();
+  ctx.moveTo(s * 0.25, s * 0.55);
+  ctx.quadraticCurveTo(s * 0.35, s * 0.49, s * 0.47, s * 0.53);
+  ctx.stroke();
+
+  ctx.globalAlpha = 0.3;
+  ctx.lineWidth = s * 0.008;
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.beginPath();
+  ctx.moveTo(s * 0.29, s * 0.63);
+  ctx.quadraticCurveTo(s * 0.37, s * 0.58, s * 0.45, s * 0.61);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+}
+
+drawIcon(document.getElementById('c144'));
+drawIcon(document.getElementById('c256'));
+drawIcon(document.getElementById('c512'));
+
+// 右键另存为图片即可
+</script>
+</body>
+</html>

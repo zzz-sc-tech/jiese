@@ -1,0 +1,44 @@
+<view class="tab-bar">
+  <view class="tab-bar-inner">
+    <!-- 历史 -->
+    <view class="tab-item {{selected === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="1" data-path="pages/history/index">
+      <view class="tab-icon">
+        <view class="icon-calendar">
+          <view class="cal-top"></view>
+          <view class="cal-body">
+            <text class="cal-text">日</text>
+          </view>
+        </view>
+      </view>
+      <text class="tab-text">历史</text>
+      <view class="tab-dot" wx:if="{{selected === 1}}"></view>
+    </view>
+
+    <!-- 主页（居中） -->
+    <view class="tab-item center {{selected === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="0" data-path="pages/index/index">
+      <view class="tab-icon home-icon">
+        <view class="home-circle {{selected === 0 ? 'active' : ''}}">
+          <view class="home-svg">
+            <view class="h-roof"></view>
+            <view class="h-body"></view>
+            <view class="h-door"></view>
+          </view>
+        </view>
+      </view>
+      <text class="tab-text">主页</text>
+      <view class="tab-dot" wx:if="{{selected === 0}}"></view>
+    </view>
+
+    <!-- 我的 -->
+    <view class="tab-item {{selected === 2 ? 'active' : ''}}" bindtap="switchTab" data-index="2" data-path="pages/profile/index">
+      <view class="tab-icon">
+        <view class="icon-user">
+          <view class="u-head"></view>
+          <view class="u-body"></view>
+        </view>
+      </view>
+      <text class="tab-text">我的</text>
+      <view class="tab-dot" wx:if="{{selected === 2}}"></view>
+    </view>
+  </view>
+</view>

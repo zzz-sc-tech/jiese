@@ -1,0 +1,701 @@
+@import "../../styles/theme.wxss";
+
+.page-history {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 32rpx;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* 目标筛选 */
+.goal-filter {
+  margin-bottom: 24rpx;
+}
+
+.filter-scroll {
+  white-space: nowrap;
+}
+
+.filter-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 14rpx 28rpx;
+  margin-right: 16rpx;
+  border-radius: 30rpx;
+  background: #fff;
+  font-size: 24rpx;
+  color: #7A8F7C;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.filter-item.active {
+  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  color: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(91, 154, 111, 0.3);
+}
+
+.filter-icon {
+  font-size: 24rpx;
+}
+
+/* 统计卡片 */
+.stats-card {
+  margin-bottom: 24rpx;
+  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  color: #fff;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32rpx;
+}
+
+.stats-title {
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.stats-month {
+  font-size: 24rpx;
+  opacity: 0.7;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 32rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 56rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+
+.week-section {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16rpx;
+  padding: 20rpx;
+}
+
+.week-title {
+  font-size: 24rpx;
+  opacity: 0.8;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.week-grid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.day-name {
+  font-size: 22rpx;
+  opacity: 0.7;
+}
+
+.day-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.week-day.checked .day-dot {
+  background: #fff;
+  box-shadow: 0 0 8rpx rgba(255, 255, 255, 0.5);
+}
+
+.week-day.today .day-name {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* 各目标统计 */
+.goal-stats-section {
+  margin-bottom: 24rpx;
+}
+
+.goal-stat-list {
+  margin-top: 16rpx;
+}
+
+.goal-stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  margin-bottom: 12rpx;
+}
+
+.goal-stat-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.goal-stat-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.goal-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.goal-stat-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+}
+
+.goal-stat-detail {
+  font-size: 22rpx;
+  color: #7A8F7C;
+  margin-top: 4rpx;
+}
+
+.goal-stat-streak {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.streak-value {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #5B9A6F;
+}
+
+.streak-label {
+  font-size: 20rpx;
+  color: #7A8F7C;
+}
+
+/* 日历 */
+.calendar {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.nav-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(91, 154, 111, 0.1);
+  border-radius: 50%;
+  font-size: 36rpx;
+  color: var(--color-primary);
+}
+
+.calendar-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.calendar-weekdays {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.weekday {
+  flex: 1;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.calendar-days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar-day {
+  width: calc(100% / 7);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.calendar-day.empty {
+  visibility: hidden;
+}
+
+.day-number {
+  font-size: 28rpx;
+  color: var(--color-text);
+}
+
+.calendar-day.today .day-number {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.calendar-day.checked .day-number {
+  color: #fff;
+}
+
+.calendar-day.checked {
+  background: var(--color-primary);
+  border-radius: 50%;
+}
+
+.check-dot {
+  width: 8rpx;
+  height: 8rpx;
+  background: var(--color-accent);
+  border-radius: 50%;
+  margin-top: 4rpx;
+}
+
+/* 总计 */
+.total-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  margin-bottom: 32rpx;
+}
+
+.total-label {
+  font-size: 28rpx;
+  color: #7A8F7C;
+}
+
+.total-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #5B9A6F;
+}
+
+/* 通用 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.section-sub {
+  font-size: 22rpx;
+  color: #7A8F7C;
+}
+
+/* 时长分析 */
+.duration-section {
+  margin-bottom: 24rpx;
+}
+
+.dur-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, #6B8DD6, #8BC4E8);
+  color: #fff;
+}
+
+.dur-ov-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dur-ov-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dur-ov-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+
+.dur-ov-divider {
+  width: 2rpx;
+  height: 48rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 柱状图 */
+.dur-chart {
+  margin-bottom: 16rpx;
+  padding: 24rpx;
+}
+
+.dur-chart-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.bar-chart-wrap {
+  width: 100%;
+  height: 300rpx;
+}
+
+.bar-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* 扇形图 */
+.pie-chart-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.pie-canvas {
+  width: 400rpx;
+  height: 400rpx;
+}
+
+.pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  padding: 8rpx 0;
+}
+
+.legend-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+}
+
+.legend-name {
+  flex: 1;
+  font-size: 24rpx;
+  color: #2C3E2D;
+}
+
+.legend-value {
+  font-size: 24rpx;
+  color: #5B9A6F;
+  font-weight: 500;
+}
+
+.legend-percent {
+  font-size: 24rpx;
+  color: #7A8F7C;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+/* 各目标详情 */
+.dur-goals {
+  margin-bottom: 16rpx;
+}
+
+.dur-goals-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.dur-goal-item {
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+.dg-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.dg-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.dg-icon {
+  font-size: 28rpx;
+}
+
+.dg-info {
+  flex: 1;
+}
+
+.dg-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  display: block;
+}
+
+.dg-detail {
+  font-size: 22rpx;
+  color: #7A8F7C;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.dg-stat {
+  text-align: right;
+}
+
+.dg-total {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #5B9A6F;
+  display: block;
+}
+
+.dg-avg {
+  font-size: 20rpx;
+  color: #7A8F7C;
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 迷你柱状图 */
+.dg-bars {
+  display: flex;
+  justify-content: space-between;
+  height: 80rpx;
+  gap: 6rpx;
+}
+
+.dg-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.dg-bar-track {
+  flex: 1;
+  width: 100%;
+  background: #F5F9F7;
+  border-radius: 6rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.dg-bar-fill {
+  width: 100%;
+  border-radius: 6rpx 6rpx 0 0;
+  min-height: 0;
+  transition: height 0.3s ease;
+}
+
+.dg-bar-label {
+  font-size: 16rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+/* 数据分析 */
+.dur-analysis {
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.dur-analysis-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.dur-analysis-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  padding: 12rpx 0;
+}
+
+.dur-analysis-icon {
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+.dur-analysis-text {
+  font-size: 26rpx;
+  color: #2C3E2D;
+  line-height: 1.6;
+}
+
+/* 计数分析 */
+.count-section {
+  margin-bottom: 24rpx;
+}
+
+.count-goal-item {
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+.cg-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.cg-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.cg-icon {
+  font-size: 28rpx;
+}
+
+.cg-info {
+  flex: 1;
+}
+
+.cg-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2C3E2D;
+  display: block;
+}
+
+.cg-detail {
+  font-size: 22rpx;
+  color: #7A8F7C;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.cg-stat {
+  text-align: right;
+}
+
+.cg-total {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #E8B86D;
+  display: block;
+}
+
+.cg-avg {
+  font-size: 20rpx;
+  color: #7A8F7C;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.cg-bars {
+  display: flex;
+  justify-content: space-between;
+  height: 80rpx;
+  gap: 6rpx;
+}
+
+.cg-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.cg-bar-track {
+  flex: 1;
+  width: 100%;
+  background: #F5F9F7;
+  border-radius: 6rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  position: relative;
+}
+
+.cg-bar-fill {
+  width: 100%;
+  border-radius: 6rpx 6rpx 0 0;
+  min-height: 0;
+  transition: height 0.3s ease;
+}
+
+.cg-bar-label {
+  font-size: 16rpx;
+  color: #999;
+  margin-top: 4rpx;
+}

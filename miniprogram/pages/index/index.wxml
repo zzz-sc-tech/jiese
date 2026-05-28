@@ -1,0 +1,424 @@
+<view class="page-index">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="bg-circle circle-1"></view>
+    <view class="bg-circle circle-2"></view>
+    <view class="bg-circle circle-3"></view>
+    <view class="bg-particle particle-1"></view>
+    <view class="bg-particle particle-2"></view>
+    <view class="bg-particle particle-3"></view>
+    <view class="bg-particle particle-4"></view>
+  </view>
+
+  <!-- 顶部状态栏 -->
+  <view class="status-bar" style="height: {{statusBarHeight}}px;">
+    <view class="status-content">
+      <view class="app-brand">
+        <view class="app-icon-wrap">
+          <text class="app-icon-text">🍃</text>
+        </view>
+        <text class="app-title">守心</text>
+      </view>
+      <view class="today-date">
+        <text class="date-text">{{todayStr}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主内容区 -->
+  <view class="main-content" style="padding-top: {{statusBarHeight + 44}}px;">
+    <!-- 总览统计 -->
+    <view class="overview-card card">
+      <view class="overview-main">
+        <view class="overview-highlight">
+          <text class="highlight-value">{{stats.currentStreak}}</text>
+          <text class="highlight-label">天连续打卡</text>
+        </view>
+      </view>
+      <view class="overview-row">
+        <view class="overview-item">
+          <text class="overview-value">{{globalTotalDays}}</text>
+          <text class="overview-label">累计打卡</text>
+        </view>
+        <view class="overview-divider"></view>
+        <view class="overview-item">
+          <text class="overview-value">{{stats.longestStreak}}</text>
+          <text class="overview-label">最长连续</text>
+        </view>
+        <view class="overview-divider"></view>
+        <view class="overview-item">
+          <text class="overview-value">{{goals.length}}</text>
+          <text class="overview-label">进行中</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 今日语录预览 -->
+    <view class="quote-preview card" bindtap="showQuoteModal">
+      <view class="quote-preview-header">
+        <text class="preview-label">今日语录</text>
+      </view>
+      <text class="preview-text">{{currentQuote.content}}</text>
+      <text class="preview-author">—— {{currentQuote.author}}</text>
+    </view>
+
+    <!-- 目标列表 -->
+    <view class="goals-section">
+      <view class="section-header">
+        <text class="section-title">目标</text>
+        <view class="add-goal-btn" bindtap="showAddGoalModal">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加</text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="goals-empty" wx:if="{{goals.length === 0}}">
+        <text class="empty-icon">🎯</text>
+        <text class="empty-text">还没有设置目标</text>
+        <text class="empty-hint">点击上方「添加」创建你的第一个打卡目标</text>
+      </view>
+
+      <!-- 目标卡片列表 -->
+      <view class="goal-card card {{item.checked ? 'checked' : ''}}"
+        wx:for="{{goals}}"
+        wx:key="id"
+      >
+        <view class="goal-left" bindtap="doCheckin" data-goal-id="{{item.id}}">
+          <view class="goal-icon-wrap" style="background: {{item.color}}20;">
+            <text class="goal-icon">{{item.icon}}</text>
+          </view>
+          <view class="goal-info">
+            <text class="goal-name">{{item.name}}</text>
+            <!-- single 类型 -->
+            <view class="goal-stats-row" wx:if="{{item.type === 'single' || !item.type}}">
+              <text class="goal-streak">连续{{item.currentStreak}}天</text>
+              <text class="goal-total">累计{{item.totalDays}}天</text>
+            </view>
+            <!-- count 类型 -->
+            <view class="goal-stats-row" wx:elif="{{item.type === 'count'}}">
+              <text class="goal-streak">今日 {{item.todayCount}}/{{item.targetCount}}</text>
+              <text class="goal-total">累计{{item.totalDays}}天</text>
+            </view>
+            <!-- duration 类型 -->
+            <view class="goal-stats-row" wx:elif="{{item.type === 'duration'}}">
+              <text class="goal-streak">今日 {{item.todayDurationStr || '0分'}}</text>
+              <text class="goal-total">累计{{item.totalDays}}天</text>
+            </view>
+          </view>
+        </view>
+        <view class="goal-right">
+          <view class="goal-edit-btn" bindtap="editGoal" data-goal-id="{{item.id}}">
+            <text class="edit-dots">⋯</text>
+          </view>
+          <!-- single: 打卡按钮 -->
+          <view class="goal-check-btn {{item.checked ? 'done' : ''}}"
+            wx:if="{{item.type === 'single' || !item.type}}"
+            style="border-color: {{item.checked ? item.color : '#ddd'}}; background: {{item.checked ? item.color : 'transparent'}};"
+            bindtap="doCheckin"
+            data-goal-id="{{item.id}}"
+          >
+            <text class="check-icon" style="color: {{item.checked ? '#fff' : '#999'}};">{{item.checked ? '✓' : ''}}</text>
+          </view>
+          <!-- count: 计数按钮 -->
+          <view class="goal-check-btn {{item.countDone ? 'done' : ''}}"
+            wx:elif="{{item.type === 'count'}}"
+            style="border-color: {{item.countDone ? item.color : '#ddd'}}; background: {{item.countDone ? item.color : 'transparent'}};"
+            bindtap="doCheckin"
+            data-goal-id="{{item.id}}"
+          >
+            <text class="check-icon" style="color: {{item.countDone ? '#fff' : item.color}};">{{item.todayCount}}</text>
+          </view>
+          <!-- duration: 计时器入口 -->
+          <view class="goal-timer-btn"
+            wx:elif="{{item.type === 'duration'}}"
+            style="border-color: {{item.color}};"
+            bindtap="doCheckin"
+            data-goal-id="{{item.id}}"
+          >
+            <text class="timer-icon" style="color: {{item.color}};">⏱</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="shortcuts">
+      <view class="shortcut-item" bindtap="goChallenge">
+        <text class="shortcut-icon">🏆</text>
+        <text class="shortcut-text">挑战</text>
+      </view>
+      <view class="shortcut-item" bindtap="showWeeklyReport">
+        <text class="shortcut-icon">📋</text>
+        <text class="shortcut-text">周报</text>
+      </view>
+      <view class="shortcut-item" bindtap="goShare">
+        <text class="shortcut-icon">📤</text>
+        <text class="shortcut-text">分享</text>
+      </view>
+      <view class="shortcut-item" bindtap="goHistory">
+        <text class="shortcut-icon">📊</text>
+        <text class="shortcut-text">统计</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加/编辑目标弹窗 -->
+  <view class="modal-overlay" hidden="{{!showAddGoal}}" bindtap="hideAddGoalModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">{{editingGoal ? '编辑目标' : '新建目标'}}</text>
+        <view class="modal-close" bindtap="hideAddGoalModal">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <view class="form-group">
+          <text class="form-label">目标名称</text>
+          <input
+            class="form-input"
+            placeholder="如：早起、运动、阅读..."
+            value="{{newGoalName}}"
+            bindinput="onGoalNameInput"
+            maxlength="10"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">打卡类型</text>
+          <view class="type-selector">
+            <view class="type-option {{selectedType === 'single' ? 'selected' : ''}}"
+              bindtap="selectGoalType" data-type="single">
+              <text class="type-icon">✋</text>
+              <text class="type-name">单次打卡</text>
+              <text class="type-desc">每天一次</text>
+            </view>
+            <view class="type-option {{selectedType === 'count' ? 'selected' : ''}}"
+              bindtap="selectGoalType" data-type="count">
+              <text class="type-icon">🔢</text>
+              <text class="type-name">计数打卡</text>
+              <text class="type-desc">每天多次</text>
+            </view>
+            <view class="type-option {{selectedType === 'duration' ? 'selected' : ''}}"
+              bindtap="selectGoalType" data-type="duration">
+              <text class="type-icon">⏱️</text>
+              <text class="type-name">时长打卡</text>
+              <text class="type-desc">记录时长</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group" wx:if="{{selectedType === 'count'}}">
+          <text class="form-label">每日目标次数</text>
+          <input
+            class="form-input"
+            type="number"
+            placeholder="3"
+            value="{{targetCount}}"
+            bindinput="onTargetCountInput"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">选择图标</text>
+          <view class="icon-grid">
+            <view
+              class="icon-option {{selectedPreset === index ? 'selected' : ''}}"
+              wx:for="{{presetIcons}}"
+              wx:key="index"
+              bindtap="selectPreset"
+              data-index="{{index}}"
+              style="background: {{item.color}}20; border-color: {{selectedPreset === index ? item.color : 'transparent'}};"
+            >
+              <text class="icon-emoji">{{item.icon}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-save" bindtap="saveGoal">
+          {{editingGoal ? '保存修改' : '创建目标'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 语录弹窗 -->
+  <quote-modal
+    show="{{showQuote}}"
+    quote="{{currentQuote}}"
+    stats="{{stats}}"
+    newAchievements="{{newAchievements}}"
+    bind:close="hideQuoteModal"
+    bind:poster="onGeneratePoster"
+  />
+
+  <!-- 昨日总结弹窗 -->
+  <view class="report-overlay" hidden="{{!showYesterday}}" bindtap="hideYesterday">
+    <view class="report-modal" catchtap="preventBubble">
+      <view class="report-header">
+        <text class="report-title">昨日总结</text>
+        <text class="report-date">{{yesterdaySummary.date}}</text>
+      </view>
+      <view class="report-body">
+        <view class="yesterday-score">
+          <view class="score-ring" style="background: conic-gradient(#5B9A6F {{yesterdaySummary.scoreDeg}}deg, #E8F5E9 0deg);">
+            <view class="score-inner">
+              <text class="score-num">{{yesterdaySummary.checkedCount}}/{{yesterdaySummary.totalCount}}</text>
+              <text class="score-label">已完成</text>
+            </view>
+          </view>
+          <text class="score-text" wx:if="{{yesterdaySummary.allChecked}}">全部完成，太棒了！</text>
+          <text class="score-text" wx:elif="{{yesterdaySummary.checkedCount > 0}}">继续加油！</text>
+          <text class="score-text" wx:else>昨天没有打卡哦，今天开始吧！</text>
+        </view>
+        <view class="yesterday-goals">
+          <view class="yesterday-goal-item" wx:for="{{yesterdaySummary.goals}}" wx:key="id">
+            <text class="yg-icon">{{item.icon}}</text>
+            <text class="yg-name">{{item.name}}</text>
+            <text class="yg-status {{item.checked ? 'done' : 'miss'}}">{{item.checked ? '✓ 已打卡' : '✗ 未打卡'}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="report-footer">
+        <button class="btn-report-close" bindtap="hideYesterday">知道了</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周报弹窗 -->
+  <view class="report-overlay" hidden="{{!showWeekly}}" bindtap="hideWeekly">
+    <view class="report-modal report-modal-lg" catchtap="preventBubble">
+      <view class="report-header">
+        <text class="report-title">每周报告</text>
+        <text class="report-date">{{weeklyReport.weekStart}} ~ {{weeklyReport.weekEnd}}</text>
+      </view>
+      <scroll-view scroll-y class="report-scroll">
+        <view class="report-body">
+          <!-- 本周总览 -->
+          <view class="weekly-overview">
+            <view class="wo-item">
+              <text class="wo-value">{{weeklyReport.totalWeekCheckins}}</text>
+              <text class="wo-label">本周打卡</text>
+            </view>
+            <view class="wo-item">
+              <text class="wo-value">{{weeklyReport.weekRate}}%</text>
+              <text class="wo-label">完成率</text>
+            </view>
+            <view class="wo-item">
+              <text class="wo-value">{{weeklyReport.activeChallenges.length}}</text>
+              <text class="wo-label">进行中挑战</text>
+            </view>
+          </view>
+
+          <!-- 各目标本周打卡图表 -->
+          <view class="chart-section">
+            <text class="chart-title">各目标打卡情况</text>
+            <view class="goal-chart" wx:for="{{weeklyReport.goalReports}}" wx:key="id">
+              <view class="gc-header">
+                <text class="gc-icon">{{item.icon}}</text>
+                <text class="gc-name">{{item.name}}</text>
+                <text class="gc-rate">{{item.weekRate}}%</text>
+              </view>
+              <view class="gc-bars">
+                <view class="gc-bar-wrap" wx:for="{{item.weekCheckins}}" wx:for-item="day" wx:key="date">
+                  <view class="gc-bar {{day.checked ? 'active' : ''}}" style="height: {{day.checked ? '100%' : '20%'}};"></view>
+                  <text class="gc-day-label">{{day.date}}</text>
+                </view>
+              </view>
+              <view class="gc-streak">连续{{item.currentStreak}}天 · 累计{{item.totalDays}}天</view>
+            </view>
+          </view>
+
+          <!-- 打卡时间曲线 -->
+          <view class="chart-section">
+            <text class="chart-title">打卡时间分析</text>
+            <view class="time-chart" wx:for="{{weeklyReport.goalReports}}" wx:key="id">
+              <view class="tc-label">
+                <text class="tc-icon">{{item.icon}}</text>
+                <text class="tc-name">{{item.name}}</text>
+                <text class="tc-pattern" wx:if="{{item.timePattern}}">常在{{item.timePattern}}打卡</text>
+              </view>
+              <!-- 时间轴图 -->
+              <view class="tc-timeline">
+                <view class="tc-axis">
+                  <text class="tc-axis-label">0:00</text>
+                  <text class="tc-axis-label">6:00</text>
+                  <text class="tc-axis-label">12:00</text>
+                  <text class="tc-axis-label">18:00</text>
+                  <text class="tc-axis-label">24:00</text>
+                </view>
+                <view class="tc-track">
+                  <view class="tc-zone z-night" style="left:0; width:25%;"></view>
+                  <view class="tc-zone z-morning" style="left:25%; width:12.5%;"></view>
+                  <view class="tc-zone z-forenoon" style="left:37.5%; width:12.5%;"></view>
+                  <view class="tc-zone z-noon" style="left:50%; width:8.3%;"></view>
+                  <view class="tc-zone z-afternoon" style="left:58.3%; width:16.7%;"></view>
+                  <view class="tc-zone z-evening" style="left:75%; width:16.7%;"></view>
+                  <view class="tc-zone z-latenight" style="left:91.7%; width:8.3%;"></view>
+                  <!-- 打卡点 -->
+                  <view class="tc-point {{day.checked ? 'active' : ''}}"
+                    wx:for="{{item.recentDays}}" wx:for-item="day" wx:key="date"
+                    style="left: {{day.hourPercent}}%;"
+                    wx:if="{{day.checked}}"
+                  >
+                    <view class="tc-point-tooltip">
+                      <text class="tc-tooltip-date">{{day.date}}</text>
+                      <text class="tc-tooltip-time">{{day.timeStr}}</text>
+                      <text class="tc-tooltip-period">{{day.period}}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <!-- 时段分布条 -->
+              <view class="period-bar">
+                <view class="period-segment {{p.name === item.timePattern ? 'highlight' : ''}}"
+                  wx:for="{{item.periodCounts}}" wx:for-item="p" wx:key="name"
+                  style="width: {{item.weekCount > 0 ? p.count / item.weekCount * 100 : 0}}%;"
+                  wx:if="{{p.count > 0}}"
+                >
+                  <text class="period-seg-text">{{p.name}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 挑战完成情况 -->
+          <view class="chart-section" wx:if="{{weeklyReport.activeChallenges.length > 0}}">
+            <text class="chart-title">挑战进度</text>
+            <view class="challenge-progress-item" wx:for="{{weeklyReport.activeChallenges}}" wx:key="_id">
+              <view class="cp-header">
+                <text class="cp-icon">{{item.goalIcon}}</text>
+                <text class="cp-name">{{item.goalName}} · {{item.targetDays}}天</text>
+                <text class="cp-progress">{{item.progress}}%</text>
+              </view>
+              <view class="cp-bar">
+                <view class="cp-fill" style="width: {{item.progress}}%;"></view>
+              </view>
+              <text class="cp-detail">已完成{{item.completedDays}}天</text>
+            </view>
+          </view>
+
+          <!-- 数据分析 -->
+          <view class="chart-section">
+            <text class="chart-title">数据分析</text>
+            <view class="analysis-list">
+              <view class="analysis-item" wx:for="{{weeklyReport.analysis}}" wx:key="index">
+                <text class="analysis-icon">💡</text>
+                <text class="analysis-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <view class="report-footer">
+        <button class="btn-report-close" bindtap="hideWeekly">关闭</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义TabBar -->
+  <tab-bar selected="{{0}}" />
+</view>

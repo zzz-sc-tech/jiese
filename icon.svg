@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5B9A6F"/>
+      <stop offset="100%" style="stop-color:#8BC4A0"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#E8F5E9"/>
+    </linearGradient>
+  </defs>
+  <!-- 圆角方形背景 -->
+  <rect x="0" y="0" width="256" height="256" rx="56" ry="56" fill="url(#bg)"/>
+  <!-- 装饰圆弧 -->
+  <circle cx="200" cy="60" r="80" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="50" cy="210" r="50" fill="rgba(255,255,255,0.06)"/>
+  <!-- 叶子主体 -->
+  <path d="M128 60 C160 60, 196 96, 196 128 C196 160, 160 196, 128 196 C96 196, 60 160, 60 128 C60 96, 96 60, 128 60 Z" fill="url(#leaf)" opacity="0.95" transform="rotate(-15, 128, 128)"/>
+  <!-- 叶脉 -->
+  <path d="M128 85 C128 85, 128 171, 128 171" stroke="#5B9A6F" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6" transform="rotate(-15, 128, 128)"/>
+  <path d="M128 110 C140 100, 155 105, 160 115" stroke="#5B9A6F" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5" transform="rotate(-15, 128, 128)"/>
+  <path d="M128 130 C116 120, 101 125, 96 135" stroke="#5B9A6F" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5" transform="rotate(-15, 128, 128)"/>
+  <path d="M128 148 C142 140, 158 145, 162 155" stroke="#5B9A6F" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4" transform="rotate(-15, 128, 128)"/>
+  <!-- 风的弧线 -->
+  <path d="M70 120 Q90 105, 110 115" stroke="rgba(255,255,255,0.7)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M65 140 Q90 125, 120 135" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M75 160 Q95 148, 115 155" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round" fill="none"/>
+</svg>

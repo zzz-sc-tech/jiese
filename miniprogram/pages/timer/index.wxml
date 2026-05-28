@@ -1,0 +1,113 @@
+<view class="page-timer">
+  <!-- 目标信息 -->
+  <view class="timer-goal-info">
+    <view class="tgi-icon-wrap" style="background: {{goal.color}}20;">
+      <text class="tgi-icon">{{goal.icon}}</text>
+    </view>
+    <text class="tgi-name">{{goal.name}}</text>
+    <text class="tgi-today">今日 {{todayDurationStr}}</text>
+  </view>
+
+  <!-- 模式切换 -->
+  <view class="timer-tabs">
+    <view class="timer-tab {{timerMode === 'pomodoro' ? 'active' : ''}}" bindtap="switchMode" data-mode="pomodoro">
+      <text class="tab-icon">🍅</text>
+      <text class="tab-text">番茄钟</text>
+    </view>
+    <view class="timer-tab {{timerMode === 'clock' ? 'active' : ''}}" bindtap="switchMode" data-mode="clock">
+      <text class="tab-icon">⏱️</text>
+      <text class="tab-text">学习时钟</text>
+    </view>
+  </view>
+
+  <!-- 番茄钟模式 -->
+  <view class="timer-display" wx:if="{{timerMode === 'pomodoro'}}">
+    <!-- 环形进度 -->
+    <view class="ring-container">
+      <canvas type="2d" id="timerCanvas" class="timer-canvas"></canvas>
+      <view class="ring-center">
+        <text class="timer-time">{{pomodoroDisplay}}</text>
+        <text class="timer-phase">{{pomodoroPhase === 'work' ? '专注中' : '休息中'}}</text>
+      </view>
+    </view>
+
+    <!-- 番茄计数 -->
+    <view class="pomodoro-count">
+      <text class="pc-label">已完成</text>
+      <view class="pc-dots">
+        <view class="pc-dot {{index < pomodoroSession ? 'done' : ''}}"
+          wx:for="{{4}}" wx:key="index">
+        </view>
+      </view>
+      <text class="pc-num">{{pomodoroSession}}/4</text>
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="timer-controls">
+      <view class="ctrl-btn secondary" bindtap="resetPomodoro" wx:if="{{pomodoroState !== 'idle'}}">
+        <text class="ctrl-icon">↺</text>
+        <text class="ctrl-label">重置</text>
+      </view>
+      <view class="ctrl-btn primary {{pomodoroState === 'running' ? 'pause' : ''}}"
+        bindtap="togglePomodoro">
+        <text class="ctrl-icon">{{pomodoroState === 'running' ? '⏸' : '▶'}}</text>
+        <text class="ctrl-label">{{pomodoroState === 'running' ? '暂停' : '开始'}}</text>
+      </view>
+      <view class="ctrl-btn secondary" bindtap="skipPomodoro" wx:if="{{pomodoroState !== 'idle'}}">
+        <text class="ctrl-icon">⏭</text>
+        <text class="ctrl-label">跳过</text>
+      </view>
+    </view>
+
+    <!-- 设置 -->
+    <view class="timer-settings">
+      <view class="setting-item">
+        <text class="setting-label">专注时长</text>
+        <view class="setting-value-row">
+          <view class="setting-btn" bindtap="adjustSetting" data-target="workMin" data-delta="-5">-</view>
+          <text class="setting-value">{{workMin}}分</text>
+          <view class="setting-btn" bindtap="adjustSetting" data-target="workMin" data-delta="5">+</view>
+        </view>
+      </view>
+      <view class="setting-item">
+        <text class="setting-label">休息时长</text>
+        <view class="setting-value-row">
+          <view class="setting-btn" bindtap="adjustSetting" data-target="breakMin" data-delta="-1">-</view>
+          <text class="setting-value">{{breakMin}}分</text>
+          <view class="setting-btn" bindtap="adjustSetting" data-target="breakMin" data-delta="1">+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 学习时钟模式 -->
+  <view class="timer-display" wx:if="{{timerMode === 'clock'}}">
+    <!-- 数字时钟 -->
+    <view class="clock-container">
+      <text class="clock-time">{{clockDisplay}}</text>
+      <text class="clock-state">{{clockState === 'running' ? '计时中...' : clockState === 'paused' ? '已暂停' : '准备开始'}}</text>
+    </view>
+
+    <!-- 控制按钮 -->
+    <view class="timer-controls">
+      <view class="ctrl-btn secondary" bindtap="stopClock" wx:if="{{clockState !== 'idle'}}">
+        <text class="ctrl-icon">⏹</text>
+        <text class="ctrl-label">结束</text>
+      </view>
+      <view class="ctrl-btn primary {{clockState === 'running' ? 'pause' : ''}}"
+        bindtap="toggleClock">
+        <text class="ctrl-icon">{{clockState === 'running' ? '⏸' : '▶'}}</text>
+        <text class="ctrl-label">{{clockState === 'running' ? '暂停' : clockState === 'paused' ? '继续' : '开始'}}</text>
+      </view>
+    </view>
+
+    <!-- 今日会话记录 -->
+    <view class="session-list" wx:if="{{sessions.length > 0}}">
+      <text class="session-title">今日记录</text>
+      <view class="session-item" wx:for="{{sessions}}" wx:key="id">
+        <text class="session-time">{{item.durationStr}}</text>
+        <text class="session-type">{{item.timerType === 'pomodoro' ? '🍅' : '⏱️'}}</text>
+      </view>
+    </view>
+  </view>
+</view>
