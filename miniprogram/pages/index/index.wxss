@@ -5,7 +5,6 @@
   background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-bg) 40%, var(--color-bg) 100%);
   position: relative;
   overflow: hidden;
-  opacity: 0.15;
 }
 
 /* 背景装饰 */
