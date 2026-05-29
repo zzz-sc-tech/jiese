@@ -28,7 +28,8 @@ Page({
     yesterdaySummary: null,
     // 周报
     showWeekly: false,
-    weeklyReport: null
+    weeklyReport: null,
+    themeClass: ''
   },
 
   onLoad() {
