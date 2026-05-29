@@ -26,6 +26,7 @@ Page({
   },
 
   onShow() {
+    app.applyNavBarColor(app.globalData.theme);
     this.setData({ themeClass: app.globalData.themeClass });
     this.loadData();
   },
