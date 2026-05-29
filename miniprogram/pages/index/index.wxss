@@ -847,7 +847,7 @@
 .chart-title {
   font-size: 28rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   margin-bottom: 20rpx;
   display: block;
 }
@@ -856,7 +856,7 @@
 .goal-chart {
   margin-bottom: 24rpx;
   padding: 20rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 16rpx;
 }
 
@@ -874,13 +874,13 @@
 .gc-name {
   flex: 1;
   font-size: 26rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   font-weight: 500;
 }
 
 .gc-rate {
   font-size: 26rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
