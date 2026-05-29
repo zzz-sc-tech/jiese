@@ -59,6 +59,11 @@
   display: block;
 }
 
+/* 主题选择菜单项 */
+.menu-item:active {
+  background: rgba(0, 0, 0, 0.03);
+}
+
 .nickname-edit {
   font-size: 24rpx;
   opacity: 0.8;
