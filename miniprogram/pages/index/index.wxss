@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(91, 154, 111, 0.3);
+  box-shadow: 0 4rpx 12rpx var(--shadow-md);
 }
 
 .app-icon-text {
