@@ -12,12 +12,32 @@ App({
     const settings = storage.getSettings();
     this.globalData.theme = settings.theme || 'green';
     this.globalData.themeClass = this.globalData.theme === 'pink' ? 'theme-pink' : '';
+
+    // 应用导航栏颜色
+    this.applyNavBarColor(this.globalData.theme);
   },
 
   // 切换主题
   applyTheme(theme) {
     this.globalData.theme = theme;
     this.globalData.themeClass = theme === 'pink' ? 'theme-pink' : '';
+    this.applyNavBarColor(theme);
+  },
+
+  // 设置导航栏颜色
+  applyNavBarColor(theme) {
+    const colors = {
+      green: {
+        frontColor: '#ffffff',
+        backgroundColor: '#5B9A6F'
+      },
+      pink: {
+        frontColor: '#ffffff',
+        backgroundColor: '#C4A0A0'
+      }
+    };
+    const color = colors[theme] || colors.green;
+    wx.setNavigationBarColor(color);
   },
 
   globalData: {
