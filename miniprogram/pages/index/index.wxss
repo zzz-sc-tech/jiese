@@ -797,7 +797,7 @@
 .yg-name {
   flex: 1;
   font-size: 28rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
 }
 
 .yg-status {
@@ -806,7 +806,7 @@
 }
 
 .yg-status.done {
-  color: #5B9A6F;
+  color: var(--color-primary);
 }
 
 .yg-status.miss {
