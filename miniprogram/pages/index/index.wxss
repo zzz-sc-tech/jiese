@@ -1110,18 +1110,18 @@
 .cp-name {
   flex: 1;
   font-size: 24rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
 }
 
 .cp-progress {
   font-size: 24rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
 .cp-bar {
   height: 12rpx;
-  background: #E8F5E9;
+  background: var(--color-border);
   border-radius: 6rpx;
   overflow: hidden;
   margin-bottom: 8rpx;
@@ -1129,14 +1129,14 @@
 
 .cp-fill {
   height: 100%;
-  background: linear-gradient(90deg, #5B9A6F, #8BC4A0);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
   border-radius: 6rpx;
   transition: width 0.5s ease;
 }
 
 .cp-detail {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 数据分析 */
