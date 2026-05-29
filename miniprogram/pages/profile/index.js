@@ -174,6 +174,7 @@ Page({
   },
 
   selectTheme() {
+    const that = this;
     wx.showActionSheet({
       itemList: ['清新绿', '樱花粉'],
       success: (res) => {
@@ -183,7 +184,7 @@ Page({
         settings.theme = theme;
         storage.saveSettings(settings);
         app.applyTheme(theme);
-        this.setData({
+        that.setData({
           themeClass: app.globalData.themeClass,
           themeName: theme === 'pink' ? '樱花粉' : '清新绿'
         });
