@@ -22,6 +22,8 @@ const ALL_ACHIEVEMENTS = [
   { id: 'total_1000', name: '千日不辍', desc: '累计打卡1000天', icon: '✨' }
 ];
 
+const app = getApp();
+
 Page({
   data: {
     avatarUrl: '',
@@ -33,7 +35,9 @@ Page({
     lockedAchievements: [],
     totalAchievements: ALL_ACHIEVEMENTS.length,
     remindEnabled: false,
-    remindTime: '08:00'
+    remindTime: '08:00',
+    themeClass: '',
+    themeName: '清新绿'
   },
 
   onLoad() {
