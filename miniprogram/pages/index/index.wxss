@@ -567,13 +567,13 @@
   align-items: center;
   padding: 20rpx 8rpx;
   border-radius: 16rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border: 3rpx solid transparent;
   transition: all 0.2s ease;
 }
 
 .type-option.selected {
-  border-color: #5B9A6F;
+  border-color: var(--color-primary);
   background: rgba(91, 154, 111, 0.08);
 }
 
@@ -585,13 +585,13 @@
 .type-name {
   font-size: 24rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   margin-bottom: 4rpx;
 }
 
 .type-desc {
   font-size: 20rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 计时器入口按钮 */
