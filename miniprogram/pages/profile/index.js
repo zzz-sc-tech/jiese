@@ -75,7 +75,7 @@ Page({
         remindEnabled: settings.remindEnabled,
         remindTime: settings.remindTime,
         themeClass: app.globalData.themeClass,
-        themeName: theme === 'pink' ? '樱花粉' : '清新绿'
+        themeName: theme === 'pink' ? '裸粉' : '清新绿'
       });
     } catch (err) {
       console.error('加载用户数据失败:', err);
