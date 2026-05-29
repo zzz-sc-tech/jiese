@@ -356,7 +356,7 @@
 .goal-name {
   font-size: 30rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   display: block;
   margin-bottom: 6rpx;
 }
@@ -368,7 +368,7 @@
 
 .goal-streak {
   font-size: 22rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   background: rgba(91, 154, 111, 0.1);
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
@@ -376,7 +376,7 @@
 
 .goal-total {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 .goal-right {
