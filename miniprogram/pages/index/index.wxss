@@ -681,7 +681,7 @@
 
 .report-header {
   padding: 32rpx;
-  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: #fff;
   text-align: center;
 }
