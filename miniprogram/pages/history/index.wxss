@@ -678,7 +678,7 @@
 .cg-bar-track {
   flex: 1;
   width: 100%;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 6rpx;
   display: flex;
   flex-direction: column;
