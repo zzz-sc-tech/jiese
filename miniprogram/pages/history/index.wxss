@@ -29,15 +29,15 @@
   border-radius: 30rpx;
   background: #fff;
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
 }
 
 .filter-item.active {
-  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: #fff;
-  box-shadow: 0 4rpx 12rpx rgba(91, 154, 111, 0.3);
+  box-shadow: 0 4rpx 12rpx var(--shadow-md);
 }
 
 .filter-icon {
