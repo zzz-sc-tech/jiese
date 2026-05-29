@@ -175,7 +175,7 @@ Page({
 
   selectTheme() {
     wx.showActionSheet({
-      itemList: ['清新绿', '樱花粉'],
+      itemList: ['清新绿', '裸粉'],
       success: (res) => {
         const themes = ['green', 'pink'];
         const theme = themes[res.tapIndex];
@@ -185,7 +185,7 @@ Page({
         app.applyTheme(theme);
         this.setData({
           themeClass: theme === 'pink' ? 'theme-pink' : '',
-          themeName: theme === 'pink' ? '樱花粉' : '清新绿'
+          themeName: theme === 'pink' ? '裸粉' : '清新绿'
         });
         wx.showToast({ title: '已切换主题', icon: 'success' });
       }
