@@ -45,6 +45,7 @@ Page({
   },
 
   onShow() {
+    app.applyNavBarColor(app.globalData.theme);
     this.loadUserData();
   },
 
