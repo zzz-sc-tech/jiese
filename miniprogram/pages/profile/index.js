@@ -176,17 +176,19 @@ Page({
 
   selectTheme() {
     wx.showActionSheet({
-      itemList: ['清新绿', '裸粉'],
+      itemList: ['清新绿', '裸粉', '墨夜'],
       success: (res) => {
-        const themes = ['green', 'pink'];
+        const themes = ['green', 'pink', 'dark'];
         const theme = themes[res.tapIndex];
         const settings = storage.getSettings();
         settings.theme = theme;
         storage.saveSettings(settings);
         app.applyTheme(theme);
+        const themeClassMap = { green: '', pink: 'theme-pink', dark: 'theme-dark' };
+        const themeNameMap = { green: '清新绿', pink: '裸粉', dark: '墨夜' };
         this.setData({
-          themeClass: theme === 'pink' ? 'theme-pink' : '',
-          themeName: theme === 'pink' ? '裸粉' : '清新绿'
+          themeClass: themeClassMap[theme] || '',
+          themeName: themeNameMap[theme] || '清新绿'
         });
         wx.showToast({ title: '已切换主题', icon: 'success' });
       }
