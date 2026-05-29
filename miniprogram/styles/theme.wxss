@@ -69,3 +69,26 @@ page.theme-pink,
   --shadow-lg: 0 8rpx 32rpx rgba(196, 160, 160, 0.16);
   --shadow-xl: 0 16rpx 48rpx rgba(196, 160, 160, 0.2);
 }
+
+/* 墨夜主题 - 支持 page 和 view 元素 */
+page.theme-dark,
+.theme-dark {
+  --color-primary: #6B8A8E;
+  --color-primary-light: #8AACB0;
+  --color-primary-dark: #506A6E;
+  --color-bg: #1A1A1E;
+  --color-bg-card: #242428;
+  --color-accent: #8A7A6B;
+  --color-accent-light: #A89888;
+  --color-text: #E8E4E0;
+  --color-text-secondary: #9A9690;
+  --color-text-light: #6A6660;
+  --color-border: #3A3A3E;
+  --color-danger: #E87461;
+  --color-success: #6B8A8E;
+
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 16rpx 48rpx rgba(0, 0, 0, 0.35);
+}
