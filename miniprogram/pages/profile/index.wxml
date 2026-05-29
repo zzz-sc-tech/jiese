@@ -1,4 +1,4 @@
-<view class="page-profile">
+<view class="page-profile {{themeClass}}">
   <!-- 用户信息卡 -->
   <view class="user-card">
     <view class="user-bg"></view>
