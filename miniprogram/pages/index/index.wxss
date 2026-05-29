@@ -259,7 +259,7 @@
 .section-title {
   font-size: 32rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
 }
 
 .add-goal-btn {
@@ -273,13 +273,13 @@
 
 .add-icon {
   font-size: 28rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 700;
 }
 
 .add-text {
   font-size: 24rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
