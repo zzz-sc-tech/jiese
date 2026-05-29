@@ -55,7 +55,7 @@
   position: absolute;
   width: 8rpx;
   height: 8rpx;
-  background: #5B9A6F;
+  background: var(--color-primary);
   border-radius: 50%;
   opacity: 0.3;
 }
