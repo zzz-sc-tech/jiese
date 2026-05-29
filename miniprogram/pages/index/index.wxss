@@ -449,7 +449,7 @@
 
 .shortcut-text {
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 添加目标弹窗 */
