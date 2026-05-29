@@ -1,6 +1,8 @@
 const api = require('../../utils/api');
 const dateUtil = require('../../utils/date');
 
+const app = getApp();
+
 Page({
   data: {
     currentMonth: '',
@@ -22,7 +24,8 @@ Page({
     durationStats: null,
     showPie: false,
     // 计数统计
-    countStats: null
+    countStats: null,
+    themeClass: ''
   },
 
   _barCtx: null,
