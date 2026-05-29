@@ -831,12 +831,12 @@
 .wo-value {
   font-size: 44rpx;
   font-weight: 700;
-  color: #5B9A6F;
+  color: var(--color-primary);
 }
 
 .wo-label {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   margin-top: 4rpx;
 }
 
