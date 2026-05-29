@@ -1,6 +1,8 @@
 const api = require('../../utils/api');
 const dateUtil = require('../../utils/date');
 
+const app = getApp();
+
 Page({
   data: {
     goals: [],
@@ -15,7 +17,8 @@ Page({
       { days: 180, icon: '👑', name: '半年挑战', desc: '180天王者', selected: false },
       { days: 365, icon: '💎', name: '年度挑战', desc: '365天传奇', selected: false }
     ],
-    selectedDays: 0
+    selectedDays: 0,
+    themeClass: ''
   },
 
   onLoad() {
