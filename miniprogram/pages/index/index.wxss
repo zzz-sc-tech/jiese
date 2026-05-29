@@ -785,7 +785,7 @@
   display: flex;
   align-items: center;
   padding: 16rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 16rpx;
 }
 
