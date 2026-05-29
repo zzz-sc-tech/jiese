@@ -174,21 +174,27 @@ Page({
   },
 
   selectTheme() {
+    console.log('selectTheme 被调用了');
     const that = this;
     wx.showActionSheet({
       itemList: ['清新绿', '樱花粉'],
-      success: (res) => {
+      success(res) {
+        console.log('选择了:', res.tapIndex);
         const themes = ['green', 'pink'];
         const theme = themes[res.tapIndex];
         const settings = storage.getSettings();
         settings.theme = theme;
         storage.saveSettings(settings);
         app.applyTheme(theme);
+        console.log('themeClass:', app.globalData.themeClass);
         that.setData({
           themeClass: app.globalData.themeClass,
           themeName: theme === 'pink' ? '樱花粉' : '清新绿'
         });
         wx.showToast({ title: '已切换主题', icon: 'success' });
+      },
+      fail(err) {
+        console.log('ActionSheet 失败:', err);
       }
     });
   },
