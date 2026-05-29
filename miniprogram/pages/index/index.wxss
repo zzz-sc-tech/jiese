@@ -904,12 +904,12 @@
 .gc-bar {
   width: 32rpx;
   border-radius: 8rpx 8rpx 0 0;
-  background: #E8F5E9;
+  background: var(--color-border);
   transition: height 0.3s ease;
 }
 
 .gc-bar.active {
-  background: linear-gradient(180deg, #5B9A6F, #8BC4A0);
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-light));
 }
 
 .gc-day-label {
@@ -920,7 +920,7 @@
 
 .gc-streak {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   text-align: center;
 }
 
