@@ -928,7 +928,7 @@
 .time-chart {
   margin-bottom: 24rpx;
   padding: 20rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 16rpx;
 }
 
@@ -947,13 +947,13 @@
 
 .tc-name {
   font-size: 26rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   font-weight: 500;
 }
 
 .tc-pattern {
   font-size: 22rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   background: rgba(91, 154, 111, 0.1);
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
