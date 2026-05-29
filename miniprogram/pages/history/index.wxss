@@ -499,7 +499,7 @@
 
 .dg-detail {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   display: block;
   margin-top: 4rpx;
 }
@@ -511,13 +511,13 @@
 .dg-total {
   font-size: 28rpx;
   font-weight: 700;
-  color: #5B9A6F;
+  color: var(--color-primary);
   display: block;
 }
 
 .dg-avg {
   font-size: 20rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   display: block;
   margin-top: 4rpx;
 }
