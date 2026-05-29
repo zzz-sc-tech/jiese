@@ -1048,7 +1048,7 @@
 
 .tc-tooltip-period {
   font-size: 18rpx;
-  color: #8BC4A0;
+  color: var(--color-primary-light);
 }
 
 .period-bar {
