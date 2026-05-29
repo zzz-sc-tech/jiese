@@ -1,8 +1,4 @@
 <view class="page-profile {{themeClass}}">
-  <!-- 调试信息 -->
-  <view style="position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;padding:10px;font-size:12px;">
-    themeClass: {{themeClass}} | themeName: {{themeName}}
-  </view>
   <!-- 用户信息卡 -->
   <view class="user-card">
     <view class="user-bg"></view>
