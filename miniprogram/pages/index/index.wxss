@@ -1004,12 +1004,12 @@
   width: 20rpx;
   height: 20rpx;
   border-radius: 50%;
-  background: #E8F5E9;
+  background: var(--color-border);
   z-index: 2;
 }
 
 .tc-point.active {
-  background: #5B9A6F;
+  background: var(--color-primary);
   box-shadow: 0 0 0 6rpx rgba(91, 154, 111, 0.25);
   width: 24rpx;
   height: 24rpx;
@@ -1020,7 +1020,7 @@
   bottom: calc(100% + 12rpx);
   left: 50%;
   transform: translateX(-50%);
-  background: #2C3E2D;
+  background: var(--color-text);
   color: #fff;
   padding: 8rpx 14rpx;
   border-radius: 10rpx;
