@@ -291,7 +291,7 @@
   padding: 60rpx 0;
   background: #fff;
   border-radius: 24rpx;
-  box-shadow: 0 4rpx 16rpx rgba(91, 154, 111, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .empty-icon {
