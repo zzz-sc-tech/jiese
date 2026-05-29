@@ -173,6 +173,25 @@ Page({
     });
   },
 
+  selectTheme() {
+    wx.showActionSheet({
+      itemList: ['清新绿', '樱花粉'],
+      success: (res) => {
+        const themes = ['green', 'pink'];
+        const theme = themes[res.tapIndex];
+        const settings = storage.getSettings();
+        settings.theme = theme;
+        storage.saveSettings(settings);
+        app.applyTheme(theme);
+        this.setData({
+          themeClass: app.globalData.themeClass,
+          themeName: theme === 'pink' ? '樱花粉' : '清新绿'
+        });
+        wx.showToast({ title: '已切换主题', icon: 'success' });
+      }
+    });
+  },
+
   showAbout() {
     wx.showModal({
       title: '关于守心',
