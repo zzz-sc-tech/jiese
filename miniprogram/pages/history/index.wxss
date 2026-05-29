@@ -331,7 +331,7 @@
 
 .section-sub {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 时长分析 */
