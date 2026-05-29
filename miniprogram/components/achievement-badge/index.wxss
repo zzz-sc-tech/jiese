@@ -1,11 +1,13 @@
+@import "../../styles/theme.wxss";
+
 .badge-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 24rpx 16rpx;
-  background: #FFFFFF;
+  background: var(--color-bg-card);
   border-radius: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(91, 154, 111, 0.08);
+  box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
 
@@ -14,8 +16,8 @@
 }
 
 .badge-item.locked {
-  opacity: 0.5;
-  filter: grayscale(100%);
+  opacity: 0.6;
+  background: var(--color-border);
 }
 
 .badge-icon-wrapper {
@@ -45,14 +47,14 @@
 .badge-name {
   font-size: 24rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   text-align: center;
   margin-bottom: 4rpx;
 }
 
 .badge-desc {
   font-size: 20rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   text-align: center;
   line-height: 1.4;
 }
