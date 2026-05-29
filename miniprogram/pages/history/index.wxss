@@ -432,18 +432,18 @@
 .legend-name {
   flex: 1;
   font-size: 24rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
 }
 
 .legend-value {
   font-size: 24rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 500;
 }
 
 .legend-percent {
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   min-width: 60rpx;
   text-align: right;
 }
