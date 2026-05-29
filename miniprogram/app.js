@@ -11,7 +11,8 @@ App({
     // 初始化主题
     const settings = storage.getSettings();
     this.globalData.theme = settings.theme || 'green';
-    this.globalData.themeClass = this.globalData.theme === 'pink' ? 'theme-pink' : '';
+    const themeClassMap = { green: '', pink: 'theme-pink', dark: 'theme-dark' };
+    this.globalData.themeClass = themeClassMap[this.globalData.theme] || '';
 
     // 应用导航栏颜色
     this.applyNavBarColor(this.globalData.theme);
@@ -20,7 +21,8 @@ App({
   // 切换主题
   applyTheme(theme) {
     this.globalData.theme = theme;
-    this.globalData.themeClass = theme === 'pink' ? 'theme-pink' : '';
+    const themeClassMap = { green: '', pink: 'theme-pink', dark: 'theme-dark' };
+    this.globalData.themeClass = themeClassMap[theme] || '';
     this.applyNavBarColor(theme);
   },
 
