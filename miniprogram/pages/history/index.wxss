@@ -180,12 +180,12 @@
 .goal-stat-name {
   font-size: 28rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
 }
 
 .goal-stat-detail {
   font-size: 22rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   margin-top: 4rpx;
 }
 
