@@ -71,12 +71,13 @@ Page({
       // 加载设置
       const settings = storage.getSettings();
       const theme = settings.theme || 'green';
+      const themeNameMap = { green: '清新绿', pink: '裸粉', dark: '墨夜' };
       this.setData({
         nickname: settings.nickname || '打卡用户',
         remindEnabled: settings.remindEnabled,
         remindTime: settings.remindTime,
         themeClass: app.globalData.themeClass,
-        themeName: theme === 'pink' ? '裸粉' : '清新绿'
+        themeName: themeNameMap[theme] || '清新绿'
       });
     } catch (err) {
       console.error('加载用户数据失败:', err);
