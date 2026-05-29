@@ -761,17 +761,17 @@
 .score-num {
   font-size: 36rpx;
   font-weight: 700;
-  color: #5B9A6F;
+  color: var(--color-primary);
 }
 
 .score-label {
   font-size: 20rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 .score-text {
   font-size: 28rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   font-weight: 500;
 }
 
