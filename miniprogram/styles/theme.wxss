@@ -50,22 +50,22 @@ page {
 /* 樱花粉主题 - 支持 page 和 view 元素 */
 page.theme-pink,
 .theme-pink {
-  --color-primary: #E88DAD;
-  --color-primary-light: #F5B8CC;
-  --color-primary-dark: #D46B8C;
-  --color-bg: #FFF5F8;
+  --color-primary: #D4839E;
+  --color-primary-light: #E8A8BD;
+  --color-primary-dark: #C06B88;
+  --color-bg: #FDF5F7;
   --color-bg-card: #FFFFFF;
-  --color-accent: #B8A0D4;
-  --color-accent-light: #D4C4E8;
-  --color-text: #4D2C3A;
-  --color-text-secondary: #9F7A8A;
-  --color-text-light: #C4A8B4;
+  --color-accent: #C9A8D4;
+  --color-accent-light: #DFC4E8;
+  --color-text: #4A3040;
+  --color-text-secondary: #8A6A7A;
+  --color-text-light: #B89AA8;
   --color-border: #F0D8E2;
   --color-danger: #E87461;
-  --color-success: #E88DAD;
+  --color-success: #D4839E;
 
-  --shadow-sm: 0 2rpx 8rpx rgba(232, 141, 173, 0.08);
-  --shadow-md: 0 4rpx 16rpx rgba(232, 141, 173, 0.12);
-  --shadow-lg: 0 8rpx 32rpx rgba(232, 141, 173, 0.16);
-  --shadow-xl: 0 16rpx 48rpx rgba(232, 141, 173, 0.2);
+  --shadow-sm: 0 2rpx 8rpx rgba(212, 131, 158, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(212, 131, 158, 0.12);
+  --shadow-lg: 0 8rpx 32rpx rgba(212, 131, 158, 0.16);
+  --shadow-xl: 0 16rpx 48rpx rgba(212, 131, 158, 0.2);
 }
