@@ -10,6 +10,7 @@ Page({
   },
 
   onLoad() {
+    this.setData({ themeClass: app.globalData.themeClass });
     this.drawPoster();
   },
 
