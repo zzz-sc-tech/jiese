@@ -228,7 +228,7 @@
 
 .preview-text {
   font-size: 28rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   line-height: 1.8;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -238,7 +238,7 @@
 
 .preview-author {
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   text-align: right;
   margin-top: 12rpx;
   display: block;
