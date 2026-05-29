@@ -34,6 +34,10 @@ App({
       pink: {
         frontColor: '#ffffff',
         backgroundColor: '#C4A0A0'
+      },
+      dark: {
+        frontColor: '#ffffff',
+        backgroundColor: '#2A2A2E'
       }
     };
     const color = colors[theme] || colors.green;
