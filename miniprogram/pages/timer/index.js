@@ -34,6 +34,7 @@ Page({
   _canvasSize: 0,
 
   onLoad(options) {
+    app.applyNavBarColor(app.globalData.theme);
     const goalId = options.goalId || '';
     this.setData({ goalId, themeClass: app.globalData.themeClass });
     this.loadGoal(goalId);
