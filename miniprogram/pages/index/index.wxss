@@ -1092,7 +1092,7 @@
 .challenge-progress-item {
   margin-bottom: 16rpx;
   padding: 16rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 16rpx;
 }
 
