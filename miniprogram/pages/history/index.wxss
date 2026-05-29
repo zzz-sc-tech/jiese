@@ -571,7 +571,7 @@
 .dur-analysis-title {
   font-size: 28rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   margin-bottom: 16rpx;
   display: block;
 }
@@ -590,7 +590,7 @@
 
 .dur-analysis-text {
   font-size: 26rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   line-height: 1.6;
 }
 
