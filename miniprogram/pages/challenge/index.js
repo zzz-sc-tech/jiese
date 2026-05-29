@@ -26,6 +26,7 @@ Page({
   },
 
   onShow() {
+    this.setData({ themeClass: app.globalData.themeClass });
     this.loadData();
   },
 
