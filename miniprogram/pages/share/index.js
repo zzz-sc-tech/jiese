@@ -1,9 +1,12 @@
 const api = require('../../utils/api');
 const storage = require('../../utils/storage');
 
+const app = getApp();
+
 Page({
   data: {
-    posterPath: ''
+    posterPath: '',
+    themeClass: ''
   },
 
   onLoad() {
