@@ -1151,7 +1151,7 @@
   align-items: flex-start;
   gap: 12rpx;
   padding: 16rpx;
-  background: #F5F9F7;
+  background: var(--color-bg);
   border-radius: 16rpx;
 }
 
@@ -1162,6 +1162,6 @@
 
 .analysis-text {
   font-size: 26rpx;
-  color: #2C3E2D;
+  color: var(--color-text);
   line-height: 1.6;
 }
