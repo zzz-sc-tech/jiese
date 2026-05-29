@@ -27,7 +27,7 @@
 .circle-1 {
   width: 400rpx;
   height: 400rpx;
-  background: #5B9A6F;
+  background: var(--color-primary);
   top: -100rpx;
   right: -100rpx;
   animation: float 8s ease-in-out infinite;
@@ -36,7 +36,7 @@
 .circle-2 {
   width: 300rpx;
   height: 300rpx;
-  background: #8BC4A0;
+  background: var(--color-primary-light);
   top: 50rpx;
   left: -80rpx;
   animation: float 6s ease-in-out infinite reverse;
@@ -45,7 +45,7 @@
 .circle-3 {
   width: 200rpx;
   height: 200rpx;
-  background: #E8B86D;
+  background: var(--color-accent);
   top: 200rpx;
   right: 50rpx;
   animation: float 10s ease-in-out infinite;
