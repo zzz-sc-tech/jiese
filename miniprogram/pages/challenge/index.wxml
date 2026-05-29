@@ -1,4 +1,4 @@
-<view class="page-challenge">
+<view class="page-challenge {{themeClass}}">
   <!-- 进行中的挑战 -->
   <view class="active-challenges" wx:if="{{activeChallenges.length > 0}}">
     <view class="section-header">
