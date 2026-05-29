@@ -35,7 +35,7 @@ Page({
 
   onLoad(options) {
     const goalId = options.goalId || '';
-    this.setData({ goalId });
+    this.setData({ goalId, themeClass: app.globalData.themeClass });
     this.loadGoal(goalId);
     this.loadSessions(goalId);
   },
