@@ -72,7 +72,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  background: linear-gradient(180deg, rgba(232, 245, 233, 0.95) 0%, rgba(232, 245, 233, 0) 100%);
+  background: linear-gradient(180deg, var(--color-bg) 0%, transparent 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
