@@ -179,7 +179,7 @@
 }
 
 .menu-item:active {
-  background: rgba(91, 154, 111, 0.03);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .menu-left {
