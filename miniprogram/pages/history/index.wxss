@@ -198,12 +198,12 @@
 .streak-value {
   font-size: 36rpx;
   font-weight: 700;
-  color: #5B9A6F;
+  color: var(--color-primary);
 }
 
 .streak-label {
   font-size: 20rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 日历 */
