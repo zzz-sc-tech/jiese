@@ -1,5 +1,7 @@
 const api = require('../../utils/api');
 
+const app = getApp();
+
 Page({
   data: {
     goalId: '',
@@ -23,7 +25,8 @@ Page({
     clockStartTimestamp: 0,
 
     // 今日会话
-    sessions: []
+    sessions: [],
+    themeClass: ''
   },
 
   _timer: null,
