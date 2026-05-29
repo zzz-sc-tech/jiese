@@ -382,7 +382,7 @@
 .dur-chart-title {
   font-size: 28rpx;
   font-weight: 600;
-  color: #2C3E2D;
+  color: var(--color-text);
   margin-bottom: 16rpx;
   display: block;
 }
