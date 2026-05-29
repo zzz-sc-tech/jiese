@@ -46,3 +46,25 @@ page {
   --transition-slow: 0.5s ease;
   --transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* 樱花粉主题 */
+page.theme-pink {
+  --color-primary: #E88DAD;
+  --color-primary-light: #F5B8CC;
+  --color-primary-dark: #D46B8C;
+  --color-bg: #FFF5F8;
+  --color-bg-card: #FFFFFF;
+  --color-accent: #B8A0D4;
+  --color-accent-light: #D4C4E8;
+  --color-text: #4D2C3A;
+  --color-text-secondary: #9F7A8A;
+  --color-text-light: #C4A8B4;
+  --color-border: #F0D8E2;
+  --color-danger: #E87461;
+  --color-success: #E88DAD;
+
+  --shadow-sm: 0 2rpx 8rpx rgba(232, 141, 173, 0.08);
+  --shadow-md: 0 4rpx 16rpx rgba(232, 141, 173, 0.12);
+  --shadow-lg: 0 8rpx 32rpx rgba(232, 141, 173, 0.16);
+  --shadow-xl: 0 16rpx 48rpx rgba(232, 141, 173, 0.2);
+}
