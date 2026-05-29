@@ -16,7 +16,7 @@
 
 .user-bg {
   height: 200rpx;
-  background: linear-gradient(135deg, #5B9A6F, #8BC4A0);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
 }
 
 .user-info {
