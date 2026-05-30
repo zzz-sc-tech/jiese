@@ -86,7 +86,8 @@ const storage = {
       theme: 'light',
       nickname: '打卡用户',
       vibrateIntensity: 'medium', // off, light, medium, heavy
-      vibrateMode: 'auto' // auto: 震动几次后停止, manual: 持续震动直到点击
+      vibrateMode: 'auto', // auto: 震动几次后停止, manual: 持续震动直到点击
+      countdowns: [] // 倒数日列表 [{id, name, date}]
     });
   },
 
