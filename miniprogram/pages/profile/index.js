@@ -231,7 +231,7 @@ Page({
 
   setVibrateMode() {
     wx.showActionSheet({
-      itemList: ['震动几次后自动停止', '持续震动直到点击屏幕'],
+      itemList: ['震动几次后自动停止', '持续震动（点击弹窗停止）'],
       success: (res) => {
         const modes = ['auto', 'manual'];
         const mode = modes[res.tapIndex];
