@@ -26,10 +26,12 @@ Page({
     // 计数统计
     countStats: null,
     themeClass: '',
-    // 挑战统计
+    // 挑战统计（总览）
     challengeStats: null,
-    // 挑战勋章
-    challengeMedals: null
+    // 挑战勋章（总览）
+    challengeMedals: null,
+    // 目标挑战数据（筛选时）
+    goalChallenges: null
   },
 
   _barCtx: null,
