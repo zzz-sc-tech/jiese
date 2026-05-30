@@ -121,7 +121,23 @@ const GOAL_PRESETS = [
   { icon: '💪', color: '#E8B86D' },
   { icon: '✍️', color: '#5BAEBF' },
   { icon: '🎵', color: '#D46B8C' },
-  { icon: '🌿', color: '#7BC47F' }
+  { icon: '🌿', color: '#7BC47F' },
+  { icon: '💤', color: '#8B9DC3' },
+  { icon: '🎯', color: '#E87461' },
+  { icon: '📝', color: '#D4A04A' },
+  { icon: '🏋️', color: '#C45B5B' },
+  { icon: '🎨', color: '#B8A0D4' },
+  { icon: '💻', color: '#5BAEBF' },
+  { icon: '🍎', color: '#E88D67' },
+  { icon: '💰', color: '#D4A04A' },
+  { icon: '🎸', color: '#D46B8C' },
+  { icon: '📚', color: '#6B8DD6' },
+  { icon: '🏃‍♀️', color: '#7BC47F' },
+  { icon: '🙏', color: '#9B72CF' },
+  { icon: '⏰', color: '#5B9A6F' },
+  { icon: '🌟', color: '#E8B86D' },
+  { icon: '🎬', color: '#8B9DC3' },
+  { icon: '🧹', color: '#5BAEBF' }
 ];
 
 // 目标类型
