@@ -194,6 +194,84 @@
     </view>
   </view>
 
+  <!-- ===== 挑战统计 ===== -->
+  <view class="challenge-section" wx:if="{{challengeStats}}">
+    <view class="section-header">
+      <text class="section-title">挑战统计</text>
+    </view>
+
+    <!-- 挑战数据概览 -->
+    <view class="challenge-overview card">
+      <view class="co-item">
+        <text class="co-value">{{challengeStats.totalChallenges}}</text>
+        <text class="co-label">总挑战数</text>
+      </view>
+      <view class="co-divider"></view>
+      <view class="co-item">
+        <text class="co-value">{{challengeStats.completedChallenges}}</text>
+        <text class="co-label">已完成</text>
+      </view>
+      <view class="co-divider"></view>
+      <view class="co-item">
+        <text class="co-value">{{challengeStats.activeChallenges}}</text>
+        <text class="co-label">进行中</text>
+      </view>
+      <view class="co-divider"></view>
+      <view class="co-item">
+        <text class="co-value">{{challengeStats.totalChallengeDays}}</text>
+        <text class="co-label">挑战天数</text>
+      </view>
+    </view>
+
+    <!-- 进行中的挑战 -->
+    <view class="active-challenges" wx:if="{{challengeStats.activeList.length > 0}}">
+      <text class="sub-title">进行中的挑战</text>
+      <view class="challenge-item card" wx:for="{{challengeStats.activeList}}" wx:key="_id">
+        <view class="ci-header">
+          <view class="ci-icon-wrap" style="background: {{item.goalColor}}20;">
+            <text class="ci-icon">{{item.goalIcon}}</text>
+          </view>
+          <view class="ci-info">
+            <text class="ci-name">{{item.goalName}} · {{item.targetDays}}天</text>
+            <view class="ci-progress-bar">
+              <view class="ci-progress-track">
+                <view class="ci-progress-fill" style="width: {{item.progress}}%; background: {{item.goalColor}};"></view>
+              </view>
+              <text class="ci-progress-text">{{item.progress}}%</text>
+            </view>
+          </view>
+        </view>
+        <text class="ci-detail">已完成 {{item.completedDays}}/{{item.targetDays}} 天</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 挑战勋章 ===== -->
+  <view class="medals-section" wx:if="{{challengeMedals}}">
+    <view class="section-header">
+      <text class="section-title">挑战勋章</text>
+      <text class="section-sub">{{challengeMedals.unlockedCount}}/{{challengeMedals.totalMedals}}</text>
+    </view>
+
+    <!-- 已解锁勋章 -->
+    <view class="medals-grid" wx:if="{{challengeMedals.unlockedMedals.length > 0}}">
+      <view class="medal-item unlocked" wx:for="{{challengeMedals.unlockedMedals}}" wx:key="id">
+        <text class="medal-icon">{{item.icon}}</text>
+        <text class="medal-name">{{item.name}}</text>
+        <text class="medal-desc">{{item.desc}}</text>
+      </view>
+    </view>
+
+    <!-- 未解锁勋章 -->
+    <view class="medals-grid" wx:if="{{challengeMedals.lockedMedals.length > 0}}">
+      <view class="medal-item locked" wx:for="{{challengeMedals.lockedMedals}}" wx:key="id">
+        <text class="medal-icon">{{item.icon}}</text>
+        <text class="medal-name">{{item.name}}</text>
+        <text class="medal-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
   <!-- 日历视图 -->
   <view class="calendar card">
     <view class="calendar-header">
