@@ -271,19 +271,22 @@ Page({
 
     if (intensity === 'off') return;
 
-    const vibrateType = intensity === 'heavy' ? 'heavy' : 'medium';
+    // 微信小程序只支持 'light' 和 'heavy' 两种震动类型
+    const vibrateType = intensity === 'heavy' ? 'heavy' : 'light';
+    // 根据强度调整震动次数
+    const vibrateCount = intensity === 'light' ? 2 : (intensity === 'medium' ? 3 : 5);
 
     if (mode === 'manual') {
       // 持续震动 + 显示弹窗
       this._vibrateInterval = setInterval(() => {
         wx.vibrateShort({ type: vibrateType });
-      }, 500);
+      }, 400);
       this.setData({ showVibrateAlert: true });
     } else {
-      // 自动停止：震动3次
+      // 自动停止：根据强度震动不同次数
       let count = 0;
       const vibrateLoop = () => {
-        if (count >= 3) return;
+        if (count >= vibrateCount) return;
         wx.vibrateShort({ type: vibrateType });
         count++;
         setTimeout(vibrateLoop, 300);
