@@ -311,6 +311,13 @@ const api = {
     return checkins.length;
   },
 
+  // 获取实际打卡天数（去重后的天数）
+  getActualCheckinDays() {
+    const checkins = getCheckins();
+    const uniqueDates = new Set(checkins.map(c => c.date));
+    return uniqueDates.size;
+  },
+
   // 创建目标
   async createGoal(name, icon, color, type, targetCount) {
     const goals = getGoals();
