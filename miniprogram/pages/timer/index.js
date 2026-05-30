@@ -284,45 +284,40 @@ Page({
   // 自动停止震动
   _doAutoVibrate(intensity) {
     if (intensity === 'light') {
-      // 轻微：短震动1次
-      wx.vibrateShort({ type: 'light' });
-    } else if (intensity === 'medium') {
-      // 中等：短震动3次
-      let count = 0;
-      const loop = () => {
-        if (count >= 3) return;
-        wx.vibrateShort({ type: 'heavy' });
-        count++;
-        setTimeout(loop, 200);
-      };
-      loop();
-    } else if (intensity === 'heavy') {
-      // 强烈：长震动1次
+      // 轻微：长震动1次
       wx.vibrateLong();
+    } else if (intensity === 'medium') {
+      // 中等：长震动2次
+      wx.vibrateLong();
+      setTimeout(() => wx.vibrateLong(), 800);
+    } else if (intensity === 'heavy') {
+      // 强烈：长震动3次
+      wx.vibrateLong();
+      setTimeout(() => wx.vibrateLong(), 600);
+      setTimeout(() => wx.vibrateLong(), 1200);
     }
   },
 
-  // 持续震动
+  // 持续震动（长震动）
   _doContinuousVibrate(intensity) {
     const that = this;
+    // 立即震动一次
+    wx.vibrateLong();
     if (intensity === 'light') {
-      // 轻微：每隔800ms短震动
+      // 轻微：每2秒长震动
       that._vibrateInterval = setInterval(() => {
-        wx.vibrateShort({ type: 'light' });
-      }, 800);
+        wx.vibrateLong();
+      }, 2000);
     } else if (intensity === 'medium') {
-      // 中等：每隔500ms短震动
+      // 中等：每1.2秒长震动
       that._vibrateInterval = setInterval(() => {
-        wx.vibrateShort({ type: 'heavy' });
-      }, 500);
+        wx.vibrateLong();
+      }, 1200);
     } else if (intensity === 'heavy') {
-      // 强烈：先长震动，然后持续短震动
-      wx.vibrateLong();
-      setTimeout(() => {
-        that._vibrateInterval = setInterval(() => {
-          wx.vibrateShort({ type: 'heavy' });
-        }, 300);
-      }, 1000);
+      // 强烈：每0.8秒长震动
+      that._vibrateInterval = setInterval(() => {
+        wx.vibrateLong();
+      }, 800);
     }
   },
 
