@@ -165,6 +165,20 @@ const ACHIEVEMENTS = [
   { id: 'total_365', name: '一年有成', desc: '累计打卡365天', days: 365, type: 'total' }
 ];
 
+// 挑战勋章定义
+const CHALLENGE_MEDALS = [
+  { id: 'challenge_7', name: '七日勇士', desc: '完成7天挑战', days: 7, icon: '🥉' },
+  { id: 'challenge_21', name: '习惯先锋', desc: '完成21天挑战', days: 21, icon: '🥈' },
+  { id: 'challenge_30', name: '月度冠军', desc: '完成30天挑战', days: 30, icon: '🥇' },
+  { id: 'challenge_60', name: '双月精英', desc: '完成60天挑战', days: 60, icon: '🏅' },
+  { id: 'challenge_90', name: '季度之星', desc: '完成90天挑战', days: 90, icon: '🎖️' },
+  { id: 'challenge_180', name: '半载传奇', desc: '完成180天挑战', days: 180, icon: '👑' },
+  { id: 'challenge_365', name: '年度王者', desc: '完成365天挑战', days: 365, icon: '💎' },
+  { id: 'challenge_first', name: '挑战新手', desc: '完成第一个挑战', days: 0, icon: '🌟' },
+  { id: 'challenge_3', name: '挑战达人', desc: '累计完成3个挑战', days: 0, icon: '🔥' },
+  { id: 'challenge_5', name: '挑战大师', desc: '累计完成5个挑战', days: 0, icon: '⚡' }
+];
+
 // ========== 内部数据操作 ==========
 function getGoals() {
   return storage.get('jiese_goals', []);
