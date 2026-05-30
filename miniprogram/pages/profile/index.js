@@ -63,8 +63,12 @@ Page({
         const unlocked = ALL_ACHIEVEMENTS.filter(a => unlockedIds.includes(a.id));
         const locked = ALL_ACHIEVEMENTS.filter(a => !unlockedIds.includes(a.id));
 
+        // 获取总打卡次数
+        const totalCheckins = api.getTotalCheckins();
+
         this.setData({
           totalDays,
+          totalCheckins,
           currentStreak,
           longestStreak,
           achievements: unlocked,
