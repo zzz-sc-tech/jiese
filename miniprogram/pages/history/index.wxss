@@ -1030,3 +1030,121 @@
   background: var(--color-bg-card);
   border-radius: 16rpx;
 }
+
+/* ===== 勋章详情弹窗 ===== */
+.medal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medal-modal {
+  width: 80%;
+  background: var(--color-bg-card);
+  border-radius: 32rpx;
+  overflow: hidden;
+}
+
+.medal-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 32rpx;
+  background: linear-gradient(135deg, rgba(232, 184, 109, 0.2), rgba(232, 184, 109, 0.1));
+}
+
+.medal-modal-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.medal-modal-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8rpx;
+}
+
+.medal-modal-desc {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.medal-modal-body {
+  padding: 32rpx;
+}
+
+.medal-modal-stat {
+  text-align: center;
+  margin-bottom: 24rpx;
+}
+
+.medal-modal-count {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.medal-modal-divider {
+  height: 2rpx;
+  background: var(--color-border);
+  margin-bottom: 24rpx;
+}
+
+.medal-modal-source-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.medal-modal-goals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.medal-modal-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  background: var(--color-bg);
+  border-radius: 24rpx;
+}
+
+.medal-modal-goal-icon {
+  font-size: 28rpx;
+}
+
+.medal-modal-goal-name {
+  font-size: 24rpx;
+  color: var(--color-text);
+}
+
+.medal-modal-footer {
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  border-top: 2rpx solid var(--color-border);
+}
+
+.medal-modal-close-btn {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 16rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
