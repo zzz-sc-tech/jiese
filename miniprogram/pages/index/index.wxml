@@ -438,6 +438,41 @@
     </view>
   </view>
 
+  <!-- 倒数日弹窗 -->
+  <view class="countdown-overlay" wx:if="{{showCountdown}}" bindtap="hideCountdownModal">
+    <view class="countdown-modal" catchtap>
+      <view class="countdown-modal-header">
+        <text class="countdown-modal-title">{{countdown ? '修改倒数日' : '添加倒数日'}}</text>
+        <view class="countdown-modal-close" bindtap="hideCountdownModal">
+          <text>✕</text>
+        </view>
+      </view>
+      <view class="countdown-modal-body">
+        <view class="form-group">
+          <text class="form-label">事件名称</text>
+          <input
+            class="form-input"
+            placeholder="如：生日、考试、旅行..."
+            value="{{countdownName}}"
+            bindinput="onCountdownNameInput"
+            maxlength="10"
+          />
+        </view>
+        <view class="form-group">
+          <text class="form-label">目标日期</text>
+          <picker mode="date" value="{{countdownDate}}" bindchange="onCountdownDateChange">
+            <view class="form-input date-picker">
+              <text>{{countdownDate || '请选择日期'}}</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="countdown-modal-footer">
+        <button class="btn-countdown-save" bindtap="saveCountdown">保存</button>
+      </view>
+    </view>
+  </view>
+
   <!-- 自定义TabBar -->
   <tab-bar selected="{{0}}" />
 </view>
