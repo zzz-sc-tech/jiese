@@ -27,7 +27,8 @@ Page({
 
     // 今日会话
     sessions: [],
-    themeClass: ''
+    themeClass: '',
+    showVibrateAlert: false
   },
 
   _timer: null,
