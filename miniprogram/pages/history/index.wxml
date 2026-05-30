@@ -355,6 +355,35 @@
     <text class="total-value">{{totalCheckins}} 次</text>
   </view>
 
+  <!-- 勋章详情弹窗 -->
+  <view class="medal-overlay" wx:if="{{showMedalDetail}}" bindtap="hideMedalDetail">
+    <view class="medal-modal" catchtap>
+      <view class="medal-modal-header">
+        <text class="medal-modal-icon">{{selectedMedal.icon}}</text>
+        <text class="medal-modal-name">{{selectedMedal.name}}</text>
+        <text class="medal-modal-desc">{{selectedMedal.desc}}</text>
+      </view>
+      <view class="medal-modal-body">
+        <view class="medal-modal-stat">
+          <text class="medal-modal-count">获得 {{selectedMedal.count}} 次</text>
+        </view>
+        <view class="medal-modal-divider"></view>
+        <text class="medal-modal-source-title">获得来源</text>
+        <view class="medal-modal-goals">
+          <view class="medal-modal-goal-item" wx:for="{{selectedMedal.goals}}" wx:key="goalName">
+            <text class="medal-modal-goal-icon">{{item.goalIcon}}</text>
+            <text class="medal-modal-goal-name">{{item.goalName}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="medal-modal-footer">
+        <view class="medal-modal-close-btn" bindtap="hideMedalDetail">
+          <text>关闭</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 自定义TabBar -->
   <tab-bar selected="{{1}}" />
 </view>
