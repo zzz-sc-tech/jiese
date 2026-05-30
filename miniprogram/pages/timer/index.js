@@ -162,8 +162,37 @@ Page({
 
   togglePomodoro() {
     const state = this.data.pomodoroState;
+    const phase = this.data.pomodoroPhase;
+    const remaining = this.data.pomodoroRemaining;
+
     if (state === 'running') {
       this.pausePomodoro();
+    } else if (state === 'paused' && remaining <= 0) {
+      // 阶段结束后的暂停，切换到下一阶段
+      this.stopVibrate();
+      if (phase === 'work') {
+        // 专注结束，切换到休息
+        const breakSec = this.data.breakMin * 60;
+        this.setData({
+          pomodoroPhase: 'break',
+          pomodoroRemaining: breakSec,
+          pomodoroDisplay: this.formatTime(breakSec),
+          pomodoroState: 'running'
+        });
+        this.drawRing(1);
+        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+      } else {
+        // 休息结束，切换到专注
+        const workSec = this.data.workMin * 60;
+        this.setData({
+          pomodoroPhase: 'work',
+          pomodoroRemaining: workSec,
+          pomodoroDisplay: this.formatTime(workSec),
+          pomodoroState: 'running'
+        });
+        this.drawRing(1);
+        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+      }
     } else {
       this.startPomodoro();
     }
