@@ -699,3 +699,172 @@
   color: #999;
   margin-top: 4rpx;
 }
+
+/* ===== 挑战统计 ===== */
+.challenge-section {
+  margin-bottom: 24rpx;
+}
+
+.challenge-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #fff;
+}
+
+.co-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.co-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.co-label {
+  font-size: 22rpx;
+  opacity: 0.8;
+  margin-top: 8rpx;
+}
+
+.co-divider {
+  width: 2rpx;
+  height: 48rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.sub-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.challenge-item {
+  padding: 20rpx;
+  margin-bottom: 12rpx;
+}
+
+.ci-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.ci-icon-wrap {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+}
+
+.ci-icon {
+  font-size: 28rpx;
+}
+
+.ci-info {
+  flex: 1;
+}
+
+.ci-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.ci-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.ci-progress-track {
+  flex: 1;
+  height: 12rpx;
+  background: var(--color-border);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.ci-progress-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  transition: width 0.5s ease;
+}
+
+.ci-progress-text {
+  font-size: 24rpx;
+  color: var(--color-primary);
+  font-weight: 600;
+  min-width: 60rpx;
+  text-align: right;
+}
+
+.ci-detail {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+}
+
+/* ===== 挑战勋章 ===== */
+.medals-section {
+  margin-bottom: 24rpx;
+}
+
+.medals-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.medal-item {
+  width: calc(33.333% - 11rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 12rpx;
+  background: var(--color-bg-card);
+  border-radius: 16rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.medal-item.unlocked {
+  background: linear-gradient(135deg, rgba(232, 184, 109, 0.1), rgba(232, 184, 109, 0.05));
+  border: 2rpx solid rgba(232, 184, 109, 0.3);
+}
+
+.medal-item.locked {
+  opacity: 0.5;
+  background: var(--color-border);
+}
+
+.medal-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+}
+
+.medal-name {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: 4rpx;
+}
+
+.medal-desc {
+  font-size: 18rpx;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
