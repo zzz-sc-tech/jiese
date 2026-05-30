@@ -109,6 +109,26 @@
         <text class="menu-arrow">›</text>
       </view>
     </view>
+    <view class="menu-item" bindtap="setVibrateIntensity">
+      <view class="menu-left">
+        <text class="menu-icon">📳</text>
+        <text class="menu-text">震动强度</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-value">{{vibrateIntensityName}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="menu-item" bindtap="setVibrateMode">
+      <view class="menu-left">
+        <text class="menu-icon">🔔</text>
+        <text class="menu-text">震动方式</text>
+      </view>
+      <view class="menu-right">
+        <text class="menu-value">{{vibrateModeName}}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
     <view class="menu-item" bindtap="showAbout">
       <view class="menu-left">
         <text class="menu-icon">ℹ️</text>
