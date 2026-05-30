@@ -84,7 +84,9 @@ const storage = {
       remindEnabled: true,
       remindTime: '08:00',
       theme: 'light',
-      nickname: '打卡用户'
+      nickname: '打卡用户',
+      vibrateIntensity: 'medium', // off, light, medium, heavy
+      vibrateMode: 'auto' // auto: 震动几次后停止, manual: 持续震动直到点击
     });
   },
 
