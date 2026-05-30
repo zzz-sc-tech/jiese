@@ -1,4 +1,5 @@
 const api = require('../../utils/api');
+const storage = require('../../utils/storage');
 
 const app = getApp();
 
