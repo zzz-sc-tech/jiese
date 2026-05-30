@@ -201,36 +201,21 @@ Page({
         if (session >= 4) {
           // 4个番茄完成，重置
           wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
+          this.triggerVibrate();
           this.setData({ pomodoroSession: 0, pomodoroState: 'idle' });
           this.resetPomodoroDisplay();
           return;
         }
 
-        // 进入休息
-        wx.showToast({ title: '休息一下', icon: 'none' });
-        wx.vibrateShort({ type: 'medium' });
-        const breakSec = this.data.breakMin * 60;
-        this.setData({
-          pomodoroPhase: 'break',
-          pomodoroRemaining: breakSec,
-          pomodoroDisplay: this.formatTime(breakSec),
-          pomodoroState: 'running'
-        });
-        this.drawRing(1);
-        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+        // 专注结束，震动提醒，等待手动切换到休息
+        this.triggerVibrate();
+        wx.showToast({ title: '专注结束，点击开始休息', icon: 'none' });
+        this.setData({ pomodoroState: 'paused' });
       } else {
-        // 休息结束，开始新的工作
-        wx.showToast({ title: '开始专注', icon: 'none' });
-        wx.vibrateShort({ type: 'medium' });
-        const workSec = this.data.workMin * 60;
-        this.setData({
-          pomodoroPhase: 'work',
-          pomodoroRemaining: workSec,
-          pomodoroDisplay: this.formatTime(workSec),
-          pomodoroState: 'running'
-        });
-        this.drawRing(1);
-        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+        // 休息结束，震动提醒，等待手动切换到专注
+        this.triggerVibrate();
+        wx.showToast({ title: '休息结束，点击开始专注', icon: 'none' });
+        this.setData({ pomodoroState: 'paused' });
       }
       return;
     }
@@ -245,6 +230,49 @@ Page({
       pomodoroDisplay: this.formatTime(remaining)
     });
     this.drawRing(percent);
+  },
+
+  // 触发震动
+  triggerVibrate() {
+    const settings = storage.getSettings();
+    const intensity = settings.vibrateIntensity || 'medium';
+    const mode = settings.vibrateMode || 'auto';
+
+    if (intensity === 'off') return;
+
+    const vibrateType = intensity === 'heavy' ? 'heavy' : 'medium';
+
+    if (mode === 'manual') {
+      // 持续震动直到点击屏幕
+      this._vibrateInterval = setInterval(() => {
+        wx.vibrateShort({ type: vibrateType });
+      }, 500);
+      // 点击屏幕停止震动
+      this._stopVibrateHandler = () => this.stopVibrate();
+      wx.onTouchStart(this._stopVibrateHandler);
+    } else {
+      // 自动停止：震动3次
+      let count = 0;
+      const vibrateLoop = () => {
+        if (count >= 3) return;
+        wx.vibrateShort({ type: vibrateType });
+        count++;
+        setTimeout(vibrateLoop, 300);
+      };
+      vibrateLoop();
+    }
+  },
+
+  // 停止震动
+  stopVibrate() {
+    if (this._vibrateInterval) {
+      clearInterval(this._vibrateInterval);
+      this._vibrateInterval = null;
+    }
+    if (this._stopVibrateHandler) {
+      wx.offTouchStart(this._stopVibrateHandler);
+      this._stopVibrateHandler = null;
+    }
   },
 
   resetPomodoro() {
