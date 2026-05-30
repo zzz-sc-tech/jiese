@@ -29,6 +29,7 @@ Page({
     avatarUrl: '',
     nickname: '打卡用户',
     totalDays: 0,
+    totalCheckins: 0,
     currentStreak: 0,
     longestStreak: 0,
     achievements: [],
