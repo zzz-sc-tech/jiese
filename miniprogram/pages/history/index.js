@@ -105,6 +105,18 @@ Page({
       if (countRes.code === 0 && countRes.data.hasCountGoals) {
         this.setData({ countStats: countRes.data });
       }
+
+      // 挑战统计
+      const challengeStatsRes = await api.getChallengeStats();
+      if (challengeStatsRes.code === 0) {
+        this.setData({ challengeStats: challengeStatsRes.data });
+      }
+
+      // 挑战勋章
+      const medalsRes = await api.getChallengeMedals();
+      if (medalsRes.code === 0) {
+        this.setData({ challengeMedals: medalsRes.data });
+      }
     } catch (err) {
       console.error('加载数据失败:', err);
     }
