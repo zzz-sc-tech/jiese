@@ -361,6 +361,91 @@ Page({
     });
   },
 
+  // 倒数日相关
+  showCountdownModal() {
+    const { countdown } = this.data;
+    if (countdown) {
+      // 已有倒数日，显示操作菜单
+      wx.showActionSheet({
+        itemList: ['修改倒数日', '删除倒数日'],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            // 修改
+            this.setData({
+              showCountdown: true,
+              countdownName: countdown.name,
+              countdownDate: countdown.date
+            });
+          } else {
+            // 删除
+            this.deleteCountdown();
+          }
+        }
+      });
+    } else {
+      // 没有倒数日，显示添加弹窗
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = dateUtil.format(tomorrow, 'YYYY-MM-DD');
+      this.setData({
+        showCountdown: true,
+        countdownName: '',
+        countdownDate: tomorrowStr
+      });
+    }
+  },
+
+  hideCountdownModal() {
+    this.setData({ showCountdown: false });
+  },
+
+  onCountdownNameInput(e) {
+    this.setData({ countdownName: e.detail.value });
+  },
+
+  onCountdownDateChange(e) {
+    this.setData({ countdownDate: e.detail.value });
+  },
+
+  saveCountdown() {
+    const { countdownName, countdownDate } = this.data;
+    if (!countdownName.trim()) {
+      wx.showToast({ title: '请输入事件名称', icon: 'none' });
+      return;
+    }
+    if (!countdownDate) {
+      wx.showToast({ title: '请选择日期', icon: 'none' });
+      return;
+    }
+
+    const settings = storage.getSettings();
+    settings.countdowns = [{
+      id: 'cd_' + Date.now(),
+      name: countdownName.trim(),
+      date: countdownDate
+    }];
+    storage.saveSettings(settings);
+    this.loadCountdown();
+    this.setData({ showCountdown: false });
+    wx.showToast({ title: '已保存', icon: 'success' });
+  },
+
+  deleteCountdown() {
+    wx.showModal({
+      title: '删除倒数日',
+      content: '确定删除倒数日？',
+      success: (res) => {
+        if (res.confirm) {
+          const settings = storage.getSettings();
+          settings.countdowns = [];
+          storage.saveSettings(settings);
+          this.setData({ countdown: null });
+          wx.showToast({ title: '已删除', icon: 'success' });
+        }
+      }
+    });
+  },
+
   // 隐藏语录弹窗
   hideQuoteModal() {
     this.setData({ showQuote: false });
