@@ -25,7 +25,11 @@ Page({
     showPie: false,
     // 计数统计
     countStats: null,
-    themeClass: ''
+    themeClass: '',
+    // 挑战统计
+    challengeStats: null,
+    // 挑战勋章
+    challengeMedals: null
   },
 
   _barCtx: null,
