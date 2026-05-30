@@ -273,13 +273,11 @@ Page({
     const vibrateType = intensity === 'heavy' ? 'heavy' : 'medium';
 
     if (mode === 'manual') {
-      // 持续震动直到点击屏幕
+      // 持续震动 + 显示弹窗
       this._vibrateInterval = setInterval(() => {
         wx.vibrateShort({ type: vibrateType });
       }, 500);
-      // 点击屏幕停止震动
-      this._stopVibrateHandler = () => this.stopVibrate();
-      wx.onTouchStart(this._stopVibrateHandler);
+      this.setData({ showVibrateAlert: true });
     } else {
       // 自动停止：震动3次
       let count = 0;
@@ -299,10 +297,7 @@ Page({
       clearInterval(this._vibrateInterval);
       this._vibrateInterval = null;
     }
-    if (this._stopVibrateHandler) {
-      wx.offTouchStart(this._stopVibrateHandler);
-      this._stopVibrateHandler = null;
-    }
+    this.setData({ showVibrateAlert: false });
   },
 
   resetPomodoro() {
