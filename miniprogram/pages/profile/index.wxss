@@ -131,11 +131,11 @@
 .achievements-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx;
+  gap: 16rpx;
 }
 
 .achievements-grid > view {
-  width: calc(33.333% - 14rpx);
+  width: calc((100% - 32rpx) / 3);
 }
 
 .empty-achievements {
