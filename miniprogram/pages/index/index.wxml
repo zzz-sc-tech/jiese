@@ -235,6 +235,17 @@
             </view>
           </view>
         </view>
+
+        <view class="form-group">
+          <text class="form-label">或自定义图标（输入表情符号）</text>
+          <input
+            class="form-input"
+            placeholder="如：🎮、🐱、🌈"
+            value="{{customIcon}}"
+            bindinput="onCustomIconInput"
+            maxlength="2"
+          />
+        </view>
       </view>
 
       <view class="modal-footer">
