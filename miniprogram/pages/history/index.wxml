@@ -254,7 +254,7 @@
     </view>
 
     <view class="medals-grid" wx:if="{{challengeMedals.unlockedMedals.length > 0}}">
-      <view class="medal-item unlocked" wx:for="{{challengeMedals.unlockedMedals}}" wx:key="id">
+      <view class="medal-item unlocked" wx:for="{{challengeMedals.unlockedMedals}}" wx:key="id" bindtap="onMedalTap" data-medal="{{item}}">
         <view class="medal-badge">
           <text class="medal-icon">{{item.icon}}</text>
           <view class="medal-count" wx:if="{{item.count > 1}}">
