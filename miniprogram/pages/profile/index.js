@@ -206,6 +206,48 @@ Page({
     });
   },
 
+  setVibrateIntensity() {
+    wx.showActionSheet({
+      itemList: ['关闭', '轻微', '中等', '强烈'],
+      success: (res) => {
+        const intensities = ['off', 'light', 'medium', 'heavy'];
+        const intensity = intensities[res.tapIndex];
+        const settings = storage.getSettings();
+        settings.vibrateIntensity = intensity;
+        storage.saveSettings(settings);
+        const nameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+        this.setData({
+          vibrateIntensity: intensity,
+          vibrateIntensityName: nameMap[intensity]
+        });
+        // 震动反馈
+        if (intensity !== 'off') {
+          wx.vibrateShort({ type: intensity === 'heavy' ? 'heavy' : 'medium' });
+        }
+        wx.showToast({ title: '已设置', icon: 'success' });
+      }
+    });
+  },
+
+  setVibrateMode() {
+    wx.showActionSheet({
+      itemList: ['震动几次后自动停止', '持续震动直到点击屏幕'],
+      success: (res) => {
+        const modes = ['auto', 'manual'];
+        const mode = modes[res.tapIndex];
+        const settings = storage.getSettings();
+        settings.vibrateMode = mode;
+        storage.saveSettings(settings);
+        const nameMap = { auto: '自动停止', manual: '持续震动' };
+        this.setData({
+          vibrateMode: mode,
+          vibrateModeName: nameMap[mode]
+        });
+        wx.showToast({ title: '已设置', icon: 'success' });
+      }
+    });
+  },
+
   showAbout() {
     wx.showModal({
       title: '关于守心',
