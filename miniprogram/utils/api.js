@@ -305,6 +305,12 @@ const api = {
     return GOAL_PRESETS;
   },
 
+  // 获取总打卡次数
+  getTotalCheckins() {
+    const checkins = getCheckins();
+    return checkins.length;
+  },
+
   // 创建目标
   async createGoal(name, icon, color, type, targetCount) {
     const goals = getGoals();
