@@ -273,7 +273,7 @@ Page({
 
   // 保存目标（新建或编辑）
   async saveGoal() {
-    const { newGoalName, selectedPreset, presetIcons, editingGoal, selectedType, targetCount } = this.data;
+    const { newGoalName, selectedPreset, presetIcons, editingGoal, selectedType, targetCount, customIcon } = this.data;
     const name = newGoalName.trim();
 
     if (!name) {
@@ -282,23 +282,26 @@ Page({
     }
 
     const preset = presetIcons[selectedPreset];
+    // 优先使用自定义图标
+    const icon = customIcon.trim() || preset.icon;
+    const color = customIcon.trim() ? '#5BAEBF' : preset.color;
 
     try {
       if (editingGoal) {
         await api.updateGoal(editingGoal.id, {
           name,
-          icon: preset.icon,
-          color: preset.color,
+          icon,
+          color,
           type: selectedType,
           targetCount: selectedType === 'count' ? targetCount : 0
         });
         wx.showToast({ title: '已更新', icon: 'success' });
       } else {
-        await api.createGoal(name, preset.icon, preset.color, selectedType, targetCount);
+        await api.createGoal(name, icon, color, selectedType, targetCount);
         wx.showToast({ title: '目标已创建', icon: 'success' });
       }
 
-      this.setData({ showAddGoal: false, editingGoal: null });
+      this.setData({ showAddGoal: false, editingGoal: null, customIcon: '' });
       this.loadData();
     } catch (err) {
       wx.showToast({ title: '操作失败', icon: 'none' });
