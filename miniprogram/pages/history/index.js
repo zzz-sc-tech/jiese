@@ -406,5 +406,22 @@ Page({
       pieSubText: '#7A8F7C',
       pieDivider: '#fff'
     };
-  }
+  },
+
+  // 点击勋章显示详情
+  onMedalTap(e) {
+    const medal = e.currentTarget.dataset.medal;
+    this.setData({
+      showMedalDetail: true,
+      selectedMedal: medal
+    });
+  },
+
+  // 关闭勋章弹窗
+  hideMedalDetail() {
+    this.setData({
+      showMedalDetail: false,
+      selectedMedal: null
+    });
+  },
 });
