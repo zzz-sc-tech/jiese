@@ -194,8 +194,8 @@
     </view>
   </view>
 
-  <!-- ===== 挑战统计 ===== -->
-  <view class="challenge-section" wx:if="{{challengeStats}}">
+  <!-- ===== 挑战统计（总览） ===== -->
+  <view class="challenge-section" wx:if="{{challengeStats && !selectedGoalId}}">
     <view class="section-header">
       <text class="section-title">挑战统计</text>
     </view>
@@ -246,29 +246,78 @@
     </view>
   </view>
 
-  <!-- ===== 挑战勋章 ===== -->
-  <view class="medals-section" wx:if="{{challengeMedals}}">
+  <!-- ===== 挑战勋章（总览） ===== -->
+  <view class="medals-section" wx:if="{{challengeMedals && !selectedGoalId}}">
     <view class="section-header">
       <text class="section-title">挑战勋章</text>
-      <text class="section-sub">{{challengeMedals.unlockedCount}}/{{challengeMedals.totalMedals}}</text>
+      <text class="section-sub">已获得 {{challengeMedals.unlockedCount}} 枚</text>
     </view>
 
-    <!-- 已解锁勋章 -->
     <view class="medals-grid" wx:if="{{challengeMedals.unlockedMedals.length > 0}}">
       <view class="medal-item unlocked" wx:for="{{challengeMedals.unlockedMedals}}" wx:key="id">
-        <text class="medal-icon">{{item.icon}}</text>
+        <view class="medal-badge">
+          <text class="medal-icon">{{item.icon}}</text>
+          <view class="medal-count" wx:if="{{item.count > 1}}">
+            <text>×{{item.count}}</text>
+          </view>
+        </view>
         <text class="medal-name">{{item.name}}</text>
-        <text class="medal-desc">{{item.desc}}</text>
+        <view class="medal-goals">
+          <text class="medal-goal-item" wx:for="{{item.goals}}" wx:for-item="goal" wx:key="goalName">{{goal.goalIcon}}</text>
+        </view>
       </view>
     </view>
 
-    <!-- 未解锁勋章 -->
-    <view class="medals-grid" wx:if="{{challengeMedals.lockedMedals.length > 0}}">
-      <view class="medal-item locked" wx:for="{{challengeMedals.lockedMedals}}" wx:key="id">
-        <text class="medal-icon">{{item.icon}}</text>
-        <text class="medal-name">{{item.name}}</text>
-        <text class="medal-desc">{{item.desc}}</text>
+    <view class="empty-medals" wx:if="{{challengeMedals.unlockedMedals.length === 0}}">
+      <text class="empty-icon">🏅</text>
+      <text class="empty-text">完成挑战解锁勋章</text>
+    </view>
+  </view>
+
+  <!-- ===== 目标挑战情况（筛选时） ===== -->
+  <view class="goal-challenge-section" wx:if="{{goalChallenges && selectedGoalId}}">
+    <view class="section-header">
+      <text class="section-title">{{goalChallenges.goalIcon}} {{goalChallenges.goalName}} 挑战</text>
+    </view>
+
+    <view class="goal-challenge-overview card" wx:if="{{goalChallenges.totalChallenges > 0}}">
+      <view class="gco-item">
+        <text class="gco-value">{{goalChallenges.totalChallenges}}</text>
+        <text class="gco-label">总挑战</text>
       </view>
+      <view class="gco-item">
+        <text class="gco-value">{{goalChallenges.completedChallenges}}</text>
+        <text class="gco-label">已完成</text>
+      </view>
+      <view class="gco-item">
+        <text class="gco-value">{{goalChallenges.activeChallenges}}</text>
+        <text class="gco-label">进行中</text>
+      </view>
+    </view>
+
+    <view class="goal-challenge-list">
+      <view class="challenge-item card" wx:for="{{goalChallenges.challenges}}" wx:key="_id">
+        <view class="gc-header">
+          <view class="gc-status {{item.status}}">
+            <text>{{item.status === 'completed' ? '✓' : item.status === 'active' ? '●' : '✗'}}</text>
+          </view>
+          <text class="gc-target">{{item.targetDays}}天挑战</text>
+          <text class="gc-date">{{item.startDate}}</text>
+        </view>
+        <view class="gc-progress" wx:if="{{item.status === 'active'}}">
+          <view class="gc-progress-track">
+            <view class="gc-progress-fill" style="width: {{item.progress}}%;"></view>
+          </view>
+          <text class="gc-progress-text">{{item.completedDays}}/{{item.targetDays}} 天</text>
+        </view>
+        <text class="gc-result" wx:if="{{item.status === 'completed'}}">已完成</text>
+        <text class="gc-result failed" wx:if="{{item.status === 'failed'}}">未完成</text>
+      </view>
+    </view>
+
+    <view class="empty-challenges" wx:if="{{goalChallenges.totalChallenges === 0}}">
+      <text class="empty-icon">🎯</text>
+      <text class="empty-text">暂无挑战记录</text>
     </view>
   </view>
 
