@@ -30,7 +30,12 @@ Page({
     // 周报
     showWeekly: false,
     weeklyReport: null,
-    themeClass: ''
+    themeClass: '',
+    // 倒数日
+    countdown: null,
+    showCountdown: false,
+    countdownName: '',
+    countdownDate: ''
   },
 
   onLoad() {
