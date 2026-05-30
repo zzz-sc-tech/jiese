@@ -75,18 +75,20 @@ Page({
       const settings = storage.getSettings();
       const theme = settings.theme || 'green';
       const themeNameMap = { green: '清新绿', pink: '裸粉', dark: '墨夜' };
-      const vibrateIntensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
-      const vibrateModeNameMap = { auto: '自动停止', manual: '持续震动' };
+      const intensity = settings.vibrateIntensity || 'medium';
+      const mode = settings.vibrateMode || 'auto';
+      const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+      const modeNameMap = { auto: '自动停止', manual: '持续震动' };
+      const vibrateName = intensity === 'off' ? '关闭' : `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
       this.setData({
         nickname: settings.nickname || '打卡用户',
         remindEnabled: settings.remindEnabled,
         remindTime: settings.remindTime,
         themeClass: app.globalData.themeClass,
         themeName: themeNameMap[theme] || '清新绿',
-        vibrateIntensity: settings.vibrateIntensity || 'medium',
-        vibrateIntensityName: vibrateIntensityNameMap[settings.vibrateIntensity || 'medium'],
-        vibrateMode: settings.vibrateMode || 'auto',
-        vibrateModeName: vibrateModeNameMap[settings.vibrateMode || 'auto']
+        vibrateIntensity: intensity,
+        vibrateMode: mode,
+        vibrateName
       });
     } catch (err) {
       console.error('加载用户数据失败:', err);
