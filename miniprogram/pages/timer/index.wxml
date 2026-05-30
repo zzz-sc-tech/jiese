@@ -42,6 +42,11 @@
       <text class="pc-num">{{pomodoroSession}}/4</text>
     </view>
 
+    <!-- 阶段切换提示 -->
+    <view class="phase-hint" wx:if="{{pomodoroState === 'paused' && pomodoroRemaining <= 0}}">
+      <text class="hint-text">{{pomodoroPhase === 'work' ? '专注结束，点击开始休息' : '休息结束，点击开始专注'}}</text>
+    </view>
+
     <!-- 控制按钮 -->
     <view class="timer-controls">
       <view class="ctrl-btn secondary" bindtap="resetPomodoro" wx:if="{{pomodoroState !== 'idle'}}">
