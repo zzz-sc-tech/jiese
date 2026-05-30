@@ -207,43 +207,42 @@ Page({
     });
   },
 
-  setVibrateIntensity() {
+  setVibrate() {
+    const that = this;
     wx.showActionSheet({
-      itemList: ['关闭', '轻微', '中等', '强烈'],
+      itemList: ['关闭震动', '轻微·自动停止', '轻微·持续震动', '中等·自动停止', '中等·持续震动', '强烈·自动停止', '强烈·持续震动'],
       success: (res) => {
-        const intensities = ['off', 'light', 'medium', 'heavy'];
-        const intensity = intensities[res.tapIndex];
+        const options = [
+          { intensity: 'off', mode: 'auto' },
+          { intensity: 'light', mode: 'auto' },
+          { intensity: 'light', mode: 'manual' },
+          { intensity: 'medium', mode: 'auto' },
+          { intensity: 'medium', mode: 'manual' },
+          { intensity: 'heavy', mode: 'auto' },
+          { intensity: 'heavy', mode: 'manual' }
+        ];
+        const option = options[res.tapIndex];
         const settings = storage.getSettings();
-        settings.vibrateIntensity = intensity;
+        settings.vibrateIntensity = option.intensity;
+        settings.vibrateMode = option.mode;
         storage.saveSettings(settings);
-        const nameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
-        this.setData({
-          vibrateIntensity: intensity,
-          vibrateIntensityName: nameMap[intensity]
-        });
-        // 震动反馈
-        if (intensity !== 'off') {
-          wx.vibrateShort({ type: intensity === 'heavy' ? 'heavy' : 'medium' });
-        }
-        wx.showToast({ title: '已设置', icon: 'success' });
-      }
-    });
-  },
 
-  setVibrateMode() {
-    wx.showActionSheet({
-      itemList: ['震动几次后自动停止', '持续震动（点击弹窗停止）'],
-      success: (res) => {
-        const modes = ['auto', 'manual'];
-        const mode = modes[res.tapIndex];
-        const settings = storage.getSettings();
-        settings.vibrateMode = mode;
-        storage.saveSettings(settings);
-        const nameMap = { auto: '自动停止', manual: '持续震动' };
-        this.setData({
-          vibrateMode: mode,
-          vibrateModeName: nameMap[mode]
+        const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+        const modeNameMap = { auto: '自动停止', manual: '持续震动' };
+        const vibrateName = option.intensity === 'off' ? '关闭' : `${intensityNameMap[option.intensity]}·${modeNameMap[option.mode]}`;
+
+        that.setData({
+          vibrateIntensity: option.intensity,
+          vibrateMode: option.mode,
+          vibrateName
         });
+
+        // 震动反馈
+        if (option.intensity !== 'off') {
+          const type = option.intensity === 'heavy' ? 'heavy' : 'light';
+          wx.vibrateShort({ type: type });
+        }
+
         wx.showToast({ title: '已设置', icon: 'success' });
       }
     });
