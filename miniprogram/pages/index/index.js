@@ -211,7 +211,8 @@ Page({
       editingGoal: null,
       selectedPreset: Math.floor(Math.random() * presets.length),
       selectedType: 'single',
-      targetCount: 3
+      targetCount: 3,
+      customIcon: ''
     });
   },
 
