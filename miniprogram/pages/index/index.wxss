@@ -1233,3 +1233,80 @@
   color: var(--color-text);
   line-height: 1.6;
 }
+
+/* 倒数日弹窗 */
+.countdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.countdown-modal {
+  width: 100%;
+  background: var(--color-bg-card);
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 40rpx 32rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.countdown-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.countdown-modal-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.countdown-modal-close {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: 50%;
+  font-size: 28rpx;
+  color: var(--color-text-secondary);
+}
+
+.countdown-modal-body {
+  margin-bottom: 40rpx;
+}
+
+.countdown-modal-footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.btn-countdown-save {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 24rpx;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-countdown-save::after {
+  display: none;
+}
+
+.date-picker {
+  display: flex;
+  align-items: center;
+  min-height: 88rpx;
+}
