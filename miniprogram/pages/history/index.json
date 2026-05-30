@@ -2,5 +2,5 @@
   "usingComponents": {
     "tab-bar": "../../components/tab-bar/index"
   },
-  "navigationBarTitleText": "打卡历史"
+  "navigationBarTitleText": "统计"
 }
