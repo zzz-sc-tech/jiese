@@ -31,7 +31,10 @@ Page({
     // 挑战勋章（总览）
     challengeMedals: null,
     // 目标挑战数据（筛选时）
-    goalChallenges: null
+    goalChallenges: null,
+    // 勋章弹窗
+    showMedalDetail: false,
+    selectedMedal: null
   },
 
   _barCtx: null,
