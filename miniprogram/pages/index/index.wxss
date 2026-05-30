@@ -206,6 +206,8 @@
   align-items: center;
   justify-content: center;
   min-height: 180rpx;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #fff;
   transition: transform 0.2s ease;
 }
 
@@ -224,25 +226,25 @@
 .countdown-value {
   font-size: 64rpx;
   font-weight: 700;
-  color: var(--color-accent);
+  color: #fff;
   line-height: 1;
 }
 
 .countdown-label {
   font-size: 24rpx;
-  color: var(--color-text-secondary);
+  opacity: 0.9;
 }
 
 .countdown-name {
   font-size: 26rpx;
   font-weight: 600;
-  color: var(--color-text);
+  color: #fff;
   margin-bottom: 4rpx;
 }
 
 .countdown-date {
   font-size: 20rpx;
-  color: var(--color-text-secondary);
+  opacity: 0.8;
 }
 
 .countdown-empty {
@@ -254,13 +256,13 @@
 
 .countdown-add-icon {
   font-size: 48rpx;
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 8rpx;
 }
 
 .countdown-add-text {
   font-size: 24rpx;
-  color: var(--color-text-light);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* 语录预览 */
