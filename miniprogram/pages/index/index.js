@@ -19,6 +19,7 @@ Page({
     selectedPreset: 0,
     selectedType: 'single',
     targetCount: 3,
+    customIcon: '',
     showQuote: false,
     currentQuote: { content: '自律给我自由。', author: '康德' },
     stats: { currentStreak: 0, totalDays: 0, longestStreak: 0 },
