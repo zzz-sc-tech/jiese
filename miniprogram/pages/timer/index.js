@@ -271,27 +271,58 @@ Page({
 
     if (intensity === 'off') return;
 
-    // 微信小程序只支持 'light' 和 'heavy' 两种震动类型
-    const vibrateType = intensity === 'heavy' ? 'heavy' : 'light';
-    // 根据强度调整震动次数
-    const vibrateCount = intensity === 'light' ? 2 : (intensity === 'medium' ? 3 : 5);
-
     if (mode === 'manual') {
       // 持续震动 + 显示弹窗
-      this._vibrateInterval = setInterval(() => {
-        wx.vibrateShort({ type: vibrateType });
-      }, 400);
       this.setData({ showVibrateAlert: true });
+      this._doContinuousVibrate(intensity);
     } else {
-      // 自动停止：根据强度震动不同次数
+      // 自动停止
+      this._doAutoVibrate(intensity);
+    }
+  },
+
+  // 自动停止震动
+  _doAutoVibrate(intensity) {
+    if (intensity === 'light') {
+      // 轻微：短震动1次
+      wx.vibrateShort({ type: 'light' });
+    } else if (intensity === 'medium') {
+      // 中等：短震动3次
       let count = 0;
-      const vibrateLoop = () => {
-        if (count >= vibrateCount) return;
-        wx.vibrateShort({ type: vibrateType });
+      const loop = () => {
+        if (count >= 3) return;
+        wx.vibrateShort({ type: 'heavy' });
         count++;
-        setTimeout(vibrateLoop, 300);
+        setTimeout(loop, 200);
       };
-      vibrateLoop();
+      loop();
+    } else if (intensity === 'heavy') {
+      // 强烈：长震动1次
+      wx.vibrateLong();
+    }
+  },
+
+  // 持续震动
+  _doContinuousVibrate(intensity) {
+    const that = this;
+    if (intensity === 'light') {
+      // 轻微：每隔800ms短震动
+      that._vibrateInterval = setInterval(() => {
+        wx.vibrateShort({ type: 'light' });
+      }, 800);
+    } else if (intensity === 'medium') {
+      // 中等：每隔500ms短震动
+      that._vibrateInterval = setInterval(() => {
+        wx.vibrateShort({ type: 'heavy' });
+      }, 500);
+    } else if (intensity === 'heavy') {
+      // 强烈：先长震动，然后持续短震动
+      wx.vibrateLong();
+      setTimeout(() => {
+        that._vibrateInterval = setInterval(() => {
+          wx.vibrateShort({ type: 'heavy' });
+        }, 300);
+      }, 1000);
     }
   },
 
