@@ -5,8 +5,8 @@ page {
   --color-primary-dark: #3D7A50;
   --color-bg: #F5F9F7;
   --color-bg-card: #FFFFFF;
-  --color-accent: #E8B86D;
-  --color-accent-light: #F5D89A;
+  --color-accent: #E89B7B;
+  --color-accent-light: #F0B8A0;
   --color-text: #2C3E2D;
   --color-text-secondary: #7A8F7C;
   --color-text-light: #A8BFA9;
