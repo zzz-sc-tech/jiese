@@ -57,13 +57,14 @@ Page({
     try {
       const res = await api.getStats();
       if (res.code === 0) {
-        const { totalDays, currentStreak, longestStreak, achievements } = res.data;
+        const { currentStreak, longestStreak, achievements } = res.data;
 
         const unlockedIds = (achievements || []).map(a => a.id);
         const unlocked = ALL_ACHIEVEMENTS.filter(a => unlockedIds.includes(a.id));
         const locked = ALL_ACHIEVEMENTS.filter(a => !unlockedIds.includes(a.id));
 
-        // 获取总打卡次数
+        // 获取实际打卡天数（去重）和总打卡次数
+        const totalDays = api.getActualCheckinDays();
         const totalCheckins = api.getTotalCheckins();
 
         this.setData({
