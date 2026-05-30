@@ -37,7 +37,11 @@ Page({
     remindEnabled: false,
     remindTime: '08:00',
     themeClass: '',
-    themeName: '清新绿'
+    themeName: '清新绿',
+    vibrateIntensity: 'medium',
+    vibrateIntensityName: '中等',
+    vibrateMode: 'auto',
+    vibrateModeName: '自动停止'
   },
 
   onLoad() {
