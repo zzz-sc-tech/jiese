@@ -268,10 +268,14 @@ Page({
       ctx.fillStyle = gradient;
       ctx.fill();
 
+      // 日期标签：柱子多时只显示部分
       ctx.fillStyle = colors.labelText;
-      ctx.font = '9px sans-serif';
+      ctx.font = '8px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(item.day, x + barW / 2, padding.top + chartH + 16);
+      const showLabel = barCount <= 7 || i % 2 === 0;
+      if (showLabel) {
+        ctx.fillText(item.day, x + barW / 2, padding.top + chartH + 16);
+      }
 
       if (item.totalMinutes > 0) {
         ctx.fillStyle = colors.barText;
