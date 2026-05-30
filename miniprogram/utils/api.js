@@ -1127,50 +1127,123 @@ const api = {
   // 获取挑战勋章
   async getChallengeMedals() {
     const challenges = getChallenges();
-    const global = getGlobalStats();
+    const goals = getGoals();
     const completedChallenges = challenges.filter(c => c.status === 'completed');
-    const completedCount = completedChallenges.length;
 
-    // 找出最长的完成挑战天数
-    let maxChallengeDays = 0;
+    // 统计每个勋章的获得情况
+    const medalMap = {};
+
     completedChallenges.forEach(ch => {
-      if (ch.targetDays > maxChallengeDays) {
-        maxChallengeDays = ch.targetDays;
+      const goal = goals.find(g => g.id === ch.goalId);
+      const goalName = goal ? goal.name : '未知目标';
+      const goalIcon = goal ? goal.icon : '🎯';
+
+      // 按天数匹配勋章
+      CHALLENGE_MEDALS.forEach(medal => {
+        if (medal.id.startsWith('challenge_') && medal.days > 0 && ch.targetDays >= medal.days) {
+          if (!medalMap[medal.id]) {
+            medalMap[medal.id] = {
+              ...medal,
+              count: 0,
+              goals: []
+            };
+          }
+          medalMap[medal.id].count++;
+          medalMap[medal.id].goals.push({ goalName, goalIcon });
+        }
+      });
+
+      // 完成第一个挑战
+      if (!medalMap['challenge_first']) {
+        medalMap['challenge_first'] = {
+          ...CHALLENGE_MEDALS.find(m => m.id === 'challenge_first'),
+          count: 0,
+          goals: []
+        };
       }
+      medalMap['challenge_first'].count++;
+      medalMap['challenge_first'].goals.push({ goalName, goalIcon });
     });
 
-    // 检查哪些勋章已解锁
-    const unlockedMedals = [];
-    const lockedMedals = [];
+    // 累计完成3个和5个挑战
+    if (completedChallenges.length >= 3) {
+      const medal = CHALLENGE_MEDALS.find(m => m.id === 'challenge_3');
+      medalMap['challenge_3'] = {
+        ...medal,
+        count: 1,
+        goals: [{ goalName: '累计完成', goalIcon: '🏆' }]
+      };
+    }
+    if (completedChallenges.length >= 5) {
+      const medal = CHALLENGE_MEDALS.find(m => m.id === 'challenge_5');
+      medalMap['challenge_5'] = {
+        ...medal,
+        count: 1,
+        goals: [{ goalName: '累计完成', goalIcon: '🏆' }]
+      };
+    }
 
-    CHALLENGE_MEDALS.forEach(medal => {
-      let unlocked = false;
-
-      if (medal.id === 'challenge_first') {
-        unlocked = completedCount >= 1;
-      } else if (medal.id === 'challenge_3') {
-        unlocked = completedCount >= 3;
-      } else if (medal.id === 'challenge_5') {
-        unlocked = completedCount >= 5;
-      } else {
-        // 按天数解锁
-        unlocked = maxChallengeDays >= medal.days;
-      }
-
-      if (unlocked) {
-        unlockedMedals.push({ ...medal, unlocked: true });
-      } else {
-        lockedMedals.push({ ...medal, unlocked: false });
-      }
-    });
+    // 只返回已获得的勋章
+    const unlockedMedals = Object.values(medalMap).filter(m => m.count > 0);
 
     return {
       code: 0,
       data: {
         unlockedMedals,
-        lockedMedals,
         totalMedals: CHALLENGE_MEDALS.length,
         unlockedCount: unlockedMedals.length
+      }
+    };
+  },
+
+  // 获取某个目标的挑战情况
+  async getGoalChallenges(goalId) {
+    const challenges = getChallenges();
+    const goals = getGoals();
+    const goal = goals.find(g => g.id === goalId);
+    const now = new Date();
+
+    const goalChallenges = challenges.filter(c => c.goalId === goalId).map(ch => {
+      const startDate = new Date(ch.startDate);
+      let completedDays = 0;
+      let progress = 0;
+
+      if (ch.status === 'active') {
+        completedDays = Math.min(
+          Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
+          ch.targetDays
+        );
+        progress = Math.min(100, Math.round((completedDays / ch.targetDays) * 100));
+      } else if (ch.status === 'completed') {
+        completedDays = ch.targetDays;
+        progress = 100;
+      }
+
+      return {
+        ...ch,
+        completedDays,
+        progress,
+        goalName: goal ? goal.name : '未知目标',
+        goalIcon: goal ? goal.icon : '🎯',
+        goalColor: goal ? goal.color : '#5B9A6F'
+      };
+    });
+
+    // 统计
+    const totalChallenges = goalChallenges.length;
+    const completedChallenges = goalChallenges.filter(c => c.status === 'completed').length;
+    const activeChallenges = goalChallenges.filter(c => c.status === 'active').length;
+
+    return {
+      code: 0,
+      data: {
+        goalId,
+        goalName: goal ? goal.name : '',
+        goalIcon: goal ? goal.icon : '',
+        totalChallenges,
+        completedChallenges,
+        activeChallenges,
+        challenges: goalChallenges
       }
     };
   },
