@@ -198,6 +198,71 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* 倒数日卡片 */
+.countdown-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180rpx;
+  transition: transform 0.2s ease;
+}
+
+.countdown-card:active {
+  transform: scale(0.98);
+}
+
+.countdown-highlight {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6rpx;
+  margin-bottom: 12rpx;
+}
+
+.countdown-value {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.countdown-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4rpx;
+}
+
+.countdown-date {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+}
+
+.countdown-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown-add-icon {
+  font-size: 48rpx;
+  color: var(--color-text-light);
+  margin-bottom: 8rpx;
+}
+
+.countdown-add-text {
+  font-size: 24rpx;
+  color: var(--color-text-light);
+}
+
 /* 语录预览 */
 .quote-preview {
   margin-bottom: 30rpx;
