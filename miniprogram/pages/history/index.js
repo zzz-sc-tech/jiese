@@ -108,16 +108,25 @@ Page({
         this.setData({ countStats: countRes.data });
       }
 
-      // 挑战统计
-      const challengeStatsRes = await api.getChallengeStats();
-      if (challengeStatsRes.code === 0) {
-        this.setData({ challengeStats: challengeStatsRes.data });
-      }
-
-      // 挑战勋章
-      const medalsRes = await api.getChallengeMedals();
-      if (medalsRes.code === 0) {
-        this.setData({ challengeMedals: medalsRes.data });
+      // 挑战相关数据
+      if (selectedGoalId) {
+        // 选中目标时：显示该目标的挑战情况
+        this.setData({ challengeStats: null, challengeMedals: null });
+        const goalChallengesRes = await api.getGoalChallenges(selectedGoalId);
+        if (goalChallengesRes.code === 0) {
+          this.setData({ goalChallenges: goalChallengesRes.data });
+        }
+      } else {
+        // 总览：显示挑战统计和勋章
+        this.setData({ goalChallenges: null });
+        const challengeStatsRes = await api.getChallengeStats();
+        if (challengeStatsRes.code === 0) {
+          this.setData({ challengeStats: challengeStatsRes.data });
+        }
+        const medalsRes = await api.getChallengeMedals();
+        if (medalsRes.code === 0) {
+          this.setData({ challengeMedals: medalsRes.data });
+        }
       }
     } catch (err) {
       console.error('加载数据失败:', err);
