@@ -210,42 +210,50 @@ Page({
   setVibrate() {
     const that = this;
     wx.showActionSheet({
-      itemList: ['关闭震动', '轻微·自动停止', '轻微·持续震动', '中等·自动停止', '中等·持续震动', '强烈·自动停止', '强烈·持续震动'],
+      itemList: ['关闭震动', '轻微', '中等', '强烈'],
       success: (res) => {
-        const options = [
-          { intensity: 'off', mode: 'auto' },
-          { intensity: 'light', mode: 'auto' },
-          { intensity: 'light', mode: 'manual' },
-          { intensity: 'medium', mode: 'auto' },
-          { intensity: 'medium', mode: 'manual' },
-          { intensity: 'heavy', mode: 'auto' },
-          { intensity: 'heavy', mode: 'manual' }
-        ];
-        const option = options[res.tapIndex];
-        const settings = storage.getSettings();
-        settings.vibrateIntensity = option.intensity;
-        settings.vibrateMode = option.mode;
-        storage.saveSettings(settings);
-
-        const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
-        const modeNameMap = { auto: '自动停止', manual: '持续震动' };
-        const vibrateName = option.intensity === 'off' ? '关闭' : `${intensityNameMap[option.intensity]}·${modeNameMap[option.mode]}`;
-
-        that.setData({
-          vibrateIntensity: option.intensity,
-          vibrateMode: option.mode,
-          vibrateName
-        });
-
-        // 震动反馈
-        if (option.intensity !== 'off') {
-          const type = option.intensity === 'heavy' ? 'heavy' : 'light';
-          wx.vibrateShort({ type: type });
+        if (res.tapIndex === 0) {
+          // 关闭震动
+          that._saveVibrateSetting('off', 'auto');
+        } else {
+          // 选择强度后，再选择方式
+          const intensities = ['light', 'medium', 'heavy'];
+          const intensity = intensities[res.tapIndex - 1];
+          wx.showActionSheet({
+            itemList: ['自动停止（震动几次后停止）', '持续震动（弹窗点击停止）'],
+            success: (res2) => {
+              const mode = res2.tapIndex === 0 ? 'auto' : 'manual';
+              that._saveVibrateSetting(intensity, mode);
+            }
+          });
         }
-
-        wx.showToast({ title: '已设置', icon: 'success' });
       }
     });
+  },
+
+  _saveVibrateSetting(intensity, mode) {
+    const settings = storage.getSettings();
+    settings.vibrateIntensity = intensity;
+    settings.vibrateMode = mode;
+    storage.saveSettings(settings);
+
+    const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+    const modeNameMap = { auto: '自动停止', manual: '持续震动' };
+    const vibrateName = intensity === 'off' ? '关闭' : `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
+
+    this.setData({
+      vibrateIntensity: intensity,
+      vibrateMode: mode,
+      vibrateName
+    });
+
+    // 震动反馈
+    if (intensity !== 'off') {
+      const type = intensity === 'heavy' ? 'heavy' : 'light';
+      wx.vibrateShort({ type: type });
+    }
+
+    wx.showToast({ title: '已设置', icon: 'success' });
   },
 
   showAbout() {
