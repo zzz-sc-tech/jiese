@@ -116,3 +116,12 @@
     </view>
   </view>
 </view>
+
+<!-- 震动提醒弹窗 -->
+<view class="vibrate-alert-overlay" wx:if="{{showVibrateAlert}}" bindtap="stopVibrate">
+  <view class="vibrate-alert-modal" catchtap="stopVibrate">
+    <text class="vibrate-alert-icon">🔔</text>
+    <text class="vibrate-alert-text">时间到！</text>
+    <text class="vibrate-alert-hint">点击任意位置停止震动</text>
+  </view>
+</view>
