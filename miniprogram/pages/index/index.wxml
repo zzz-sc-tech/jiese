@@ -28,27 +28,39 @@
   <!-- 主内容区 -->
   <view class="main-content" style="padding-top: {{statusBarHeight + 44}}px;">
     <!-- 总览统计 -->
-    <view class="overview-card card">
-      <view class="overview-main">
+    <view class="overview-section">
+      <!-- 连续打卡 -->
+      <view class="overview-card card">
         <view class="overview-highlight">
           <text class="highlight-value">{{stats.currentStreak}}</text>
           <text class="highlight-label">天连续打卡</text>
         </view>
+        <view class="overview-row">
+          <view class="overview-item">
+            <text class="overview-value">{{globalTotalDays}}</text>
+            <text class="overview-label">累计</text>
+          </view>
+          <view class="overview-divider"></view>
+          <view class="overview-item">
+            <text class="overview-value">{{stats.longestStreak}}</text>
+            <text class="overview-label">最长</text>
+          </view>
+        </view>
       </view>
-      <view class="overview-row">
-        <view class="overview-item">
-          <text class="overview-value">{{globalTotalDays}}</text>
-          <text class="overview-label">累计打卡</text>
+
+      <!-- 倒数日 -->
+      <view class="countdown-card card" bindtap="showCountdownModal">
+        <view wx:if="{{countdown}}">
+          <view class="countdown-highlight">
+            <text class="countdown-value">{{countdown.days}}</text>
+            <text class="countdown-label">天后</text>
+          </view>
+          <text class="countdown-name">{{countdown.name}}</text>
+          <text class="countdown-date">{{countdown.date}}</text>
         </view>
-        <view class="overview-divider"></view>
-        <view class="overview-item">
-          <text class="overview-value">{{stats.longestStreak}}</text>
-          <text class="overview-label">最长连续</text>
-        </view>
-        <view class="overview-divider"></view>
-        <view class="overview-item">
-          <text class="overview-value">{{goals.length}}</text>
-          <text class="overview-label">进行中</text>
+        <view wx:else class="countdown-empty">
+          <text class="countdown-add-icon">+</text>
+          <text class="countdown-add-text">添加倒数日</text>
         </view>
       </view>
     </view>
