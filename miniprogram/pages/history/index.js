@@ -214,6 +214,7 @@ Page({
     const { w, h } = this._barSize;
     if (!ctx || !dailyTotals || dailyTotals.length === 0) return;
 
+    const colors = this._getChartColors();
     ctx.clearRect(0, 0, w, h);
 
     const padding = { top: 20, right: 20, bottom: 40, left: 50 };
@@ -226,7 +227,7 @@ Page({
 
     // Y 轴刻度
     const ySteps = 4;
-    ctx.fillStyle = '#999';
+    ctx.fillStyle = colors.labelText;
     ctx.font = '10px sans-serif';
     ctx.textAlign = 'right';
     for (let i = 0; i <= ySteps; i++) {
@@ -237,7 +238,7 @@ Page({
         ctx.beginPath();
         ctx.moveTo(padding.left, y);
         ctx.lineTo(w - padding.right, y);
-        ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+        ctx.strokeStyle = colors.gridLine;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -250,8 +251,8 @@ Page({
       const y = padding.top + chartH - barH;
 
       const gradient = ctx.createLinearGradient(x, y, x, padding.top + chartH);
-      gradient.addColorStop(0, '#5B9A6F');
-      gradient.addColorStop(1, '#8BC4A0');
+      gradient.addColorStop(0, colors.barGradientStart);
+      gradient.addColorStop(1, colors.barGradientEnd);
 
       const radius = Math.min(barW / 2, 6);
       ctx.beginPath();
@@ -267,13 +268,13 @@ Page({
       ctx.fillStyle = gradient;
       ctx.fill();
 
-      ctx.fillStyle = '#999';
+      ctx.fillStyle = colors.labelText;
       ctx.font = '9px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(item.day, x + barW / 2, padding.top + chartH + 16);
 
       if (item.totalMinutes > 0) {
-        ctx.fillStyle = '#5B9A6F';
+        ctx.fillStyle = colors.barText;
         ctx.font = 'bold 9px sans-serif';
         ctx.fillText(`${item.totalMinutes}`, x + barW / 2, y - 6);
       }
@@ -343,5 +344,32 @@ Page({
     const m = Math.floor((seconds % 3600) / 60);
     if (h > 0) return `${h}时${m}分`;
     return `${m}分`;
+  },
+
+  // 获取当前主题的图表颜色
+  _getChartColors() {
+    const theme = app.globalData.theme;
+    if (theme === 'dark') {
+      return {
+        barGradientStart: '#5A8A9E',
+        barGradientEnd: '#7AACBE',
+        barText: '#5A8A9E',
+        labelText: '#9A9690',
+        gridLine: 'rgba(255,255,255,0.05)',
+        pieText: '#E8E4E0',
+        pieSubText: '#9A9690',
+        pieDivider: '#2A2A2E'
+      };
+    }
+    return {
+      barGradientStart: '#5B9A6F',
+      barGradientEnd: '#8BC4A0',
+      barText: '#5B9A6F',
+      labelText: '#999',
+      gridLine: 'rgba(0,0,0,0.05)',
+      pieText: '#2C3E2D',
+      pieSubText: '#7A8F7C',
+      pieDivider: '#fff'
+    };
   }
 });
