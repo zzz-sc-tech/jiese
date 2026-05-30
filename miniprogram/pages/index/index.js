@@ -263,6 +263,10 @@ Page({
     this.setData({ newGoalName: e.detail.value });
   },
 
+  onCustomIconInput(e) {
+    this.setData({ customIcon: e.detail.value });
+  },
+
   selectPreset(e) {
     this.setData({ selectedPreset: e.currentTarget.dataset.index });
   },
