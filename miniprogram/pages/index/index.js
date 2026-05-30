@@ -86,10 +86,39 @@ Page({
         this.setData({ currentQuote: quoteRes.data[0] });
       }
 
+      // 加载倒数日
+      this.loadCountdown();
+
       // 检查是否需要弹出昨日总结或周报
       this.checkReports();
     } catch (err) {
       console.error('加载数据失败:', err);
+    }
+  },
+
+  // 加载倒数日
+  loadCountdown() {
+    const settings = storage.getSettings();
+    const countdowns = settings.countdowns || [];
+    if (countdowns.length > 0) {
+      // 取第一个倒数日
+      const cd = countdowns[0];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const targetDate = new Date(cd.date);
+      targetDate.setHours(0, 0, 0, 0);
+      const diffTime = targetDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      this.setData({
+        countdown: {
+          ...cd,
+          days: diffDays > 0 ? diffDays : 0,
+          isPast: diffDays < 0,
+          isToday: diffDays === 0
+        }
+      });
+    } else {
+      this.setData({ countdown: null });
     }
   },
 
