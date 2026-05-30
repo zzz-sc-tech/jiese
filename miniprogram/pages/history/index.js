@@ -286,6 +286,7 @@ Page({
     const size = this._pieSize;
     if (!ctx || !goalDistribution || goalDistribution.length === 0) return;
 
+    const colors = this._getChartColors();
     ctx.clearRect(0, 0, size, size);
 
     const cx = size / 2;
@@ -311,7 +312,7 @@ Page({
       ctx.beginPath();
       ctx.moveTo(cx + innerR * Math.cos(startAngle), cy + innerR * Math.sin(startAngle));
       ctx.lineTo(cx + r * Math.cos(startAngle), cy + r * Math.sin(startAngle));
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = colors.pieDivider;
       ctx.lineWidth = 2;
       ctx.stroke();
 
@@ -320,7 +321,7 @@ Page({
       const lx = cx + labelR * Math.cos(midAngle);
       const ly = cy + labelR * Math.sin(midAngle);
 
-      ctx.fillStyle = '#2C3E2D';
+      ctx.fillStyle = colors.pieText;
       ctx.font = 'bold 11px sans-serif';
       ctx.textAlign = midAngle > Math.PI / 2 && midAngle < Math.PI * 1.5 ? 'right' : 'left';
       ctx.textBaseline = 'middle';
@@ -329,12 +330,12 @@ Page({
       startAngle = endAngle;
     });
 
-    ctx.fillStyle = '#2C3E2D';
+    ctx.fillStyle = colors.pieText;
     ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(this._formatDurationShort(total), cx, cy - 8);
-    ctx.fillStyle = '#7A8F7C';
+    ctx.fillStyle = colors.pieSubText;
     ctx.font = '10px sans-serif';
     ctx.fillText('总时长', cx, cy + 12);
   },
