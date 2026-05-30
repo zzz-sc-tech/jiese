@@ -47,8 +47,14 @@ Page({
     this.initCanvas();
   },
 
+  onHide() {
+    // 页面隐藏时停止震动
+    this.stopVibrate();
+  },
+
   onUnload() {
     this.clearTimer();
+    this.stopVibrate();
     // 如果时钟正在运行，保存当前进度
     if (this.data.clockState === 'running' || this.data.clockState === 'paused') {
       this.saveClockDuration();
