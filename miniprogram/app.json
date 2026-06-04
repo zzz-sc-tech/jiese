@@ -5,7 +5,8 @@
     "pages/challenge/index",
     "pages/share/index",
     "pages/profile/index",
-    "pages/timer/index"
+    "pages/timer/index",
+    "pages/pet/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
