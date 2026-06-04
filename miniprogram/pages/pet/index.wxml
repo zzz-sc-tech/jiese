@@ -1,0 +1,145 @@
+<view class="page-pet {{themeClass}}">
+  <!-- 无宠物状态 -->
+  <view class="no-pet" wx:if="{{!hasPet}}">
+    <view class="no-pet-icon">🐾</view>
+    <text class="no-pet-title">还没有宠物</text>
+    <text class="no-pet-desc">领养一只宠物，陪伴你自律成长</text>
+    <button class="btn-adopt" bindtap="showAdoptModal">领养宠物</button>
+  </view>
+
+  <!-- 有宠物状态 -->
+  <view class="pet-main" wx:if="{{hasPet && pet}}">
+    <!-- 宠物展示区 -->
+    <view class="pet-showcase card">
+      <view class="pet-avatar">
+        <text class="pet-icon">{{pet.stageIcon}}</text>
+      </view>
+      <text class="pet-name">{{pet.name}}</text>
+      <text class="pet-stage">{{pet.stageName}} · Lv.{{pet.level}}</text>
+
+      <!-- 经验条 -->
+      <view class="exp-bar">
+        <view class="exp-track">
+          <view class="exp-fill" style="width: {{pet.levelProgress * 100}}%;"></view>
+        </view>
+        <text class="exp-text">{{pet.currentExp}} / {{pet.nextLevelExp}}</text>
+      </view>
+    </view>
+
+    <!-- 快捷操作 -->
+    <view class="pet-actions">
+      <view class="action-btn" bindtap="showFeedModal">
+        <text class="action-icon">🍖</text>
+        <text class="action-text">投喂</text>
+      </view>
+    </view>
+
+    <!-- 道具背包 -->
+    <view class="items-section">
+      <view class="section-header">
+        <text class="section-title">道具背包</text>
+      </view>
+      <view class="items-grid">
+        <view class="item-card" wx:for="{{items}}" wx:key="id">
+          <text class="item-icon">{{item.icon}}</text>
+          <text class="item-count">×{{item.count}}</text>
+          <text class="item-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 领养弹窗 -->
+  <view class="modal-overlay" wx:if="{{showAdopt}}" bindtap="hideAdoptModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-header">
+        <text class="modal-title">选择宠物</text>
+        <view class="modal-close" bindtap="hideAdoptModal">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <view class="pet-grid">
+          <view
+            class="pet-option {{selectedPetId === item.id ? 'selected' : ''}}"
+            wx:for="{{petTypes}}"
+            wx:key="id"
+            bindtap="selectPet"
+            data-id="{{item.id}}"
+          >
+            <text class="pet-option-icon">{{item.icon}}</text>
+            <text class="pet-option-name">{{item.name}}</text>
+            <text class="pet-option-desc">{{item.desc}}</text>
+          </view>
+        </view>
+
+        <view class="form-group" wx:if="{{selectedPetId}}">
+          <text class="form-label">给宠物起个名字</text>
+          <input
+            class="form-input"
+            placeholder="{{petTypes[selectedPetId].name}}"
+            value="{{petName}}"
+            bindinput="onPetNameInput"
+            maxlength="8"
+          />
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-save" bindtap="adoptPet" disabled="{{!selectedPetId}}">确认领养</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 投喂弹窗 -->
+  <view class="modal-overlay" wx:if="{{showFeed}}" bindtap="hideFeedModal">
+    <view class="modal-content" catchtap>
+      <view class="modal-header">
+        <text class="modal-title">选择道具</text>
+        <view class="modal-close" bindtap="hideFeedModal">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <view class="feed-grid">
+          <view
+            class="feed-option {{selectedItemId === item.id ? 'selected' : ''}} {{item.count <= 0 ? 'disabled' : ''}}"
+            wx:for="{{items}}"
+            wx:key="id"
+            bindtap="selectItem"
+            data-id="{{item.id}}"
+          >
+            <text class="feed-option-icon">{{item.icon}}</text>
+            <text class="feed-option-name">{{item.name}}</text>
+            <text class="feed-option-exp">+{{item.exp}} 经验</text>
+            <text class="feed-option-count">拥有: {{item.count}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="btn-save" bindtap="feedPet" disabled="{{!selectedItemId}}">投喂</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 升级/进化提示 -->
+  <view class="modal-overlay" wx:if="{{showLevelUp}}" bindtap="hideLevelUpModal">
+    <view class="levelup-modal" catchtap>
+      <view class="levelup-content">
+        <text class="levelup-icon" wx:if="{{levelUpData.evolved}}">🎉</text>
+        <text class="levelup-icon" wx:else>⬆️</text>
+        <text class="levelup-title" wx:if="{{levelUpData.evolved}}">宠物进化！</text>
+        <text class="levelup-title" wx:else>等级提升！</text>
+        <text class="levelup-pet-icon">{{levelUpData.levelInfo.stageIcon}}</text>
+        <text class="levelup-pet-name" wx:if="{{levelUpData.evolved}}">{{levelUpData.newStage}}</text>
+        <text class="levelup-level">Lv.{{levelUpData.levelInfo.level}}</text>
+      </view>
+      <view class="levelup-footer">
+        <button class="btn-save" bindtap="hideLevelUpModal">太棒了！</button>
+      </view>
+    </view>
+  </view>
+</view>
