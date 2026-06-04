@@ -235,9 +235,13 @@ Page({
         const session = this.data.pomodoroSession + 1;
         this.setData({ pomodoroSession: session });
 
+        // 发放宠物道具
+        api.grantItem('candy', 1);
+
         if (session >= 4) {
-          // 4个番茄完成，重置
-          wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
+          // 4个番茄完成，重置，发放额外奖励
+          api.grantItem('crystal', 1);
+          wx.showToast({ title: '完成4个番茄！获得魔法水晶', icon: 'success' });
           this.triggerVibrate();
           this.setData({ pomodoroSession: 0, pomodoroState: 'idle' });
           this.resetPomodoroDisplay();
