@@ -129,24 +129,16 @@ Page({
 
     const res = await api.feedPet(selectedItemId);
     if (res.code === 0) {
-      const { gainedExp, leveledUp, evolved } = res.data;
+      const { leveledUp, evolved } = res.data;
 
-      wx.showToast({ title: `获得 ${gainedExp} 经验`, icon: 'success' });
-
-      // 检查是否升级或进化
-      if (evolved) {
-        this.setData({
-          showFeed: false,
-          showLevelUp: true,
-          levelUpData: res.data
-        });
-      } else if (leveledUp) {
+      if (evolved || leveledUp) {
         this.setData({
           showFeed: false,
           showLevelUp: true,
           levelUpData: res.data
         });
       } else {
+        wx.showToast({ title: '投喂成功', icon: 'success' });
         this.setData({ showFeed: false });
       }
 
