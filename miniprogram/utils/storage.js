@@ -5,7 +5,9 @@ const KEYS = {
   LAST_CHECK_DATE: 'jiese_last_check_date',
   CACHED_STATS: 'jiese_cached_stats',
   SETTINGS: 'jiese_settings',
-  QUOTES_CACHE: 'jiese_quotes_cache'
+  QUOTES_CACHE: 'jiese_quotes_cache',
+  PET: 'jiese_pet',
+  PET_ITEMS: 'jiese_pet_items'
 };
 
 const storage = {
