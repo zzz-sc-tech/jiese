@@ -96,7 +96,7 @@
   <view class="modal-overlay" wx:if="{{showFeed}}" bindtap="hideFeedModal">
     <view class="modal-content" catchtap>
       <view class="modal-header">
-        <text class="modal-title">选择道具</text>
+        <text class="modal-title">投喂宠物</text>
         <view class="modal-close" bindtap="hideFeedModal">
           <text>✕</text>
         </view>
@@ -110,12 +110,15 @@
             wx:key="id"
             bindtap="selectItem"
             data-id="{{item.id}}"
+            wx:if="{{item.count > 0}}"
           >
             <text class="feed-option-icon">{{item.icon}}</text>
             <text class="feed-option-name">{{item.name}}</text>
-            <text class="feed-option-exp">+{{item.exp}} 经验</text>
-            <text class="feed-option-count">拥有: {{item.count}}</text>
+            <text class="feed-option-count">×{{item.count}}</text>
           </view>
+        </view>
+        <view class="feed-empty" wx:if="{{items.length === 0 || items.every(function(i){return i.count <= 0})}}">
+          <text class="feed-empty-text">暂无道具，坚持打卡会获得哦~</text>
         </view>
       </view>
 
