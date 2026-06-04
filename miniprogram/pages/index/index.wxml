@@ -156,6 +156,10 @@
 
     <!-- 快捷入口 -->
     <view class="shortcuts">
+      <view class="shortcut-item" bindtap="goPet">
+        <text class="shortcut-icon">🐾</text>
+        <text class="shortcut-text">宠物</text>
+      </view>
       <view class="shortcut-item" bindtap="goChallenge">
         <text class="shortcut-icon">🏆</text>
         <text class="shortcut-text">挑战</text>
