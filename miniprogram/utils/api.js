@@ -785,6 +785,31 @@ const api = {
         this.grantItem('star', 1);
         grantedItems.push({ itemId: 'star', count: 1 });
       }
+
+      // 检查挑战完成情况
+      const challenges = getChallenges();
+      const goalChallenges = challenges.filter(c => c.goalId === goal.id && c.status === 'active');
+      const now = new Date();
+
+      goalChallenges.forEach(ch => {
+        const startDate = new Date(ch.startDate);
+        const completedDays = Math.min(
+          Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
+          ch.targetDays
+        );
+
+        if (completedDays >= ch.targetDays) {
+          // 挑战完成，发放彩虹宝箱
+          this.grantItem('rainbow', 1);
+          grantedItems.push({ itemId: 'rainbow', count: 1 });
+
+          // 更新挑战状态
+          ch.status = 'completed';
+          ch.completedAt = Date.now();
+        }
+      });
+
+      saveChallenges(challenges);
     }
 
     return {
