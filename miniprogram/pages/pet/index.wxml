@@ -137,11 +137,10 @@
         <text class="levelup-title" wx:if="{{levelUpData.evolved}}">宠物进化！</text>
         <text class="levelup-title" wx:else>等级提升！</text>
         <text class="levelup-pet-icon">{{levelUpData.levelInfo.stageIcon}}</text>
-        <text class="levelup-pet-name" wx:if="{{levelUpData.evolved}}">{{levelUpData.newStage}}</text>
         <text class="levelup-level">Lv.{{levelUpData.levelInfo.level}}</text>
       </view>
       <view class="levelup-footer">
-        <button class="btn-save" bindtap="hideLevelUpModal">太棒了！</button>
+        <button class="btn-save" bindtap="hideLevelUpModal">好的</button>
       </view>
     </view>
   </view>
