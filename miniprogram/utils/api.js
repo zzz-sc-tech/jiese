@@ -767,49 +767,34 @@ const api = {
 
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
-    // 发放宠物道具
-    const grantedItems = [];
+    // 静默发放宠物道具（无提示）
     const pet = getPet();
     if (pet) {
-      // 每日打卡获得普通饲料
       this.grantItem('feed', 1);
-      grantedItems.push({ itemId: 'feed', count: 1 });
-
-      // 连续打卡奖励
       const streak = goalStat.currentStreak;
-      if (streak === 3) {
-        this.grantItem('fruit', 1);
-        grantedItems.push({ itemId: 'fruit', count: 1 });
-      }
-      if (streak === 7) {
-        this.grantItem('star', 1);
-        grantedItems.push({ itemId: 'star', count: 1 });
-      }
+      if (streak === 3) this.grantItem('fruit', 1);
+      if (streak === 7) this.grantItem('star', 1);
 
-      // 检查挑战完成情况
+      // 检查挑战完成
       const challenges = getChallenges();
       const goalChallenges = challenges.filter(c => c.goalId === goal.id && c.status === 'active');
       const now = new Date();
-
       goalChallenges.forEach(ch => {
         const startDate = new Date(ch.startDate);
         const completedDays = Math.min(
           Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
           ch.targetDays
         );
-
         if (completedDays >= ch.targetDays) {
-          // 挑战完成，发放彩虹宝箱
           this.grantItem('rainbow', 1);
-          grantedItems.push({ itemId: 'rainbow', count: 1 });
-
-          // 更新挑战状态
           ch.status = 'completed';
           ch.completedAt = Date.now();
         }
       });
-
       saveChallenges(challenges);
+
+      // 随机事件
+      this._triggerRandomEvent();
     }
 
     return {
@@ -822,10 +807,27 @@ const api = {
         longestStreak: goalStat.longestStreak,
         globalTotalDays: totalDays,
         quote,
-        newAchievements,
-        grantedItems
+        newAchievements
       }
     };
+  },
+
+  // 随机事件触发
+  _triggerRandomEvent() {
+    const rand = Math.random();
+    if (rand < 0.2) {
+      const items = ['feed', 'fruit', 'candy', 'star'];
+      const weights = [4, 3, 2, 1];
+      const totalWeight = weights.reduce((a, b) => a + b, 0);
+      let r = rand / 0.2 * totalWeight;
+      for (let i = 0; i < items.length; i++) {
+        r -= weights[i];
+        if (r <= 0) {
+          this.grantItem(items[i], 1);
+          break;
+        }
+      }
+    }
   },
 
   // 获取今日各目标打卡状态
