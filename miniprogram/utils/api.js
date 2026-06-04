@@ -240,6 +240,66 @@ const PET_TYPES = {
       grow: { icon: '🐉', name: '成长飞龙' },
       adult: { icon: '🐲', name: '神圣巨龙' }
     }
+  },
+  pet_fox: {
+    name: '小狐狸',
+    icon: '🦊',
+    desc: '聪明伶俐的伙伴',
+    stages: {
+      baby: { icon: '🦊', name: '幼年狐狸' },
+      grow: { icon: '🦊', name: '灵狐' },
+      adult: { icon: '🦊', name: '九尾灵狐' }
+    }
+  },
+  pet_penguin: {
+    name: '小企鹅',
+    icon: '🐧',
+    desc: '坚持到底的象征',
+    stages: {
+      baby: { icon: '🐧', name: '幼年企鹅' },
+      grow: { icon: '🐧', name: '绅士企鹅' },
+      adult: { icon: '🐧', name: '帝王企鹅' }
+    }
+  },
+  pet_hamster: {
+    name: '小仓鼠',
+    icon: '🐹',
+    desc: '勤劳的小可爱',
+    stages: {
+      baby: { icon: '🐹', name: '幼年仓鼠' },
+      grow: { icon: '🐹', name: '活力仓鼠' },
+      adult: { icon: '🐹', name: '黄金仓鼠' }
+    }
+  },
+  pet_turtle: {
+    name: '小乌龟',
+    icon: '🐢',
+    desc: '稳扎稳打的智者',
+    stages: {
+      baby: { icon: '🐢', name: '幼年乌龟' },
+      grow: { icon: '🐢', name: '灵龟' },
+      adult: { icon: '🐢', name: '神龟' }
+    }
+  },
+  pet_butterfly: {
+    name: '小蝴蝶',
+    icon: '🦋',
+    desc: '破茧成蝶的蜕变',
+    stages: {
+      baby: { icon: '🐛', name: '毛毛虫' },
+      grow: { icon: '🪱', name: '蛹' },
+      adult: { icon: '🦋', name: '彩蝶' }
+    }
+  },
+  pet_unicorn: {
+    name: '小独角兽',
+    icon: '🦄',
+    desc: '梦想与奇迹的化身',
+    stages: {
+      baby: { icon: '🦄', name: '幼年独角兽' },
+      grow: { icon: '🦄', name: '银角独角兽' },
+      adult: { icon: '🦄', name: '彩虹独角兽' }
+    }
   }
 };
 
@@ -253,11 +313,11 @@ const ITEM_TYPES = {
   rainbow: { name: '彩虹宝箱', icon: '🌈', exp: 200, desc: '完成挑战获得' }
 };
 
-// 等级经验表（30级）
+// 等级经验表（30级）- 一周全勤约1000经验可满级
 const LEVEL_EXP = [
-  0, 50, 120, 200, 300, 420, 560, 720, 900, 1100,      // 1-10
-  1320, 1560, 1820, 2100, 2400, 2720, 3060, 3420, 3800, 4200,  // 11-20
-  4620, 5060, 5520, 6000, 6500, 7020, 7560, 8120, 8700, 9300   // 21-30
+  0, 30, 60, 100, 150, 200, 260, 330, 400, 480,        // 1-10
+  560, 640, 720, 800, 850, 900, 930, 960, 980, 1000,    // 11-20
+  1020, 1040, 1060, 1080, 1100, 1120, 1140, 1160, 1180, 1200  // 21-30
 ];
 
 // 阶段等级阈值
