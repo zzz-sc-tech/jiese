@@ -48,11 +48,13 @@ Page({
 
     // 加载道具列表
     const itemsRes = api.getItems();
+    const hasItems = itemsRes.data.some(item => item.count > 0);
 
     this.setData({
       pet: petInfo.data,
       hasPet,
-      items: itemsRes.data
+      items: itemsRes.data,
+      hasItems
     });
   },
 
