@@ -106,9 +106,9 @@
       </view>
 
       <view class="modal-body">
-        <view class="feed-grid">
+        <view class="feed-grid" wx:if="{{hasItems}}">
           <view
-            class="feed-option {{selectedItemId === item.id ? 'selected' : ''}} {{item.count <= 0 ? 'disabled' : ''}}"
+            class="feed-option {{selectedItemId === item.id ? 'selected' : ''}}"
             wx:for="{{items}}"
             wx:key="id"
             bindtap="selectItem"
@@ -120,7 +120,7 @@
             <text class="feed-option-count">×{{item.count}}</text>
           </view>
         </view>
-        <view class="feed-empty" wx:if="{{items.length === 0 || items.every(function(i){return i.count <= 0})}}">
+        <view class="feed-empty" wx:if="{{!hasItems}}">
           <text class="feed-empty-text">暂无道具，坚持打卡会获得哦~</text>
         </view>
       </view>
