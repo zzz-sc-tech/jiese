@@ -13,6 +13,7 @@ Page({
     petTypes: [],
     // 道具列表
     items: [],
+    hasItems: false,
     // 领养弹窗
     showAdopt: false,
     selectedPetId: '',
