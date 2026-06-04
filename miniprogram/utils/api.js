@@ -767,6 +767,26 @@ const api = {
 
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
+    // 发放宠物道具
+    const grantedItems = [];
+    const pet = getPet();
+    if (pet) {
+      // 每日打卡获得普通饲料
+      this.grantItem('feed', 1);
+      grantedItems.push({ itemId: 'feed', count: 1 });
+
+      // 连续打卡奖励
+      const streak = goalStat.currentStreak;
+      if (streak === 3) {
+        this.grantItem('fruit', 1);
+        grantedItems.push({ itemId: 'fruit', count: 1 });
+      }
+      if (streak === 7) {
+        this.grantItem('star', 1);
+        grantedItems.push({ itemId: 'star', count: 1 });
+      }
+    }
+
     return {
       code: 0, message: '打卡成功',
       data: {
@@ -777,7 +797,8 @@ const api = {
         longestStreak: goalStat.longestStreak,
         globalTotalDays: totalDays,
         quote,
-        newAchievements
+        newAchievements,
+        grantedItems
       }
     };
   },
