@@ -39,14 +39,14 @@
       <view class="section-header">
         <text class="section-title">道具背包</text>
       </view>
-      <view class="items-grid">
+      <view class="items-grid" wx:if="{{hasItems}}">
         <view class="item-card" wx:for="{{items}}" wx:key="id" wx:if="{{item.count > 0}}">
           <text class="item-icon">{{item.icon}}</text>
           <text class="item-count">×{{item.count}}</text>
           <text class="item-name">{{item.name}}</text>
         </view>
       </view>
-      <view class="items-empty" wx:if="{{items.every(function(i){return i.count <= 0})}}">
+      <view class="items-empty" wx:if="{{!hasItems}}">
         <text class="items-empty-text">暂无道具</text>
       </view>
     </view>
