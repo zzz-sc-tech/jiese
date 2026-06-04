@@ -185,6 +185,28 @@
   color: var(--color-text-secondary);
 }
 
+.items-empty {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+}
+
+.items-empty-text {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.feed-empty {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+}
+
+.feed-empty-text {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
 /* 弹窗样式 */
 .modal-overlay {
   position: fixed;
