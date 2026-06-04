@@ -179,6 +179,151 @@ const CHALLENGE_MEDALS = [
   { id: 'challenge_5', name: '挑战大师', desc: '累计完成5个挑战', days: 0, icon: '⚡' }
 ];
 
+// ========== 宠物系统配置 ==========
+const PET_TYPES = {
+  pet_seedling: {
+    name: '小树苗',
+    icon: '🌱',
+    desc: '象征自律成长',
+    stages: {
+      baby: { icon: '🌱', name: '幼年树苗' },
+      grow: { icon: '🌿', name: '成长小树' },
+      adult: { icon: '🌳', name: '参天大树' }
+    }
+  },
+  pet_cat: {
+    name: '小猫咪',
+    icon: '🐱',
+    desc: '温柔陪伴你成长',
+    stages: {
+      baby: { icon: '🐱', name: '幼年猫咪' },
+      grow: { icon: '🐈', name: '优雅猫咪' },
+      adult: { icon: '🦁', name: '狮王猫咪' }
+    }
+  },
+  pet_dog: {
+    name: '小柴犬',
+    icon: '🐶',
+    desc: '忠诚守护你的目标',
+    stages: {
+      baby: { icon: '🐶', name: '幼年柴犬' },
+      grow: { icon: '🐕', name: '活力柴犬' },
+      adult: { icon: '🐺', name: '狼王柴犬' }
+    }
+  },
+  pet_rabbit: {
+    name: '小兔子',
+    icon: '🐰',
+    desc: '活力满满的伙伴',
+    stages: {
+      baby: { icon: '🐰', name: '幼年兔子' },
+      grow: { icon: '🐇', name: '跳跃兔子' },
+      adult: { icon: '🦌', name: '灵兔仙子' }
+    }
+  },
+  pet_panda: {
+    name: '小熊猫',
+    icon: '🐼',
+    desc: '国宝级萌宠',
+    stages: {
+      baby: { icon: '🐼', name: '幼年熊猫' },
+      grow: { icon: '🐻', name: '憨厚熊猫' },
+      adult: { icon: '🐻‍❄️', name: '冰雪熊猫' }
+    }
+  },
+  pet_dragon: {
+    name: '小飞龙',
+    icon: '🐲',
+    desc: '守护你的梦想',
+    stages: {
+      baby: { icon: '🐲', name: '幼年飞龙' },
+      grow: { icon: '🐉', name: '成长飞龙' },
+      adult: { icon: '🐲', name: '神圣巨龙' }
+    }
+  }
+};
+
+// 道具配置
+const ITEM_TYPES = {
+  feed: { name: '普通饲料', icon: '🌾', exp: 10, desc: '每日打卡获得' },
+  fruit: { name: '营养果实', icon: '🍎', exp: 20, desc: '连续打卡3天获得' },
+  candy: { name: '能量糖果', icon: '🍬', exp: 15, desc: '完成番茄钟获得' },
+  crystal: { name: '魔法水晶', icon: '💎', exp: 50, desc: '完成4个番茄钟获得' },
+  star: { name: '星光碎片', icon: '⭐', exp: 100, desc: '连续打卡7天获得' },
+  rainbow: { name: '彩虹宝箱', icon: '🌈', exp: 200, desc: '完成挑战获得' }
+};
+
+// 等级经验表（30级）
+const LEVEL_EXP = [
+  0, 50, 120, 200, 300, 420, 560, 720, 900, 1100,      // 1-10
+  1320, 1560, 1820, 2100, 2400, 2720, 3060, 3420, 3800, 4200,  // 11-20
+  4620, 5060, 5520, 6000, 6500, 7020, 7560, 8120, 8700, 9300   // 21-30
+];
+
+// 阶段等级阈值
+const STAGE_THRESHOLDS = {
+  baby: { min: 1, max: 10 },
+  grow: { min: 11, max: 20 },
+  adult: { min: 21, max: 30 }
+};
+
+// ========== 宠物数据操作 ==========
+function getPet() {
+  return storage.get('jiese_pet', null);
+}
+
+function savePet(pet) {
+  storage.set('jiese_pet', pet);
+}
+
+function getPetItems() {
+  return storage.get('jiese_pet_items', {
+    feed: 0,
+    fruit: 0,
+    candy: 0,
+    crystal: 0,
+    star: 0,
+    rainbow: 0
+  });
+}
+
+function savePetItems(items) {
+  storage.set('jiese_pet_items', items);
+}
+
+// 计算等级和阶段
+function calculateLevel(exp) {
+  let level = 1;
+  for (let i = 0; i < LEVEL_EXP.length; i++) {
+    if (exp >= LEVEL_EXP[i]) {
+      level = i + 1;
+    } else {
+      break;
+    }
+  }
+
+  let stage = 'baby';
+  if (level >= STAGE_THRESHOLDS.adult.min) {
+    stage = 'adult';
+  } else if (level >= STAGE_THRESHOLDS.grow.min) {
+    stage = 'grow';
+  }
+
+  const currentLevelExp = LEVEL_EXP[level - 1] || 0;
+  const nextLevelExp = level < 30 ? LEVEL_EXP[level] : LEVEL_EXP[29];
+  const levelProgress = level < 30
+    ? (exp - currentLevelExp) / (nextLevelExp - currentLevelExp)
+    : 1;
+
+  return {
+    level,
+    stage,
+    currentExp: exp,
+    nextLevelExp: nextLevelExp,
+    levelProgress: Math.min(1, Math.max(0, levelProgress))
+  };
+}
+
 // ========== 内部数据操作 ==========
 function getGoals() {
   return storage.get('jiese_goals', []);
