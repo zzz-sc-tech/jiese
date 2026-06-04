@@ -463,6 +463,163 @@ const api = {
     return uniqueDates.size;
   },
 
+  // ========== 宠物系统接口 ==========
+
+  // 获取宠物类型列表
+  getPetTypes() {
+    return PET_TYPES;
+  },
+
+  // 获取道具类型列表
+  getItemTypes() {
+    return ITEM_TYPES;
+  },
+
+  // 获取当前宠物信息
+  getPetInfo() {
+    const pet = getPet();
+    if (!pet) return { code: 0, data: null };
+
+    const petType = PET_TYPES[pet.petId];
+    const levelInfo = calculateLevel(pet.exp);
+    const stageInfo = petType.stages[levelInfo.stage];
+
+    return {
+      code: 0,
+      data: {
+        ...pet,
+        ...levelInfo,
+        typeName: petType.name,
+        typeIcon: petType.icon,
+        typeDesc: petType.desc,
+        stageName: stageInfo.name,
+        stageIcon: stageInfo.icon
+      }
+    };
+  },
+
+  // 领养宠物
+  async adoptPet(petId, name) {
+    const existingPet = getPet();
+    if (existingPet) {
+      return { code: 1, message: '你已经有宠物了' };
+    }
+
+    if (!PET_TYPES[petId]) {
+      return { code: 2, message: '无效的宠物类型' };
+    }
+
+    const pet = {
+      petId,
+      name: name || PET_TYPES[petId].name,
+      exp: 0,
+      adoptTime: Date.now(),
+      lastFeedTime: Date.now()
+    };
+
+    savePet(pet);
+    return { code: 0, data: pet };
+  },
+
+  // 获取道具列表
+  getItems() {
+    const items = getPetItems();
+    const itemTypes = ITEM_TYPES;
+
+    const itemList = Object.entries(items).map(([id, count]) => ({
+      id,
+      count,
+      ...itemTypes[id]
+    }));
+
+    return { code: 0, data: itemList };
+  },
+
+  // 使用道具投喂宠物
+  async feedPet(itemId) {
+    const pet = getPet();
+    if (!pet) {
+      return { code: 1, message: '请先领养宠物' };
+    }
+
+    const items = getPetItems();
+    if (!items[itemId] || items[itemId] <= 0) {
+      return { code: 2, message: '道具不足' };
+    }
+
+    const itemConfig = ITEM_TYPES[itemId];
+    if (!itemConfig) {
+      return { code: 3, message: '无效的道具' };
+    }
+
+    // 计算升级前的等级
+    const beforeLevel = calculateLevel(pet.exp);
+
+    // 增加经验值
+    pet.exp += itemConfig.exp;
+    pet.lastFeedTime = Date.now();
+
+    // 计算升级后的等级
+    const afterLevel = calculateLevel(pet.exp);
+
+    // 减少道具
+    items[itemId]--;
+    savePetItems(items);
+    savePet(pet);
+
+    // 判断是否升级或进化
+    const leveledUp = afterLevel.level > beforeLevel.level;
+    const evolved = afterLevel.stage !== beforeLevel.stage;
+
+    return {
+      code: 0,
+      data: {
+        pet,
+        levelInfo: afterLevel,
+        gainedExp: itemConfig.exp,
+        leveledUp,
+        evolved,
+        oldStage: beforeLevel.stage,
+        newStage: afterLevel.stage
+      }
+    };
+  },
+
+  // 发放道具（打卡/番茄钟时调用）
+  async grantItem(itemId, count = 1) {
+    const items = getPetItems();
+    items[itemId] = (items[itemId] || 0) + count;
+    savePetItems(items);
+
+    return {
+      code: 0,
+      data: {
+        itemId,
+        count,
+        totalCount: items[itemId]
+      }
+    };
+  },
+
+  // 获取宠物信息（简化版，用于显示）
+  getPetSimple() {
+    const pet = getPet();
+    if (!pet) return null;
+
+    const petType = PET_TYPES[pet.petId];
+    const levelInfo = calculateLevel(pet.exp);
+    const stageInfo = petType.stages[levelInfo.stage];
+
+    return {
+      ...pet,
+      level: levelInfo.level,
+      stage: levelInfo.stage,
+      stageIcon: stageInfo.icon,
+      stageName: stageInfo.name,
+      levelProgress: levelInfo.levelProgress
+    };
+  },
+
   // 创建目标
   async createGoal(name, icon, color, type, targetCount) {
     const goals = getGoals();
