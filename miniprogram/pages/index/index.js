@@ -455,6 +455,10 @@ Page({
     wx.navigateTo({ url: '/pages/share/index' });
   },
 
+  goPet() {
+    wx.navigateTo({ url: '/pages/pet/index' });
+  },
+
   goChallenge() {
     wx.navigateTo({ url: '/pages/challenge/index' });
   },
