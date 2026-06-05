@@ -28,6 +28,8 @@ Page({
     levelUpData: null,
     // 删除确认
     showDeleteConfirm: false,
+    // 背景样式
+    currentBgStyle: '',
     // 互动弹窗
     showInteractModal: false,
     interactResult: null,
