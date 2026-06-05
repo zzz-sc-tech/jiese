@@ -11,18 +11,56 @@
   <view class="pet-main" wx:if="{{hasPet && pet}}">
     <!-- 宠物展示区 -->
     <view class="pet-showcase card">
-      <view class="pet-avatar">
-        <text class="pet-icon">{{pet.stageIcon}}</text>
+      <!-- 宠物动画区域 -->
+      <view class="pet-animation-area">
+        <!-- 气泡提示 -->
+        <view class="pet-bubble {{showBubble ? 'show' : ''}}" wx:if="{{bubbleText}}">
+          <text class="bubble-text">{{bubbleText}}</text>
+        </view>
+
+        <!-- 宠物主体 -->
+        <view
+          class="pet-body {{petAnimation}}"
+          bindtap="onPetTap"
+          bindlongpress="onPetLongPress"
+        >
+          <!-- 阴影 -->
+          <view class="pet-shadow"></view>
+          <!-- 宠物图标 -->
+          <text class="pet-main-icon">{{pet.stageIcon}}</text>
+          <!-- 眼睛动画 -->
+          <view class="pet-eyes {{isBlinking ? 'blink' : ''}}">
+            <view class="eye left"></view>
+            <view class="eye right"></view>
+          </view>
+        </view>
+
+        <!-- 爱心特效 -->
+        <view class="heart-effect {{showHeart ? 'show' : ''}}">❤️</view>
+
+        <!-- 星星特效 -->
+        <view class="star-effects" wx:if="{{showStars}}">
+          <text class="star star1">✨</text>
+          <text class="star star2">⭐</text>
+          <text class="star star3">✨</text>
+        </view>
       </view>
+
+      <!-- 宠物信息 -->
       <text class="pet-name">{{pet.name}}</text>
       <text class="pet-stage">{{pet.stageName}} · Lv.{{pet.level}}</text>
+
+      <!-- 心情指示 -->
+      <view class="pet-mood">
+        <text class="mood-icon">{{moodIcon}}</text>
+        <text class="mood-text">{{moodText}}</text>
+      </view>
 
       <!-- 经验条 -->
       <view class="exp-bar">
         <view class="exp-track">
           <view class="exp-fill" style="width: {{pet.levelProgress * 100}}%;"></view>
         </view>
-        <text class="exp-text">{{pet.currentExp}} / {{pet.nextLevelExp}}</text>
       </view>
     </view>
 
@@ -31,6 +69,10 @@
       <view class="action-btn" bindtap="showFeedModal">
         <text class="action-icon">🍖</text>
         <text class="action-text">投喂</text>
+      </view>
+      <view class="action-btn" bindtap="onPetPat">
+        <text class="action-icon">🤚</text>
+        <text class="action-text">摸摸</text>
       </view>
     </view>
 
