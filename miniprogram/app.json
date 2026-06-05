@@ -6,7 +6,12 @@
     "pages/share/index",
     "pages/profile/index",
     "pages/timer/index",
-    "pages/pet/index"
+    "pages/pet/index",
+    "pages/pet-diary/index",
+    "pages/pet-achievement/index",
+    "pages/pet-skill/index",
+    "pages/pet-costume/index",
+    "pages/pet-background/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
