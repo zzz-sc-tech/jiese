@@ -704,8 +704,10 @@ const api = {
   },
 
   // 获取宠物信息（简化版，用于显示）
-  getPetSimple() {
-    const pet = getPet();
+  getPetSimple(petIndex = 0) {
+    migratePetData();
+    const pets = getPets();
+    const pet = pets[petIndex];
     if (!pet) return null;
 
     const petType = PET_TYPES[pet.petId];
@@ -714,12 +716,25 @@ const api = {
 
     return {
       ...pet,
+      petIndex,
       level: levelInfo.level,
       stage: levelInfo.stage,
       stageIcon: stageInfo.icon,
       stageName: stageInfo.name,
       levelProgress: levelInfo.levelProgress
     };
+  },
+
+  // 删除宠物
+  async deletePet(petIndex) {
+    migratePetData();
+    const pets = getPets();
+    if (petIndex < 0 || petIndex >= pets.length) {
+      return { code: 1, message: '无效的宠物索引' };
+    }
+    pets.splice(petIndex, 1);
+    savePets(pets);
+    return { code: 0 };
   },
 
   // 创建目标
