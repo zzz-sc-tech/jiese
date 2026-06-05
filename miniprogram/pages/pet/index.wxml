@@ -211,4 +211,19 @@
       </view>
     </view>
   </view>
+
+  <!-- 删除确认弹窗 -->
+  <view class="modal-overlay" wx:if="{{showDeleteConfirm}}" bindtap="hideDeleteConfirm">
+    <view class="confirm-modal" catchtap>
+      <view class="confirm-content">
+        <text class="confirm-icon">😢</text>
+        <text class="confirm-title">确定要放生吗？</text>
+        <text class="confirm-desc">放生后将无法恢复</text>
+      </view>
+      <view class="confirm-actions">
+        <button class="btn-cancel" bindtap="hideDeleteConfirm">取消</button>
+        <button class="btn-confirm" bindtap="confirmDelete">确定放生</button>
+      </view>
+    </view>
+  </view>
 </view>
