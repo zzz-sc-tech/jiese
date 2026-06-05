@@ -8,7 +8,24 @@
   </view>
 
   <!-- 有宠物状态 -->
-  <view class="pet-main" wx:if="{{hasPet && pet}}">
+  <view class="pet-main" wx:if="{{hasPet && currentPet}}">
+    <!-- 宠物切换栏 -->
+    <view class="pet-tabs" wx:if="{{pets.length > 1}}">
+      <view
+        class="pet-tab {{currentPetIndex === index ? 'active' : ''}}"
+        wx:for="{{pets}}"
+        wx:key="petId"
+        bindtap="switchPet"
+        data-index="{{index}}"
+      >
+        <text class="pet-tab-icon">{{item.stageIcon}}</text>
+        <text class="pet-tab-name">{{item.name}}</text>
+      </view>
+      <view class="pet-tab add" wx:if="{{pets.length < 2}}" bindtap="showAdoptModal">
+        <text class="pet-tab-icon">+</text>
+      </view>
+    </view>
+
     <!-- 宠物展示区 -->
     <view class="pet-showcase card">
       <!-- 宠物动画区域 -->
@@ -27,12 +44,7 @@
           <!-- 阴影 -->
           <view class="pet-shadow"></view>
           <!-- 宠物图标 -->
-          <text class="pet-main-icon">{{pet.stageIcon}}</text>
-          <!-- 眼睛动画 -->
-          <view class="pet-eyes {{isBlinking ? 'blink' : ''}}">
-            <view class="eye left"></view>
-            <view class="eye right"></view>
-          </view>
+          <text class="pet-main-icon">{{currentPet.stageIcon}}</text>
         </view>
 
         <!-- 爱心特效 -->
@@ -47,8 +59,8 @@
       </view>
 
       <!-- 宠物信息 -->
-      <text class="pet-name">{{pet.name}}</text>
-      <text class="pet-stage">{{pet.stageName}} · Lv.{{pet.level}}</text>
+      <text class="pet-name">{{currentPet.name}}</text>
+      <text class="pet-stage">{{currentPet.stageName}} · Lv.{{currentPet.level}}</text>
 
       <!-- 心情指示 -->
       <view class="pet-mood">
@@ -59,7 +71,7 @@
       <!-- 经验条 -->
       <view class="exp-bar">
         <view class="exp-track">
-          <view class="exp-fill" style="width: {{pet.levelProgress * 100}}%;"></view>
+          <view class="exp-fill" style="width: {{currentPet.levelProgress * 100}}%;"></view>
         </view>
       </view>
     </view>
@@ -74,6 +86,16 @@
         <text class="action-icon">🤚</text>
         <text class="action-text">摸摸</text>
       </view>
+      <view class="action-btn" bindtap="showDeleteConfirm" wx:if="{{pets.length > 1}}">
+        <text class="action-icon">👋</text>
+        <text class="action-text">放生</text>
+      </view>
+    </view>
+
+    <!-- 只有一只宠物时显示添加按钮 -->
+    <view class="add-pet-btn" wx:if="{{pets.length === 1}}" bindtap="showAdoptModal">
+      <text class="add-pet-icon">+</text>
+      <text class="add-pet-text">再养一只</text>
     </view>
 
     <!-- 道具背包 -->
