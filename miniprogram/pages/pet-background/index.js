@@ -43,11 +43,18 @@ Page({
       selected: pet && pet.background === id
     }));
 
+    // 计算当前背景样式
+    let currentBgStyle = '';
+    if (pet && pet.background && bgTypes[pet.background]) {
+      currentBgStyle = bgTypes[pet.background].gradient;
+    }
+
     this.setData({
       pet,
       backgrounds,
       ownedBackgrounds,
-      currentBg: pet ? (pet.background || '') : ''
+      currentBg: pet ? (pet.background || '') : '',
+      currentBgStyle
     });
   },
 
