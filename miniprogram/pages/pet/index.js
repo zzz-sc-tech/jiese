@@ -329,5 +329,31 @@ Page({
   // 跳转到宠物选择页面
   goPetSelect() {
     this.showAdoptModal();
+  },
+
+  // 显示删除确认
+  showDeleteConfirm() {
+    this.setData({ showDeleteConfirm: true });
+  },
+
+  // 隐藏删除确认
+  hideDeleteConfirm() {
+    this.setData({ showDeleteConfirm: false });
+  },
+
+  // 确认删除宠物
+  async confirmDelete() {
+    const { currentPetIndex } = this.data;
+    const res = await api.deletePet(currentPetIndex);
+    if (res.code === 0) {
+      wx.showToast({ title: '已放生', icon: 'success' });
+      this.setData({
+        showDeleteConfirm: false,
+        currentPetIndex: 0
+      });
+      this.loadData();
+    } else {
+      wx.showToast({ title: res.message, icon: 'none' });
+    }
   }
 });
