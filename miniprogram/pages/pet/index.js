@@ -30,6 +30,10 @@ Page({
     showDeleteConfirm: false,
     // 背景样式
     currentBgStyle: '',
+    // 装扮图标
+    costumeHatIcon: '',
+    costumeScarfIcon: '',
+    costumeGlassesIcon: '',
     // 互动弹窗
     showInteractModal: false,
     interactResult: null,
