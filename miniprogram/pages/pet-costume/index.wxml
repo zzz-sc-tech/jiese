@@ -1,0 +1,70 @@
+<view class="page-costume {{themeClass}}">
+  <view class="costume-header" wx:if="{{pet}}">
+    <view class="costume-pet">
+      <text class="costume-pet-icon">{{pet.stageIcon}}</text>
+      <text class="costume-pet-name">{{pet.name}}</text>
+    </view>
+  </view>
+
+  <view class="costume-sections">
+    <!-- 帽子 -->
+    <view class="costume-section">
+      <text class="section-title">🎩 帽子</text>
+      <view class="costume-grid">
+        <view
+          class="costume-item {{item.equipped ? 'equipped' : ''}}"
+          wx:for="{{costumes}}"
+          wx:key="id"
+          wx:if="{{item.part === 'hat'}}"
+          bindtap="{{item.equipped ? 'unequipCostume' : 'equipCostume'}}"
+          data-id="{{item.id}}"
+          data-part="{{item.part}}"
+        >
+          <text class="costume-icon">{{item.icon}}</text>
+          <text class="costume-name">{{item.name}}</text>
+          <text class="costume-status" wx:if="{{item.equipped}}">已穿戴</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 围巾 -->
+    <view class="costume-section">
+      <text class="section-title">🧣 围巾/领结</text>
+      <view class="costume-grid">
+        <view
+          class="costume-item {{item.equipped ? 'equipped' : ''}}"
+          wx:for="{{costumes}}"
+          wx:key="id"
+          wx:if="{{item.part === 'scarf'}}"
+          bindtap="{{item.equipped ? 'unequipCostume' : 'equipCostume'}}"
+          data-id="{{item.id}}"
+          data-part="{{item.part}}"
+        >
+          <text class="costume-icon">{{item.icon}}</text>
+          <text class="costume-name">{{item.name}}</text>
+          <text class="costume-status" wx:if="{{item.equipped}}">已穿戴</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 眼镜 -->
+    <view class="costume-section">
+      <text class="section-title">🕶️ 眼镜</text>
+      <view class="costume-grid">
+        <view
+          class="costume-item {{item.equipped ? 'equipped' : ''}}"
+          wx:for="{{costumes}}"
+          wx:key="id"
+          wx:if="{{item.part === 'glasses'}}"
+          bindtap="{{item.equipped ? 'unequipCostume' : 'equipCostume'}}"
+          data-id="{{item.id}}"
+          data-part="{{item.part}}"
+        >
+          <text class="costume-icon">{{item.icon}}</text>
+          <text class="costume-name">{{item.name}}</text>
+          <text class="costume-status" wx:if="{{item.equipped}}">已穿戴</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
