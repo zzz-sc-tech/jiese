@@ -435,5 +435,12 @@ Page({
       // 检查成就
       api.checkPetAchievements();
     }
+  },
+
+  // 获取装扮图标
+  getCostumeIcon(costumeId) {
+    const costumeTypes = api.getCostumeTypes();
+    const costume = costumeTypes[costumeId];
+    return costume ? costume.icon : '';
   }
 });
