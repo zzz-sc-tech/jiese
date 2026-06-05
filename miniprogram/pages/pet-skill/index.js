@@ -20,21 +20,24 @@ Page({
     const petTypes = api.getPetTypes();
     const petsRes = api.getPetsInfo();
     const pets = petsRes.data || [];
-    const currentPetId = pets.length > 0 ? pets[0].petId : '';
+    const ownedPetIds = pets.map(p => p.petId);
 
     const skills = Object.entries(petTypes).map(([id, info]) => {
       const skill = api.getPetSkill(id);
-      const owned = pets.some(p => p.petId === id);
+      const owned = ownedPetIds.includes(id);
       return {
         petId: id,
         petName: info.name,
         petIcon: info.icon,
         skill,
         owned,
-        isCurrent: id === currentPetId
+        isCurrent: owned
       };
     });
 
-    this.setData({ skills, currentPetId });
+    // 已拥有的排前面
+    skills.sort((a, b) => (b.owned ? 1 : 0) - (a.owned ? 1 : 0));
+
+    this.setData({ skills });
   }
 });
