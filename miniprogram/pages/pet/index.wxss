@@ -233,6 +233,9 @@
   align-items: center;
   padding: 32rpx;
   margin-bottom: 24rpx;
+  background-size: cover;
+  background-position: center;
+  transition: background 0.3s ease;
 }
 
 /* 宠物动画区域 */
