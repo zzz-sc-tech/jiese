@@ -86,9 +86,13 @@
         <text class="action-icon">🤚</text>
         <text class="action-text">摸摸</text>
       </view>
-      <view class="action-btn" bindtap="showDeleteConfirm" wx:if="{{pets.length > 1}}">
-        <text class="action-icon">👋</text>
-        <text class="action-text">放生</text>
+      <view class="action-btn" bindtap="goCostume" wx:if="{{pets.length > 0}}">
+        <text class="action-icon">👗</text>
+        <text class="action-text">装扮</text>
+      </view>
+      <view class="action-btn" bindtap="goBackground" wx:if="{{pets.length > 0}}">
+        <text class="action-icon">🎨</text>
+        <text class="action-text">背景</text>
       </view>
     </view>
 
@@ -96,6 +100,35 @@
     <view class="add-pet-btn" wx:if="{{pets.length === 1}}" bindtap="showAdoptModal">
       <text class="add-pet-icon">+</text>
       <text class="add-pet-text">再养一只</text>
+    </view>
+
+    <!-- 功能入口 -->
+    <view class="feature-grid">
+      <view class="feature-item" bindtap="goDiary">
+        <text class="feature-icon">📖</text>
+        <text class="feature-name">宠物日记</text>
+      </view>
+      <view class="feature-item" bindtap="goAchievement">
+        <text class="feature-icon">🏆</text>
+        <text class="feature-name">宠物成就</text>
+      </view>
+      <view class="feature-item" bindtap="goSkill">
+        <text class="feature-icon">✨</text>
+        <text class="feature-name">宠物技能</text>
+      </view>
+      <view class="feature-item" bindtap="showInteract" wx:if="{{pets.length >= 2}}">
+        <text class="feature-icon">💕</text>
+        <text class="feature-name">宠物互动</text>
+      </view>
+    </view>
+
+    <!-- 宠物技能预览 -->
+    <view class="skill-preview card" wx:if="{{currentSkill}}">
+      <view class="skill-header">
+        <text class="skill-icon">{{currentSkill.icon}}</text>
+        <text class="skill-name">{{currentSkill.name}}</text>
+      </view>
+      <text class="skill-desc">{{currentSkill.desc}}</text>
     </view>
 
     <!-- 道具背包 -->
@@ -112,6 +145,13 @@
       </view>
       <view class="items-empty" wx:if="{{!hasItems}}">
         <text class="items-empty-text">暂无道具</text>
+      </view>
+    </view>
+
+    <!-- 放生按钮 -->
+    <view class="delete-section" wx:if="{{pets.length > 1}}">
+      <view class="delete-btn" bindtap="showDeleteConfirm">
+        <text class="delete-text">放生宠物</text>
       </view>
     </view>
   </view>
