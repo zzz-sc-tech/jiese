@@ -548,9 +548,32 @@ const api = {
     return ITEM_TYPES;
   },
 
-  // 获取当前宠物信息
-  getPetInfo() {
-    const pet = getPet();
+  // 获取所有宠物信息
+  getPetsInfo() {
+    migratePetData();
+    const pets = getPets();
+    const petsInfo = pets.map(pet => {
+      const petType = PET_TYPES[pet.petId];
+      const levelInfo = calculateLevel(pet.exp);
+      const stageInfo = petType.stages[levelInfo.stage];
+      return {
+        ...pet,
+        ...levelInfo,
+        typeName: petType.name,
+        typeIcon: petType.icon,
+        typeDesc: petType.desc,
+        stageName: stageInfo.name,
+        stageIcon: stageInfo.icon
+      };
+    });
+    return { code: 0, data: petsInfo };
+  },
+
+  // 获取单个宠物信息
+  getPetInfo(petIndex = 0) {
+    migratePetData();
+    const pets = getPets();
+    const pet = pets[petIndex];
     if (!pet) return { code: 0, data: null };
 
     const petType = PET_TYPES[pet.petId];
@@ -561,6 +584,7 @@ const api = {
       code: 0,
       data: {
         ...pet,
+        petIndex,
         ...levelInfo,
         typeName: petType.name,
         typeIcon: petType.icon,
@@ -573,9 +597,10 @@ const api = {
 
   // 领养宠物
   async adoptPet(petId, name) {
-    const existingPet = getPet();
-    if (existingPet) {
-      return { code: 1, message: '你已经有宠物了' };
+    migratePetData();
+    const pets = getPets();
+    if (pets.length >= 2) {
+      return { code: 1, message: '最多只能养2只宠物' };
     }
 
     if (!PET_TYPES[petId]) {
@@ -590,7 +615,8 @@ const api = {
       lastFeedTime: Date.now()
     };
 
-    savePet(pet);
+    pets.push(pet);
+    savePets(pets);
     return { code: 0, data: pet };
   },
 
