@@ -1,0 +1,27 @@
+<view class="page-achievement {{themeClass}}">
+  <view class="achievement-header">
+    <view class="achievement-stats">
+      <text class="achievement-title">🏆 宠物成就</text>
+      <text class="achievement-count">{{unlockedCount}}/{{totalCount}}</text>
+    </view>
+    <view class="achievement-progress">
+      <view class="progress-track">
+        <view class="progress-fill" style="width: {{totalCount > 0 ? unlockedCount / totalCount * 100 : 0}}%;"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="achievement-list">
+    <view class="achievement-item {{item.unlocked ? 'unlocked' : 'locked'}}" wx:for="{{achievements}}" wx:key="id">
+      <text class="achievement-icon">{{item.icon}}</text>
+      <view class="achievement-info">
+        <text class="achievement-name">{{item.name}}</text>
+        <text class="achievement-desc">{{item.desc}}</text>
+      </view>
+      <view class="achievement-status">
+        <text wx:if="{{item.unlocked}}">✅</text>
+        <text wx:else class="status-locked">🔒</text>
+      </view>
+    </view>
+  </view>
+</view>
