@@ -285,14 +285,6 @@
   z-index: 2;
 }
 
-.costume-scarf {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36rpx;
-  z-index: 2;
-}
-
 .costume-glasses {
   position: absolute;
   left: 50%;
