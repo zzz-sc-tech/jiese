@@ -841,7 +841,225 @@ const api = {
     return { code: 0 };
   },
 
-  // 创建目标
+  // ========== 宠物技能系统 ==========
+  getPetSkill(petId) {
+    return PET_SKILLS[petId] || null;
+  },
+
+  // ========== 宠物日记系统 ==========
+  addPetDiary(content, type, petIndex = 0) {
+    const diary = getPetDiary();
+    const pets = getPets();
+    const pet = pets[petIndex];
+    if (!pet) return;
+
+    diary.unshift({
+      id: 'diary_' + Date.now(),
+      petIndex,
+      petName: pet.name,
+      content,
+      type, // 'adopt', 'evolve', 'level', 'feed', 'interact', 'milestone'
+      timestamp: Date.now(),
+      date: new Date().toLocaleDateString()
+    });
+
+    // 最多保留100条日记
+    if (diary.length > 100) {
+      diary.length = 100;
+    }
+
+    savePetDiary(diary);
+
+    // 更新统计
+    const stats = getPetStats();
+    stats.diaryCount++;
+    savePetStats(stats);
+  },
+
+  getPetDiaryList() {
+    return { code: 0, data: getPetDiary() };
+  },
+
+  // ========== 宠物装扮系统 ==========
+  getCostumeTypes() {
+    return COSTUME_TYPES;
+  },
+
+  getOwnedCostumes() {
+    return { code: 0, data: getPetCostumes() };
+  },
+
+  unlockCostume(costumeId) {
+    const costumes = getPetCostumes();
+    if (!costumes.includes(costumeId)) {
+      costumes.push(costumeId);
+      savePetCostumes(costumes);
+    }
+    return { code: 0 };
+  },
+
+  equipCostume(costumeId, petIndex = 0) {
+    const pets = getPets();
+    const pet = pets[petIndex];
+    if (!pet) return { code: 1, message: '宠物不存在' };
+
+    const costume = COSTUME_TYPES[costumeId];
+    if (!costume) return { code: 2, message: '装扮不存在' };
+
+    if (!pet.costumes) pet.costumes = {};
+    pet.costumes[costume.part] = costumeId;
+    savePets(pets);
+
+    return { code: 0 };
+  },
+
+  unequipCostume(part, petIndex = 0) {
+    const pets = getPets();
+    const pet = pets[petIndex];
+    if (!pet) return { code: 1, message: '宠物不存在' };
+
+    if (pet.costumes) {
+      delete pet.costumes[part];
+      savePets(pets);
+    }
+
+    return { code: 0 };
+  },
+
+  // ========== 宠物背景系统 ==========
+  getBgTypes() {
+    return BG_TYPES;
+  },
+
+  getOwnedBackgrounds() {
+    return { code: 0, data: getPetBackgrounds() };
+  },
+
+  unlockBackground(bgId) {
+    const backgrounds = getPetBackgrounds();
+    if (!backgrounds.includes(bgId)) {
+      backgrounds.push(bgId);
+      savePetBackgrounds(backgrounds);
+    }
+    return { code: 0 };
+  },
+
+  setPetBackground(bgId, petIndex = 0) {
+    const pets = getPets();
+    const pet = pets[petIndex];
+    if (!pet) return { code: 1, message: '宠物不存在' };
+
+    pet.background = bgId;
+    savePets(pets);
+
+    return { code: 0 };
+  },
+
+  // ========== 宠物成就系统 ==========
+  getPetAchievementDefs() {
+    return PET_ACHIEVEMENTS;
+  },
+
+  getPetAchievementList() {
+    const unlocked = getPetAchievements();
+    const list = PET_ACHIEVEMENTS.map(a => ({
+      ...a,
+      unlocked: unlocked.includes(a.id)
+    }));
+    return { code: 0, data: list };
+  },
+
+  checkPetAchievements() {
+    const pets = getPets();
+    const stats = getPetStats();
+    const unlocked = getPetAchievements();
+    const newAchievements = [];
+
+    PET_ACHIEVEMENTS.forEach(achievement => {
+      if (unlocked.includes(achievement.id)) return;
+
+      let earned = false;
+      switch (achievement.condition) {
+        case 'adopt_first':
+          earned = pets.length >= 1;
+          break;
+        case 'have_two':
+          earned = pets.length >= 2;
+          break;
+        case 'level_10':
+          earned = pets.some(p => calculateLevel(p.exp).level >= 10);
+          break;
+        case 'level_20':
+          earned = pets.some(p => calculateLevel(p.exp).level >= 20);
+          break;
+        case 'level_30':
+          earned = pets.some(p => calculateLevel(p.exp).level >= 30);
+          break;
+        case 'evolve_once':
+          earned = pets.some(p => calculateLevel(p.exp).stage !== 'baby');
+          break;
+        case 'evolve_full':
+          earned = pets.some(p => calculateLevel(p.exp).stage === 'adult');
+          break;
+        case 'feed_100':
+          earned = stats.feedCount >= 100;
+          break;
+        case 'all_types':
+          earned = stats.adoptedTypes.length >= Object.keys(PET_TYPES).length;
+          break;
+        case 'wear_costume':
+          earned = pets.some(p => p.costumes && Object.keys(p.costumes).length > 0);
+          break;
+        case 'diary_30':
+          earned = stats.diaryCount >= 30;
+          break;
+        case 'interact_50':
+          earned = stats.interactCount >= 50;
+          break;
+      }
+
+      if (earned) {
+        unlocked.push(achievement.id);
+        newAchievements.push(achievement);
+      }
+    });
+
+    savePetAchievements(unlocked);
+    return { code: 0, data: { newAchievements } };
+  },
+
+  // ========== 宠物互动系统 ==========
+  recordInteract() {
+    const stats = getPetStats();
+    stats.interactCount++;
+    savePetStats(stats);
+  },
+
+  interactPets(petIndex1, petIndex2) {
+    const pets = getPets();
+    if (!pets[petIndex1] || !pets[petIndex2]) {
+      return { code: 1, message: '宠物不存在' };
+    }
+
+    // 增加亲密度
+    if (!pets[petIndex1].intimacy) pets[petIndex1].intimacy = {};
+    if (!pets[petIndex2].intimacy) pets[petIndex2].intimacy = {};
+
+    pets[petIndex1].intimacy[petIndex2] = (pets[petIndex1].intimacy[petIndex2] || 0) + 1;
+    pets[petIndex2].intimacy[petIndex1] = (pets[petIndex2].intimacy[petIndex1] || 0) + 1;
+
+    savePets(pets);
+
+    return {
+      code: 0,
+      data: {
+        intimacy1: pets[petIndex1].intimacy[petIndex2],
+        intimacy2: pets[petIndex2].intimacy[petIndex1]
+      }
+    };
+  },
+
+  // ========== 创建目标
   async createGoal(name, icon, color, type, targetCount) {
     const goals = getGoals();
     const id = 'goal_' + Date.now();
