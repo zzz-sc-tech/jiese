@@ -271,15 +271,31 @@ Page({
     if (res.code === 0) {
       const { leveledUp, evolved } = res.data;
 
+      // 播放吃东西动画
+      this.setData({
+        showFeed: false,
+        petAnimation: 'eat',
+        showBubble: true,
+        bubbleText: '好吃~',
+        showStars: true
+      });
+
+      setTimeout(() => {
+        this.setData({ petAnimation: '', showStars: false });
+      }, 500);
+
+      setTimeout(() => {
+        this.setData({ showBubble: false });
+      }, 2000);
+
+      // 延迟显示升级/进化提示
       if (evolved || leveledUp) {
-        this.setData({
-          showFeed: false,
-          showLevelUp: true,
-          levelUpData: res.data
-        });
-      } else {
-        wx.showToast({ title: '投喂成功', icon: 'success' });
-        this.setData({ showFeed: false });
+        setTimeout(() => {
+          this.setData({
+            showLevelUp: true,
+            levelUpData: res.data
+          });
+        }, 800);
       }
 
       this.loadData();
