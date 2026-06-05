@@ -635,8 +635,10 @@ const api = {
   },
 
   // 使用道具投喂宠物
-  async feedPet(itemId) {
-    const pet = getPet();
+  async feedPet(itemId, petIndex = 0) {
+    migratePetData();
+    const pets = getPets();
+    const pet = pets[petIndex];
     if (!pet) {
       return { code: 1, message: '请先领养宠物' };
     }
@@ -664,7 +666,7 @@ const api = {
     // 减少道具
     items[itemId]--;
     savePetItems(items);
-    savePet(pet);
+    savePets(pets);
 
     // 判断是否升级或进化
     const leveledUp = afterLevel.level > beforeLevel.level;
@@ -674,6 +676,7 @@ const api = {
       code: 0,
       data: {
         pet,
+        petIndex,
         levelInfo: afterLevel,
         gainedExp: itemConfig.exp,
         leveledUp,
