@@ -1,0 +1,27 @@
+<view class="page-diary {{themeClass}}">
+  <view class="diary-header">
+    <text class="diary-title">📖 成长日记</text>
+    <text class="diary-count">共 {{diaryList.length}} 条记录</text>
+  </view>
+
+  <view class="diary-list" wx:if="{{diaryList.length > 0}}">
+    <view class="diary-item" wx:for="{{diaryList}}" wx:key="id">
+      <view class="diary-icon">
+        <text>{{item.type === 'adopt' ? '🏠' : item.type === 'evolve' ? '✨' : item.type === 'level' ? '📈' : item.type === 'feed' ? '🍖' : item.type === 'interact' ? '💕' : '📝'}}</text>
+      </view>
+      <view class="diary-content">
+        <text class="diary-text">{{item.content}}</text>
+        <view class="diary-meta">
+          <text class="diary-pet">{{item.petName}}</text>
+          <text class="diary-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="diary-empty" wx:else>
+    <text class="empty-icon">📖</text>
+    <text class="empty-text">还没有日记</text>
+    <text class="empty-hint">领养宠物、投喂、互动都会自动记录</text>
+  </view>
+</view>
