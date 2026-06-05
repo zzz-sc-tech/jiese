@@ -48,7 +48,6 @@
           <!-- 装扮显示 -->
           <view class="pet-costumes">
             <text class="costume-hat" wx:if="{{costumeHatIcon}}" style="{{costumeHatStyle}}">{{costumeHatIcon}}</text>
-            <text class="costume-scarf" wx:if="{{costumeScarfIcon}}" style="{{costumeScarfStyle}}">{{costumeScarfIcon}}</text>
             <text class="costume-glasses" wx:if="{{costumeGlassesIcon}}" style="{{costumeGlassesStyle}}">{{costumeGlassesIcon}}</text>
           </view>
         </view>
