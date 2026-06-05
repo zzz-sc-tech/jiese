@@ -23,8 +23,21 @@ Page({
     selectedItemId: '',
     // 升级/进化提示
     showLevelUp: false,
-    levelUpData: null
+    levelUpData: null,
+    // 动画状态
+    petAnimation: '',
+    isBlinking: false,
+    showBubble: false,
+    bubbleText: '',
+    showHeart: false,
+    showStars: false,
+    // 心情
+    moodIcon: '😊',
+    moodText: '心情不错'
   },
+
+  _blinkTimer: null,
+  _bubbleTimer: null,
 
   onLoad() {
     this.setData({
@@ -40,6 +53,33 @@ Page({
     app.applyNavBarColor(app.globalData.theme);
     this.setData({ themeClass: app.globalData.themeClass });
     this.loadData();
+    this.startBlinking();
+  },
+
+  onHide() {
+    this.stopBlinking();
+  },
+
+  onUnload() {
+    this.stopBlinking();
+  },
+
+  // 开始眨眼动画
+  startBlinking() {
+    this._blinkTimer = setInterval(() => {
+      this.setData({ isBlinking: true });
+      setTimeout(() => {
+        this.setData({ isBlinking: false });
+      }, 200);
+    }, 3000);
+  },
+
+  // 停止眨眼动画
+  stopBlinking() {
+    if (this._blinkTimer) {
+      clearInterval(this._blinkTimer);
+      this._blinkTimer = null;
+    }
   },
 
   loadData() {
@@ -51,12 +91,109 @@ Page({
     const itemsRes = api.getItems();
     const hasItems = itemsRes.data.some(item => item.count > 0);
 
+    // 计算心情
+    let moodIcon = '😊';
+    let moodText = '心情不错';
+    if (petInfo.data) {
+      const lastFeed = petInfo.data.lastFeedTime;
+      const now = Date.now();
+      const hoursSinceFeed = (now - lastFeed) / (1000 * 60 * 60);
+
+      if (hoursSinceFeed < 1) {
+        moodIcon = '🥰';
+        moodText = '非常开心';
+      } else if (hoursSinceFeed < 6) {
+        moodIcon = '😊';
+        moodText = '心情不错';
+      } else if (hoursSinceFeed < 24) {
+        moodIcon = '😐';
+        moodText = '有点无聊';
+      } else {
+        moodIcon = '😢';
+        moodText = '想你了';
+      }
+    }
+
     this.setData({
       pet: petInfo.data,
       hasPet,
       items: itemsRes.data,
-      hasItems
+      hasItems,
+      moodIcon,
+      moodText
     });
+  },
+
+  // 点击宠物
+  onPetTap() {
+    this.setData({
+      petAnimation: 'happy',
+      showBubble: true,
+      bubbleText: this.getRandomBubble()
+    });
+
+    setTimeout(() => {
+      this.setData({ petAnimation: '' });
+    }, 500);
+
+    setTimeout(() => {
+      this.setData({ showBubble: false });
+    }, 2000);
+  },
+
+  // 长按宠物
+  onPetLongPress() {
+    this.setData({
+      showHeart: true,
+      showBubble: true,
+      bubbleText: '好舒服~'
+    });
+
+    setTimeout(() => {
+      this.setData({ showHeart: false });
+    }, 1000);
+
+    setTimeout(() => {
+      this.setData({ showBubble: false });
+    }, 2000);
+  },
+
+  // 摸摸宠物
+  onPetPat() {
+    this.setData({
+      petAnimation: 'happy',
+      showHeart: true,
+      showStars: true,
+      showBubble: true,
+      bubbleText: '嘿嘿~'
+    });
+
+    setTimeout(() => {
+      this.setData({ petAnimation: '' });
+    }, 500);
+
+    setTimeout(() => {
+      this.setData({ showHeart: false, showStars: false });
+    }, 1000);
+
+    setTimeout(() => {
+      this.setData({ showBubble: false });
+    }, 2000);
+  },
+
+  // 获取随机气泡文字
+  getRandomBubble() {
+    const bubbles = [
+      '你好呀~',
+      '今天也要加油！',
+      '想你了~',
+      '陪我玩吧！',
+      '嘿嘿~',
+      '喵~',
+      '汪！',
+      '咕咕~'
+    ];
+    return bubbles[Math.floor(Math.random() * bubbles.length)];
   },
 
   // 显示领养弹窗
