@@ -1261,13 +1261,30 @@ const api = {
 
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
-    // 静默发放宠物道具（无提示）
+    // 应用宠物技能效果
+    const skillEffects = this.applyPetSkills();
     const pets = getPets();
+
     if (pets.length > 0) {
-      this.grantItem('feed', 1);
-      const streak = goalStat.currentStreak;
-      if (streak === 3) this.grantItem('fruit', 1);
-      if (streak === 7) this.grantItem('star', 1);
+      // 基础饲料 + 技能额外饲料
+      this.grantItem('feed', 1 + skillEffects.extraFeed);
+
+      // 连续打卡奖励 + 技能加成
+      const streak = goalStat.currentStreak + skillEffects.streakBonus;
+      if (streak >= 3) this.grantItem('fruit', 1);
+      if (streak >= 7) this.grantItem('star', 1);
+
+      // 双倍道具概率
+      if (skillEffects.doubleItemChance > 0 && Math.random() < skillEffects.doubleItemChance) {
+        this.grantItem('feed', 1);
+      }
+
+      // 每日随机道具
+      if (skillEffects.dailyRandomItem) {
+        const items = ['feed', 'fruit', 'candy'];
+        const randomItem = items[Math.floor(Math.random() * items.length)];
+        this.grantItem(randomItem, 1);
+      }
 
       // 检查挑战完成
       const challenges = getChallenges();
@@ -1287,8 +1304,8 @@ const api = {
       });
       saveChallenges(challenges);
 
-      // 随机事件
-      this._triggerRandomEvent();
+      // 随机事件（受幸运加成影响）
+      this._triggerRandomEvent(skillEffects.luckBoost);
     }
 
     return {
