@@ -27,7 +27,7 @@
     </view>
 
     <!-- 宠物展示区 -->
-    <view class="pet-showcase card">
+    <view class="pet-showcase card" style="{{currentBgStyle ? 'background: ' + currentBgStyle : ''}}">
       <!-- 宠物动画区域 -->
       <view class="pet-animation-area">
         <!-- 气泡提示 -->
