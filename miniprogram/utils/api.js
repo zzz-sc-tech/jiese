@@ -343,12 +343,12 @@ const COSTUME_TYPES = {
 
 // 背景配置
 const BG_TYPES = {
-  bg_forest: { name: '魔法森林', icon: '🌲', desc: '宁静的森林', gradient: 'linear-gradient(180deg, #2d5016 0%, #4a7c2e 50%, #8bc34a 100%)' },
-  bg_beach: { name: '阳光海滩', icon: '🏖️', desc: '温暖的海滩', gradient: 'linear-gradient(180deg, #87ceeb 0%, #f0e68c 50%, #deb887 100%)' },
-  bg_space: { name: '星际太空', icon: '🚀', desc: '神秘的宇宙', gradient: 'linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 50%, #2d2d6e 100%)' },
-  bg_garden: { name: '梦幻花园', icon: '🌸', desc: '浪漫的花园', gradient: 'linear-gradient(180deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%)' },
-  bg_mountain: { name: '云端山峰', icon: '⛰️', desc: '高耸的山峰', gradient: 'linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)' },
-  bg_night: { name: '星空夜晚', icon: '🌙', desc: '宁静的夜晚', gradient: 'linear-gradient(180deg, #1a237e 0%, #283593 50%, #3949ab 100%)' }
+  bg_white: { name: '纯白', icon: '⬜', desc: '简约纯净', gradient: 'linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%)' },
+  bg_cream: { name: '奶油白', icon: '🍦', desc: '温暖柔和', gradient: 'linear-gradient(180deg, #fffdf7 0%, #fef9ef 100%)' },
+  bg_mint: { name: '薄荷绿', icon: '🌿', desc: '清新自然', gradient: 'linear-gradient(180deg, #f0faf6 0%, #e8f5f0 100%)' },
+  bg_sky: { name: '天空蓝', icon: '☁️', desc: '清爽明亮', gradient: 'linear-gradient(180deg, #f0f7ff 0%, #e8f2ff 100%)' },
+  bg_pink: { name: '樱花粉', icon: '🌸', desc: '温柔浪漫', gradient: 'linear-gradient(180deg, #fff5f7 0%, #fef0f2 100%)' },
+  bg_lavender: { name: '薰衣草', icon: '💜', desc: '优雅恬静', gradient: 'linear-gradient(180deg, #f8f5ff 0%, #f2eeff 100%)' }
 };
 
 // 宠物成就配置
