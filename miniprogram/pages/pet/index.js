@@ -7,7 +7,9 @@ Page({
   data: {
     themeClass: '',
     // 宠物信息
-    pet: null,
+    pets: [],
+    currentPetIndex: 0,
+    currentPet: null,
     hasPet: false,
     // 宠物类型列表
     petTypes: [],
@@ -24,6 +26,8 @@ Page({
     // 升级/进化提示
     showLevelUp: false,
     levelUpData: null,
+    // 删除确认
+    showDeleteConfirm: false,
     // 动画状态
     petAnimation: '',
     isBlinking: false,
@@ -37,7 +41,6 @@ Page({
   },
 
   _blinkTimer: null,
-  _bubbleTimer: null,
 
   onLoad() {
     this.setData({
@@ -83,9 +86,12 @@ Page({
   },
 
   loadData() {
-    // 加载宠物信息
-    const petInfo = api.getPetInfo();
-    const hasPet = petInfo.data !== null;
+    // 加载所有宠物信息
+    const petsRes = api.getPetsInfo();
+    const pets = petsRes.data || [];
+    const hasPet = pets.length > 0;
+    const currentPetIndex = this.data.currentPetIndex;
+    const currentPet = pets[currentPetIndex] || null;
 
     // 加载道具列表
     const itemsRes = api.getItems();
@@ -94,8 +100,8 @@ Page({
     // 计算心情
     let moodIcon = '😊';
     let moodText = '心情不错';
-    if (petInfo.data) {
-      const lastFeed = petInfo.data.lastFeedTime;
+    if (currentPet) {
+      const lastFeed = currentPet.lastFeedTime;
       const now = Date.now();
       const hoursSinceFeed = (now - lastFeed) / (1000 * 60 * 60);
 
@@ -115,13 +121,21 @@ Page({
     }
 
     this.setData({
-      pet: petInfo.data,
+      pets,
+      currentPet,
       hasPet,
       items: itemsRes.data,
       hasItems,
       moodIcon,
       moodText
     });
+  },
+
+  // 切换宠物
+  switchPet(e) {
+    const index = e.currentTarget.dataset.index;
+    this.setData({ currentPetIndex: index });
+    this.loadData();
   },
 
   // 点击宠物
