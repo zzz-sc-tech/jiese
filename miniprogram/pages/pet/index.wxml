@@ -46,10 +46,10 @@
           <!-- 宠物图标 -->
           <text class="pet-main-icon">{{currentPet.stageIcon}}</text>
           <!-- 装扮显示 -->
-          <view class="pet-costumes" wx:if="{{currentPet.costumes}}">
-            <text class="costume-hat" wx:if="{{currentPet.costumes.hat}}">{{getCostumeIcon(currentPet.costumes.hat)}}</text>
-            <text class="costume-scarf" wx:if="{{currentPet.costumes.scarf}}">{{getCostumeIcon(currentPet.costumes.scarf)}}</text>
-            <text class="costume-glasses" wx:if="{{currentPet.costumes.glasses}}">{{getCostumeIcon(currentPet.costumes.glasses)}}</text>
+          <view class="pet-costumes">
+            <text class="costume-hat" wx:if="{{costumeHatIcon}}">{{costumeHatIcon}}</text>
+            <text class="costume-scarf" wx:if="{{costumeScarfIcon}}">{{costumeScarfIcon}}</text>
+            <text class="costume-glasses" wx:if="{{costumeGlassesIcon}}">{{costumeGlassesIcon}}</text>
           </view>
         </view>
 
