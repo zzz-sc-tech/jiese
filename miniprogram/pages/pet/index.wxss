@@ -6,6 +6,70 @@
   padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
 }
 
+/* 宠物切换栏 */
+.pet-tabs {
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 24rpx;
+  margin-bottom: 16rpx;
+  overflow-x: auto;
+}
+
+.pet-tab {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 24rpx;
+  background: var(--color-bg-card);
+  border-radius: 32rpx;
+  border: 2rpx solid transparent;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.pet-tab.active {
+  border-color: var(--color-primary);
+  background: rgba(91, 154, 111, 0.1);
+}
+
+.pet-tab.add {
+  border: 2rpx dashed var(--color-border);
+  background: transparent;
+  box-shadow: none;
+}
+
+.pet-tab-icon {
+  font-size: 32rpx;
+}
+
+.pet-tab-name {
+  font-size: 24rpx;
+  color: var(--color-text);
+}
+
+/* 添加宠物按钮 */
+.add-pet-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 20rpx;
+  margin: 16rpx 24rpx;
+  background: var(--color-bg-card);
+  border-radius: 16rpx;
+  border: 2rpx dashed var(--color-border);
+}
+
+.add-pet-icon {
+  font-size: 36rpx;
+  color: var(--color-primary);
+}
+
+.add-pet-text {
+  font-size: 26rpx;
+  color: var(--color-primary);
+}
+
 /* 无宠物状态 */
 .no-pet {
   display: flex;
