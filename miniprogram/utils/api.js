@@ -885,8 +885,8 @@ const api = {
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
     // 静默发放宠物道具（无提示）
-    const pet = getPet();
-    if (pet) {
+    const pets = getPets();
+    if (pets.length > 0) {
       this.grantItem('feed', 1);
       const streak = goalStat.currentStreak;
       if (streak === 3) this.grantItem('fruit', 1);
