@@ -28,6 +28,9 @@ Page({
     levelUpData: null,
     // 删除确认
     showDeleteConfirm: false,
+    // 互动弹窗
+    showInteractModal: false,
+    interactResult: null,
     // 动画状态
     petAnimation: '',
     isBlinking: false,
@@ -37,7 +40,9 @@ Page({
     showStars: false,
     // 心情
     moodIcon: '😊',
-    moodText: '心情不错'
+    moodText: '心情不错',
+    // 技能
+    currentSkill: null
   },
 
   _blinkTimer: null,
