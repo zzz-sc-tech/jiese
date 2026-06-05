@@ -335,10 +335,18 @@ const COSTUME_TYPES = {
   hat_2: { name: '皇冠', icon: '👑', part: 'hat', desc: '王者风范' },
   hat_3: { name: '花环', icon: '💐', part: 'hat', desc: '清新自然' },
   hat_4: { name: '巫师帽', icon: '🧙', part: 'hat', desc: '神秘魔法' },
-  scarf_1: { name: '红围巾', icon: '🧣', part: 'scarf', desc: '温暖舒适' },
-  scarf_2: { name: '领结', icon: '🎀', part: 'scarf', desc: '俏皮可爱' },
+  hat_5: { name: '生日帽', icon: '🎉', part: 'hat', desc: '欢乐庆祝' },
+  hat_6: { name: '蝴蝶结', icon: '🎀', part: 'hat', desc: '俏皮可爱' },
+  hat_7: { name: '恶魔角', icon: '😈', part: 'hat', desc: '调皮捣蛋' },
+  hat_8: { name: '天使环', icon: '😇', part: 'hat', desc: '纯洁善良' },
+  hat_9: { name: '厨师帽', icon: '👨‍🍳', part: 'hat', desc: '美食达人' },
+  hat_10: { name: '博士帽', icon: '🎓', part: 'hat', desc: '学识渊博' },
+  hat_11: { name: '王冠', icon: '♛', part: 'hat', desc: '尊贵典雅' },
+  hat_12: { name: '樱花', icon: '🌸', part: 'hat', desc: '浪漫唯美' },
   glasses_1: { name: '墨镜', icon: '🕶️', part: 'glasses', desc: '酷炫十足' },
-  glasses_2: { name: '圆框眼镜', icon: '👓', part: 'glasses', desc: '文艺范儿' }
+  glasses_2: { name: '圆框眼镜', icon: '👓', part: 'glasses', desc: '文艺范儿' },
+  glasses_3: { name: '爱心眼镜', icon: '😍', part: 'glasses', desc: '满眼都是爱' },
+  glasses_4: { name: '星星眼镜', icon: '🤩', part: 'glasses', desc: '闪闪发光' }
 };
 
 // 背景配置
