@@ -8,7 +8,8 @@ Page({
     pet: null,
     backgrounds: [],
     ownedBackgrounds: [],
-    currentBg: ''
+    currentBg: '',
+    currentBgStyle: ''
   },
 
   onLoad(options) {
