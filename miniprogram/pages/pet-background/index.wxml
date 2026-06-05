@@ -1,0 +1,27 @@
+<view class="page-background {{themeClass}}">
+  <view class="background-preview" wx:if="{{pet}}">
+    <view class="preview-bg" style="background: {{currentBg ? backgrounds[0].gradient : 'var(--color-bg)'}};">
+      <text class="preview-pet-icon">{{pet.stageIcon}}</text>
+      <text class="preview-pet-name">{{pet.name}}</text>
+    </view>
+  </view>
+
+  <view class="background-section">
+    <text class="section-title">🎨 选择背景</text>
+    <view class="background-grid">
+      <view
+        class="background-item {{item.selected ? 'selected' : ''}}"
+        wx:for="{{backgrounds}}"
+        wx:key="id"
+        bindtap="selectBackground"
+        data-id="{{item.id}}"
+      >
+        <view class="bg-preview" style="background: {{item.gradient}};">
+          <text class="bg-icon">{{item.icon}}</text>
+        </view>
+        <text class="bg-name">{{item.name}}</text>
+        <text class="bg-status" wx:if="{{item.selected}}">当前</text>
+      </view>
+    </view>
+  </view>
+</view>
