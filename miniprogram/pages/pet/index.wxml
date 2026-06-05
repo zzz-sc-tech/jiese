@@ -123,12 +123,22 @@
     </view>
 
     <!-- 宠物技能预览 -->
-    <view class="skill-preview card" wx:if="{{currentSkill}}">
-      <view class="skill-header">
-        <text class="skill-icon">{{currentSkill.icon}}</text>
-        <text class="skill-name">{{currentSkill.name}}</text>
+    <view class="skills-section" wx:if="{{allSkills.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">宠物技能</text>
       </view>
-      <text class="skill-desc">{{currentSkill.desc}}</text>
+      <view class="skills-list">
+        <view class="skill-item" wx:for="{{allSkills}}" wx:key="petId">
+          <view class="skill-left">
+            <text class="skill-icon">{{item.skill.icon}}</text>
+            <view class="skill-info">
+              <text class="skill-name">{{item.skill.name}}</text>
+              <text class="skill-desc">{{item.skill.desc}}</text>
+            </view>
+          </view>
+          <text class="skill-pet">{{item.petName}}</text>
+        </view>
+      </view>
     </view>
 
     <!-- 道具背包 -->
