@@ -1,6 +1,6 @@
 <view class="page-background {{themeClass}}">
   <view class="background-preview" wx:if="{{pet}}">
-    <view class="preview-bg" style="background: {{currentBg ? backgrounds[0].gradient : 'var(--color-bg)'}};">
+    <view class="preview-bg" style="background: {{currentBg ? currentBgStyle : 'var(--color-bg-card)'}};">
       <text class="preview-pet-icon">{{pet.stageIcon}}</text>
       <text class="preview-pet-name">{{pet.name}}</text>
     </view>
