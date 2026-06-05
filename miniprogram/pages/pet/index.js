@@ -133,6 +133,16 @@ Page({
     // 检查宠物成就
     api.checkPetAchievements();
 
+    // 计算背景样式
+    let currentBgStyle = '';
+    if (currentPet && currentPet.background) {
+      const bgTypes = api.getBgTypes();
+      const bg = bgTypes[currentPet.background];
+      if (bg) {
+        currentBgStyle = bg.gradient;
+      }
+    }
+
     this.setData({
       pets,
       currentPet,
@@ -141,7 +151,8 @@ Page({
       hasItems,
       moodIcon,
       moodText,
-      allSkills
+      allSkills,
+      currentBgStyle
     });
   },
 
