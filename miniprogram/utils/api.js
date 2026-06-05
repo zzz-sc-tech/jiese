@@ -328,12 +328,25 @@ const STAGE_THRESHOLDS = {
 };
 
 // ========== 宠物数据操作 ==========
-function getPet() {
-  return storage.get('jiese_pet', null);
+function getPets() {
+  return storage.get('jiese_pets', []);
 }
 
-function savePet(pet) {
-  storage.set('jiese_pet', pet);
+function savePets(pets) {
+  storage.set('jiese_pets', pets);
+}
+
+// 兼容旧版本单宠物数据
+function migratePetData() {
+  const oldPet = storage.get('jiese_pet', null);
+  if (oldPet) {
+    const pets = getPets();
+    if (pets.length === 0) {
+      pets.push(oldPet);
+      savePets(pets);
+    }
+    storage.remove('jiese_pet');
+  }
 }
 
 function getPetItems() {
