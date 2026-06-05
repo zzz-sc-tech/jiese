@@ -370,5 +370,60 @@ Page({
     } else {
       wx.showToast({ title: res.message, icon: 'none' });
     }
+  },
+
+  // 功能入口
+  goDiary() {
+    wx.navigateTo({ url: '/pages/pet-diary/index' });
+  },
+
+  goAchievement() {
+    wx.navigateTo({ url: '/pages/pet-achievement/index' });
+  },
+
+  goSkill() {
+    wx.navigateTo({ url: '/pages/pet-skill/index' });
+  },
+
+  goCostume() {
+    wx.navigateTo({ url: '/pages/pet-costume/index?petIndex=' + this.data.currentPetIndex });
+  },
+
+  goBackground() {
+    wx.navigateTo({ url: '/pages/pet-background/index?petIndex=' + this.data.currentPetIndex });
+  },
+
+  // 宠物互动
+  showInteract() {
+    this.setData({ showInteractModal: true });
+  },
+
+  hideInteractModal() {
+    this.setData({ showInteractModal: false, interactResult: null });
+  },
+
+  async doInteract() {
+    const res = api.interactPets(0, 1);
+    if (res.code === 0) {
+      // 记录互动
+      api.recordInteract();
+
+      // 添加日记
+      api.addPetDiary('两只宠物一起玩耍，感情更好了！', 'interact');
+
+      this.setData({
+        interactResult: res.data,
+        showBubble: true,
+        bubbleText: '好开心~',
+        showHeart: true
+      });
+
+      setTimeout(() => {
+        this.setData({ showBubble: false, showHeart: false });
+      }, 2000);
+
+      // 检查成就
+      api.checkPetAchievements();
+    }
   }
 });
