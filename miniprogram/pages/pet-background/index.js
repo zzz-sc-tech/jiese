@@ -55,12 +55,16 @@ Page({
     const { petIndex, ownedBackgrounds } = this.data;
 
     if (!ownedBackgrounds.includes(id)) {
-      // 解锁背景（这里简化处理）
+      // 解锁背景
       api.unlockBackground(id);
     }
 
-    api.setPetBackground(id, petIndex);
-    this.loadData();
-    wx.showToast({ title: '已更换', icon: 'success' });
+    const res = api.setPetBackground(id, petIndex);
+    if (res.code === 0) {
+      wx.showToast({ title: '已更换', icon: 'success' });
+      this.loadData();
+    } else {
+      wx.showToast({ title: res.message, icon: 'none' });
+    }
   }
 });
