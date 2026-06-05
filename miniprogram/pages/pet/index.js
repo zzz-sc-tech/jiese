@@ -102,6 +102,12 @@ Page({
     const itemsRes = api.getItems();
     const hasItems = itemsRes.data.some(item => item.count > 0);
 
+    // 加载当前宠物技能
+    let currentSkill = null;
+    if (currentPet) {
+      currentSkill = api.getPetSkill(currentPet.petId);
+    }
+
     // 计算心情
     let moodIcon = '😊';
     let moodText = '心情不错';
@@ -125,6 +131,9 @@ Page({
       }
     }
 
+    // 检查宠物成就
+    api.checkPetAchievements();
+
     this.setData({
       pets,
       currentPet,
@@ -132,7 +141,8 @@ Page({
       items: itemsRes.data,
       hasItems,
       moodIcon,
-      moodText
+      moodText,
+      currentSkill
     });
   },
 
