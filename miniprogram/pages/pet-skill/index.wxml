@@ -1,0 +1,23 @@
+<view class="page-skill {{themeClass}}">
+  <view class="skill-header">
+    <text class="skill-title">✨ 宠物技能</text>
+    <text class="skill-subtitle">每种宠物都有独特的被动技能</text>
+  </view>
+
+  <view class="skill-list">
+    <view class="skill-item {{item.owned ? 'owned' : ''}} {{item.isCurrent ? 'current' : ''}}" wx:for="{{skills}}" wx:key="petId">
+      <view class="skill-pet">
+        <text class="skill-pet-icon">{{item.petIcon}}</text>
+        <text class="skill-pet-name">{{item.petName}}</text>
+        <text class="skill-badge" wx:if="{{item.isCurrent}}">当前</text>
+      </view>
+      <view class="skill-info" wx:if="{{item.skill}}">
+        <view class="skill-name-row">
+          <text class="skill-icon">{{item.skill.icon}}</text>
+          <text class="skill-name">{{item.skill.name}}</text>
+        </view>
+        <text class="skill-desc">{{item.skill.desc}}</text>
+      </view>
+    </view>
+  </view>
+</view>
