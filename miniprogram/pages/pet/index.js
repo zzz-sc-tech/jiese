@@ -275,13 +275,13 @@ Page({
 
   // 确认投喂
   async feedPet() {
-    const { selectedItemId } = this.data;
+    const { selectedItemId, currentPetIndex } = this.data;
     if (!selectedItemId) {
       wx.showToast({ title: '请选择道具', icon: 'none' });
       return;
     }
 
-    const res = await api.feedPet(selectedItemId);
+    const res = await api.feedPet(selectedItemId, currentPetIndex);
     if (res.code === 0) {
       const { leveledUp, evolved } = res.data;
 
