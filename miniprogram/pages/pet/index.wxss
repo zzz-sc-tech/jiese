@@ -99,32 +99,62 @@
   color: var(--color-text);
 }
 
-/* 技能预览 */
-.skill-preview {
+/* 技能列表 */
+.skills-section {
   margin: 0 24rpx 24rpx;
-  padding: 20rpx;
 }
 
-.skill-header {
+.skills-list {
+  background: var(--color-bg-card);
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.skill-item {
   display: flex;
   align-items: center;
-  gap: 12rpx;
-  margin-bottom: 8rpx;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid var(--color-border);
+}
+
+.skill-item:last-child {
+  border-bottom: none;
+}
+
+.skill-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
 }
 
 .skill-icon {
-  font-size: 32rpx;
+  font-size: 36rpx;
+}
+
+.skill-info {
+  flex: 1;
 }
 
 .skill-name {
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 600;
   color: var(--color-primary);
+  display: block;
+  margin-bottom: 4rpx;
 }
 
 .skill-desc {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: var(--color-text-secondary);
+}
+
+.skill-pet {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
 }
 
 /* 删除按钮 */
