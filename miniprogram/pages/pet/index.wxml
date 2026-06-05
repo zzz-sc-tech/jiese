@@ -266,4 +266,32 @@
       </view>
     </view>
   </view>
+
+  <!-- 宠物互动弹窗 -->
+  <view class="modal-overlay" wx:if="{{showInteractModal}}" bindtap="hideInteractModal">
+    <view class="interact-modal" catchtap>
+      <view class="interact-header">
+        <text class="interact-title">宠物互动</text>
+        <view class="modal-close" bindtap="hideInteractModal">
+          <text>✕</text>
+        </view>
+      </view>
+      <view class="interact-body">
+        <view class="interact-pets">
+          <text class="interact-pet-icon">{{pets[0].stageIcon}}</text>
+          <text class="interact-heart">💕</text>
+          <text class="interact-pet-icon">{{pets[1].stageIcon}}</text>
+        </view>
+        <view class="interact-result" wx:if="{{interactResult}}">
+          <text class="interact-text">亲密度 +1</text>
+        </view>
+        <view class="interact-empty" wx:else>
+          <text class="interact-hint">让两只宠物一起玩耍吧</text>
+        </view>
+      </view>
+      <view class="interact-footer">
+        <button class="btn-save" bindtap="doInteract">一起玩耍</button>
+      </view>
+    </view>
+  </view>
 </view>
