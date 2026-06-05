@@ -143,6 +143,23 @@ Page({
       }
     }
 
+    // 计算装扮图标
+    const costumeTypes = api.getCostumeTypes();
+    let costumeHatIcon = '';
+    let costumeScarfIcon = '';
+    let costumeGlassesIcon = '';
+    if (currentPet && currentPet.costumes) {
+      if (currentPet.costumes.hat && costumeTypes[currentPet.costumes.hat]) {
+        costumeHatIcon = costumeTypes[currentPet.costumes.hat].icon;
+      }
+      if (currentPet.costumes.scarf && costumeTypes[currentPet.costumes.scarf]) {
+        costumeScarfIcon = costumeTypes[currentPet.costumes.scarf].icon;
+      }
+      if (currentPet.costumes.glasses && costumeTypes[currentPet.costumes.glasses]) {
+        costumeGlassesIcon = costumeTypes[currentPet.costumes.glasses].icon;
+      }
+    }
+
     this.setData({
       pets,
       currentPet,
@@ -152,7 +169,10 @@ Page({
       moodIcon,
       moodText,
       allSkills,
-      currentBgStyle
+      currentBgStyle,
+      costumeHatIcon,
+      costumeScarfIcon,
+      costumeGlassesIcon
     });
   },
 
