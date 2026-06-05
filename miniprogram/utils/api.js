@@ -857,6 +857,50 @@ const api = {
     return skills;
   },
 
+  // 应用所有宠物技能效果（打卡时调用）
+  applyPetSkills(context) {
+    const pets = getPets();
+    const effects = {
+      extraFeed: 0,
+      doubleItemChance: 0,
+      streakBonus: 0,
+      expBoost: 0,
+      luckBoost: 0,
+      dailyRandomItem: false
+    };
+
+    pets.forEach(pet => {
+      const skill = PET_SKILLS[pet.petId];
+      if (!skill) return;
+
+      switch (skill.type) {
+        case 'extra_feed':
+          effects.extraFeed += 1;
+          break;
+        case 'double_item':
+          effects.doubleItemChance += skill.chance;
+          break;
+        case 'streak_bonus':
+          effects.streakBonus += skill.value;
+          break;
+        case 'exp_boost':
+          effects.expBoost += skill.value;
+          break;
+        case 'luck_boost':
+          effects.luckBoost += skill.value;
+          break;
+        case 'global_exp_boost':
+          effects.expBoost += skill.value;
+          break;
+        case 'daily_random_item':
+          effects.dailyRandomItem = true;
+          break;
+      }
+    });
+
+    return effects;
+  },
+
   // ========== 宠物日记系统 ==========
   addPetDiary(content, type, petIndex = 0) {
     const diary = getPetDiary();
