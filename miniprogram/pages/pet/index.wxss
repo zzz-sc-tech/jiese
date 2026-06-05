@@ -59,23 +59,235 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48rpx 32rpx;
+  padding: 32rpx;
   margin-bottom: 24rpx;
 }
 
-.pet-avatar {
-  width: 160rpx;
-  height: 160rpx;
+/* 宠物动画区域 */
+.pet-animation-area {
+  position: relative;
+  width: 300rpx;
+  height: 300rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent-light));
-  border-radius: 50%;
   margin-bottom: 24rpx;
 }
 
-.pet-icon {
-  font-size: 80rpx;
+/* 宠物主体 */
+.pet-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: petFloat 3s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.pet-body:active {
+  transform: scale(0.95);
+}
+
+/* 宠物图标 */
+.pet-main-icon {
+  font-size: 160rpx;
+  line-height: 1;
+  filter: drop-shadow(0 8rpx 16rpx rgba(0,0,0,0.1));
+}
+
+/* 阴影 */
+.pet-shadow {
+  position: absolute;
+  bottom: -20rpx;
+  width: 120rpx;
+  height: 20rpx;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: shadowPulse 3s ease-in-out infinite;
+}
+
+/* 眼睛 */
+.pet-eyes {
+  display: none;
+}
+
+/* 气泡提示 */
+.pet-bubble {
+  position: absolute;
+  top: -60rpx;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: var(--color-bg-card);
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.pet-bubble.show {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+.pet-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -12rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 12rpx solid transparent;
+  border-right: 12rpx solid transparent;
+  border-top: 12rpx solid var(--color-bg-card);
+}
+
+.bubble-text {
+  font-size: 24rpx;
+  color: var(--color-text);
+}
+
+/* 爱心特效 */
+.heart-effect {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  font-size: 48rpx;
+  opacity: 0;
+  transform: scale(0) translateY(0);
+  transition: all 0.5s ease;
+}
+
+.heart-effect.show {
+  opacity: 1;
+  transform: scale(1) translateY(-40rpx);
+  animation: heartFloat 1s ease forwards;
+}
+
+/* 星星特效 */
+.star-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  font-size: 32rpx;
+  opacity: 0;
+}
+
+.star1 {
+  top: 0;
+  left: 20rpx;
+  animation: starBurst 0.8s ease forwards;
+}
+
+.star2 {
+  top: 20rpx;
+  right: 10rpx;
+  animation: starBurst 0.8s ease 0.2s forwards;
+}
+
+.star3 {
+  bottom: 40rpx;
+  left: 40rpx;
+  animation: starBurst 0.8s ease 0.4s forwards;
+}
+
+/* 宠物动画 */
+@keyframes petFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20rpx);
+  }
+}
+
+@keyframes shadowPulse {
+  0%, 100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.8);
+    opacity: 0.6;
+  }
+}
+
+@keyframes heartFloat {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-80rpx);
+  }
+}
+
+@keyframes starBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* 宠物动画状态 */
+.pet-body.happy {
+  animation: petHappy 0.5s ease;
+}
+
+.pet-body.eat {
+  animation: petEat 0.3s ease;
+}
+
+.pet-body.sleep {
+  animation: petSleep 2s ease-in-out infinite;
+}
+
+@keyframes petHappy {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-20rpx) rotate(-10deg); }
+  75% { transform: translateY(-20rpx) rotate(10deg); }
+}
+
+@keyframes petEat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes petSleep {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10rpx); }
+}
+
+/* 心情指示 */
+.pet-mood {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 16rpx;
+}
+
+.mood-icon {
+  font-size: 28rpx;
+}
+
+.mood-text {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
 }
 
 .pet-name {
