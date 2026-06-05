@@ -846,6 +846,17 @@ const api = {
     return PET_SKILLS[petId] || null;
   },
 
+  // 获取所有拥有宠物的技能
+  getAllPetSkills() {
+    const pets = getPets();
+    const skills = pets.map(pet => ({
+      petId: pet.petId,
+      petName: pet.name,
+      skill: PET_SKILLS[pet.petId]
+    })).filter(s => s.skill);
+    return skills;
+  },
+
   // ========== 宠物日记系统 ==========
   addPetDiary(content, type, petIndex = 0) {
     const diary = getPetDiary();
