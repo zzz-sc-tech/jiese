@@ -202,7 +202,10 @@ Page({
       currentBgStyle,
       costumeHatIcon,
       costumeScarfIcon,
-      costumeGlassesIcon
+      costumeGlassesIcon,
+      costumeHatStyle,
+      costumeScarfStyle,
+      costumeGlassesStyle
     });
   },
 
