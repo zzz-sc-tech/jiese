@@ -1324,13 +1324,14 @@ const api = {
   },
 
   // 随机事件触发
-  _triggerRandomEvent() {
+  _triggerRandomEvent(luckBoost = 0) {
+    const baseChance = 0.2 + luckBoost;
     const rand = Math.random();
-    if (rand < 0.2) {
+    if (rand < baseChance) {
       const items = ['feed', 'fruit', 'candy', 'star'];
       const weights = [4, 3, 2, 1];
       const totalWeight = weights.reduce((a, b) => a + b, 0);
-      let r = rand / 0.2 * totalWeight;
+      let r = rand / baseChance * totalWeight;
       for (let i = 0; i < items.length; i++) {
         r -= weights[i];
         if (r <= 0) {
