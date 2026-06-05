@@ -7,7 +7,12 @@ const KEYS = {
   SETTINGS: 'jiese_settings',
   QUOTES_CACHE: 'jiese_quotes_cache',
   PET: 'jiese_pet',
-  PET_ITEMS: 'jiese_pet_items'
+  PET_ITEMS: 'jiese_pet_items',
+  PET_DIARY: 'jiese_pet_diary',
+  PET_COSTUMES: 'jiese_pet_costumes',
+  PET_BACKGROUNDS: 'jiese_pet_backgrounds',
+  PET_ACHIEVEMENTS: 'jiese_pet_achievements',
+  PET_STATS: 'jiese_pet_stats'
 };
 
 const storage = {
