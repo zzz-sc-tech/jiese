@@ -198,10 +198,8 @@ Page({
       allSkills,
       currentBgStyle,
       costumeHatIcon,
-      costumeScarfIcon,
       costumeGlassesIcon,
       costumeHatStyle,
-      costumeScarfStyle,
       costumeGlassesStyle
     });
   },
