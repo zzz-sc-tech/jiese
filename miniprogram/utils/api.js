@@ -418,6 +418,56 @@ function savePetItems(items) {
   storage.set('jiese_pet_items', items);
 }
 
+// 宠物日记
+function getPetDiary() {
+  return storage.get('jiese_pet_diary', []);
+}
+
+function savePetDiary(diary) {
+  storage.set('jiese_pet_diary', diary);
+}
+
+// 宠物装扮
+function getPetCostumes() {
+  return storage.get('jiese_pet_costumes', []);
+}
+
+function savePetCostumes(costumes) {
+  storage.set('jiese_pet_costumes', costumes);
+}
+
+// 宠物背景
+function getPetBackgrounds() {
+  return storage.get('jiese_pet_backgrounds', []);
+}
+
+function savePetBackgrounds(backgrounds) {
+  storage.set('jiese_pet_backgrounds', backgrounds);
+}
+
+// 宠物成就
+function getPetAchievements() {
+  return storage.get('jiese_pet_achievements', []);
+}
+
+function savePetAchievements(achievements) {
+  storage.set('jiese_pet_achievements', achievements);
+}
+
+// 宠物统计
+function getPetStats() {
+  return storage.get('jiese_pet_stats', {
+    feedCount: 0,
+    interactCount: 0,
+    diaryCount: 0,
+    adoptedTypes: []
+  });
+}
+
+function savePetStats(stats) {
+  storage.set('jiese_pet_stats', stats);
+}
+
 // 计算等级和阶段
 function calculateLevel(exp) {
   let level = 1;
