@@ -153,26 +153,24 @@ Page({
     // 计算装扮图标和位置
     const costumeTypes = api.getCostumeTypes();
     let costumeHatIcon = '';
-    let costumeScarfIcon = '';
     let costumeGlassesIcon = '';
     let costumeHatStyle = '';
-    let costumeScarfStyle = '';
     let costumeGlassesStyle = '';
 
     // 每种宠物的装扮位置配置
     const costumePositions = {
-      pet_seedling: { hat: 'top: -25rpx;', scarf: 'bottom: 20rpx;', glasses: 'top: 30rpx;' },
-      pet_cat: { hat: 'top: -15rpx;', scarf: 'bottom: 35rpx;', glasses: 'top: 45rpx;' },
-      pet_dog: { hat: 'top: -20rpx;', scarf: 'bottom: 30rpx;', glasses: 'top: 40rpx;' },
-      pet_rabbit: { hat: 'top: -30rpx;', scarf: 'bottom: 25rpx;', glasses: 'top: 35rpx;' },
-      pet_panda: { hat: 'top: -20rpx;', scarf: 'bottom: 30rpx;', glasses: 'top: 40rpx;' },
-      pet_dragon: { hat: 'top: -25rpx;', scarf: 'bottom: 20rpx;', glasses: 'top: 30rpx;' },
-      pet_fox: { hat: 'top: -20rpx;', scarf: 'bottom: 30rpx;', glasses: 'top: 40rpx;' },
-      pet_penguin: { hat: 'top: -15rpx;', scarf: 'bottom: 40rpx;', glasses: 'top: 50rpx;' },
-      pet_hamster: { hat: 'top: -20rpx;', scarf: 'bottom: 30rpx;', glasses: 'top: 40rpx;' },
-      pet_turtle: { hat: 'top: -25rpx;', scarf: 'bottom: 15rpx;', glasses: 'top: 25rpx;' },
-      pet_butterfly: { hat: 'top: -30rpx;', scarf: 'bottom: 20rpx;', glasses: 'top: 30rpx;' },
-      pet_unicorn: { hat: 'top: -30rpx;', scarf: 'bottom: 25rpx;', glasses: 'top: 35rpx;' }
+      pet_seedling: { hat: 'top: -25rpx;', glasses: 'top: 30rpx;' },
+      pet_cat: { hat: 'top: -15rpx;', glasses: 'top: 45rpx;' },
+      pet_dog: { hat: 'top: -20rpx;', glasses: 'top: 40rpx;' },
+      pet_rabbit: { hat: 'top: -30rpx;', glasses: 'top: 35rpx;' },
+      pet_panda: { hat: 'top: -20rpx;', glasses: 'top: 40rpx;' },
+      pet_dragon: { hat: 'top: -25rpx;', glasses: 'top: 30rpx;' },
+      pet_fox: { hat: 'top: -20rpx;', glasses: 'top: 40rpx;' },
+      pet_penguin: { hat: 'top: -15rpx;', glasses: 'top: 50rpx;' },
+      pet_hamster: { hat: 'top: -20rpx;', glasses: 'top: 40rpx;' },
+      pet_turtle: { hat: 'top: -25rpx;', glasses: 'top: 25rpx;' },
+      pet_butterfly: { hat: 'top: -30rpx;', glasses: 'top: 30rpx;' },
+      pet_unicorn: { hat: 'top: -30rpx;', glasses: 'top: 35rpx;' }
     };
 
     if (currentPet && currentPet.costumes) {
@@ -182,10 +180,6 @@ Page({
       if (currentPet.costumes.hat && costumeTypes[currentPet.costumes.hat]) {
         costumeHatIcon = costumeTypes[currentPet.costumes.hat].icon;
         costumeHatStyle = positions.hat;
-      }
-      if (currentPet.costumes.scarf && costumeTypes[currentPet.costumes.scarf]) {
-        costumeScarfIcon = costumeTypes[currentPet.costumes.scarf].icon;
-        costumeScarfStyle = positions.scarf;
       }
       if (currentPet.costumes.glasses && costumeTypes[currentPet.costumes.glasses]) {
         costumeGlassesIcon = costumeTypes[currentPet.costumes.glasses].icon;
