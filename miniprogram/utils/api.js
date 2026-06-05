@@ -313,6 +313,60 @@ const ITEM_TYPES = {
   rainbow: { name: '彩虹宝箱', icon: '🌈', exp: 200, desc: '完成挑战获得' }
 };
 
+// 宠物技能配置
+const PET_SKILLS = {
+  pet_seedling: { name: '光合作用', desc: '每日打卡额外获得1个饲料', icon: '☀️', type: 'extra_feed' },
+  pet_cat: { name: '猫的报恩', desc: '打卡有20%概率获得双倍道具', icon: '🍀', type: 'double_item', chance: 0.2 },
+  pet_dog: { name: '忠诚守护', desc: '连续打卡天数+1', icon: '🛡️', type: 'streak_bonus', value: 1 },
+  pet_rabbit: { name: '跳跃活力', desc: '番茄钟经验+20%', icon: '⚡', type: 'exp_boost', value: 0.2 },
+  pet_panda: { name: '国宝福气', desc: '随机事件触发率+10%', icon: '🎋', type: 'luck_boost', value: 0.1 },
+  pet_dragon: { name: '龙之祝福', desc: '所有经验+10%', icon: '🐲', type: 'global_exp_boost', value: 0.1 },
+  pet_fox: { name: '狐之智慧', desc: '投喂暴击率15%（3倍经验）', icon: '📚', type: 'crit_feed', chance: 0.15 },
+  pet_penguin: { name: '极地耐力', desc: '挑战完成奖励+50%', icon: '❄️', type: 'challenge_boost', value: 0.5 },
+  pet_hamster: { name: '勤劳储备', desc: '每日首次投喂不消耗道具', icon: '💰', type: 'free_feed' },
+  pet_turtle: { name: '龟之坚韧', desc: '失败挑战不重置进度', icon: '🐢', type: 'challenge_protect' },
+  pet_butterfly: { name: '蝶之蜕变', desc: '进化所需经验-30%', icon: '🦋', type: 'evolution_discount', value: 0.3 },
+  pet_unicorn: { name: '彩虹祝福', desc: '每天随机获得1个道具', icon: '🌈', type: 'daily_random_item' }
+};
+
+// 装扮配置
+const COSTUME_TYPES = {
+  hat_1: { name: '小礼帽', icon: '🎩', part: 'hat', desc: '优雅绅士' },
+  hat_2: { name: '皇冠', icon: '👑', part: 'hat', desc: '王者风范' },
+  hat_3: { name: '花环', icon: '💐', part: 'hat', desc: '清新自然' },
+  hat_4: { name: '巫师帽', icon: '🧙', part: 'hat', desc: '神秘魔法' },
+  scarf_1: { name: '红围巾', icon: '🧣', part: 'scarf', desc: '温暖舒适' },
+  scarf_2: { name: '领结', icon: '🎀', part: 'scarf', desc: '俏皮可爱' },
+  glasses_1: { name: '墨镜', icon: '🕶️', part: 'glasses', desc: '酷炫十足' },
+  glasses_2: { name: '圆框眼镜', icon: '👓', part: 'glasses', desc: '文艺范儿' }
+};
+
+// 背景配置
+const BG_TYPES = {
+  bg_forest: { name: '魔法森林', icon: '🌲', desc: '宁静的森林', gradient: 'linear-gradient(180deg, #2d5016 0%, #4a7c2e 50%, #8bc34a 100%)' },
+  bg_beach: { name: '阳光海滩', icon: '🏖️', desc: '温暖的海滩', gradient: 'linear-gradient(180deg, #87ceeb 0%, #f0e68c 50%, #deb887 100%)' },
+  bg_space: { name: '星际太空', icon: '🚀', desc: '神秘的宇宙', gradient: 'linear-gradient(180deg, #0a0a2e 0%, #1a1a4e 50%, #2d2d6e 100%)' },
+  bg_garden: { name: '梦幻花园', icon: '🌸', desc: '浪漫的花园', gradient: 'linear-gradient(180deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%)' },
+  bg_mountain: { name: '云端山峰', icon: '⛰️', desc: '高耸的山峰', gradient: 'linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%)' },
+  bg_night: { name: '星空夜晚', icon: '🌙', desc: '宁静的夜晚', gradient: 'linear-gradient(180deg, #1a237e 0%, #283593 50%, #3949ab 100%)' }
+};
+
+// 宠物成就配置
+const PET_ACHIEVEMENTS = [
+  { id: 'pet_first', name: '初次相遇', desc: '领养第一只宠物', icon: '🤝', condition: 'adopt_first' },
+  { id: 'pet_two', name: '双宠之家', desc: '同时拥有两只宠物', icon: '🐾', condition: 'have_two' },
+  { id: 'pet_level_10', name: '小有成就', desc: '宠物达到10级', icon: '📈', condition: 'level_10' },
+  { id: 'pet_level_20', name: '茁壮成长', desc: '宠物达到20级', icon: '🌟', condition: 'level_20' },
+  { id: 'pet_level_30', name: '满级达成', desc: '宠物达到30级', icon: '🏆', condition: 'level_30' },
+  { id: 'pet_evolve_1', name: '初次进化', desc: '宠物第一次进化', icon: '✨', condition: 'evolve_once' },
+  { id: 'pet_evolve_2', name: '完全体', desc: '宠物进化到最终形态', icon: '🦋', condition: 'evolve_full' },
+  { id: 'pet_feed_100', name: '爱心满满', desc: '累计投喂100次', icon: '❤️', condition: 'feed_100' },
+  { id: 'pet_all_types', name: '收藏家', desc: '解锁所有宠物类型', icon: '📚', condition: 'all_types' },
+  { id: 'pet_costume', name: '时尚达人', desc: '给宠物穿上装扮', icon: '👗', condition: 'wear_costume' },
+  { id: 'pet_diary_30', name: '成长记录', desc: '累计30条日记', icon: '📖', condition: 'diary_30' },
+  { id: 'pet_interact_50', name: '亲密伙伴', desc: '与宠物互动50次', icon: '💕', condition: 'interact_50' }
+];
+
 // 等级经验表（30级）- 一周全勤约1000经验可满级
 const LEVEL_EXP = [
   0, 30, 60, 100, 150, 200, 260, 330, 400, 480,        // 1-10
