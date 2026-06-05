@@ -34,6 +34,9 @@ Page({
     costumeHatIcon: '',
     costumeScarfIcon: '',
     costumeGlassesIcon: '',
+    costumeHatStyle: '',
+    costumeScarfStyle: '',
+    costumeGlassesStyle: '',
     // 互动弹窗
     showInteractModal: false,
     interactResult: null,
