@@ -32,10 +32,8 @@ Page({
     currentBgStyle: '',
     // 装扮图标
     costumeHatIcon: '',
-    costumeScarfIcon: '',
     costumeGlassesIcon: '',
     costumeHatStyle: '',
-    costumeScarfStyle: '',
     costumeGlassesStyle: '',
     // 互动弹窗
     showInteractModal: false,
