@@ -279,7 +279,6 @@
 
 .costume-hat {
   position: absolute;
-  top: -20rpx;
   left: 50%;
   transform: translateX(-50%);
   font-size: 48rpx;
@@ -288,7 +287,6 @@
 
 .costume-scarf {
   position: absolute;
-  bottom: 40rpx;
   left: 50%;
   transform: translateX(-50%);
   font-size: 36rpx;
@@ -297,7 +295,6 @@
 
 .costume-glasses {
   position: absolute;
-  top: 50rpx;
   left: 50%;
   transform: translateX(-50%);
   font-size: 32rpx;
