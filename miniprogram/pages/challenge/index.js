@@ -1,5 +1,4 @@
 const api = require('../../utils/api');
-const dateUtil = require('../../utils/date');
 
 const app = getApp();
 
@@ -47,32 +46,12 @@ Page({
     try {
       const res = await api.getChallenges();
       if (res.code === 0 && res.data) {
-        const now = new Date();
         const active = res.data
           .filter(c => c.status === 'active')
-          .map(ch => {
-            const startDate = new Date(ch.startDate);
-            const completedDays = Math.min(
-              Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-              ch.targetDays
-            );
-            const remainingDays = Math.max(0, ch.targetDays - completedDays);
-            const progress = Math.min(100, Math.round((completedDays / ch.targetDays) * 100));
-            const status = completedDays >= ch.targetDays ? 'completed' : 'active';
-            const goal = this.data.goals.find(g => g.id === ch.goalId);
-            return {
-              ...ch,
-              completedDays,
-              remainingDays,
-              progress,
-              status,
-              statusText: status === 'completed' ? '挑战成功' : '进行中',
-              goalName: goal ? goal.name : '未知目标',
-              goalIcon: goal ? goal.icon : '🎯',
-              goalColor: goal ? goal.color : '#5B9A6F',
-              timeline: this.generateTimeline(ch.targetDays, completedDays)
-            };
-          });
+          .map(ch => ({
+            ...ch,
+            timeline: this.generateTimeline(ch.targetDays, ch.completedDays)
+          }));
         this.setData({ activeChallenges: active });
       }
     } catch (err) {

@@ -2,15 +2,25 @@ App({
   onLaunch() {
     const storage = require('./utils/storage');
 
-    // 一次性迁移：清除所有旧挑战数据（新的挑战模型要求每个目标绑定独立挑战）
+    // 一次性迁移：保留旧挑战数据，避免升级时丢失历史记录。
     if (!storage.get('jiese_migration_v2_done')) {
-      storage.set('jiese_challenges', []);
+      const oldChallenges = storage.get('jiese_challenges', []);
+      if (oldChallenges.length > 0 && !storage.get('jiese_challenges_v1_backup')) {
+        storage.set('jiese_challenges_v1_backup', oldChallenges);
+      }
       storage.set('jiese_migration_v2_done', true);
     }
 
     // 初始化主题
     const settings = storage.getSettings();
-    this.globalData.theme = settings.theme || 'green';
+    const validThemes = ['green', 'pink', 'dark'];
+    const theme = validThemes.includes(settings.theme) ? settings.theme : 'green';
+    if (settings.theme !== theme) {
+      settings.theme = theme;
+      storage.saveSettings(settings);
+    }
+
+    this.globalData.theme = theme;
     const themeClassMap = { green: '', pink: 'theme-pink', dark: 'theme-dark' };
     this.globalData.themeClass = themeClassMap[this.globalData.theme] || '';
 

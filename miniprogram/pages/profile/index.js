@@ -35,8 +35,6 @@ Page({
     achievements: [],
     lockedAchievements: [],
     totalAchievements: ALL_ACHIEVEMENTS.length,
-    remindEnabled: false,
-    remindTime: '08:00',
     themeClass: '',
     themeName: '清新绿',
     vibrateIntensity: 'medium',
@@ -81,15 +79,21 @@ Page({
       const settings = storage.getSettings();
       const theme = settings.theme || 'green';
       const themeNameMap = { green: '清新绿', pink: '裸粉', dark: '墨夜' };
-      const intensity = settings.vibrateIntensity || 'medium';
-      const mode = settings.vibrateMode || 'auto';
-      const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+      const validIntensities = ['light', 'medium', 'heavy'];
+      const validModes = ['auto', 'manual'];
+      const intensity = validIntensities.includes(settings.vibrateIntensity) ? settings.vibrateIntensity : 'medium';
+      const mode = validModes.includes(settings.vibrateMode) ? settings.vibrateMode : 'auto';
+      const intensityNameMap = { light: '轻微', medium: '中等', heavy: '强烈' };
       const modeNameMap = { auto: '自动停止', manual: '持续震动' };
-      const vibrateName = intensity === 'off' ? '关闭' : `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
+      const vibrateName = `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
+      if (settings.vibrateIntensity !== intensity || settings.vibrateMode !== mode) {
+        settings.vibrateIntensity = intensity;
+        settings.vibrateMode = mode;
+        storage.saveSettings(settings);
+      }
       this.setData({
         nickname: settings.nickname || '打卡用户',
-        remindEnabled: settings.remindEnabled,
-        remindTime: settings.remindTime,
+        avatarUrl: settings.avatarUrl || '',
         themeClass: app.globalData.themeClass,
         themeName: themeNameMap[theme] || '清新绿',
         vibrateIntensity: intensity,
@@ -127,8 +131,12 @@ Page({
       count: 1,
       mediaType: ['image'],
       success: (res) => {
+        const avatarUrl = res.tempFiles[0].tempFilePath;
+        const settings = storage.getSettings();
+        settings.avatarUrl = avatarUrl;
+        storage.saveSettings(settings);
         this.setData({
-          avatarUrl: res.tempFiles[0].tempFilePath
+          avatarUrl
         });
       }
     });
@@ -140,56 +148,6 @@ Page({
 
   goShare() {
     wx.navigateTo({ url: '/pages/share/index' });
-  },
-
-  setReminder() {
-    wx.showActionSheet({
-      itemList: ['开启每日提醒', '关闭每日提醒', '设置提醒时间'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          this.enableReminder();
-        } else if (res.tapIndex === 1) {
-          this.disableReminder();
-        } else if (res.tapIndex === 2) {
-          this.setRemindTime();
-        }
-      }
-    });
-  },
-
-  enableReminder() {
-    const settings = storage.getSettings();
-    settings.remindEnabled = true;
-    storage.saveSettings(settings);
-    this.setData({ remindEnabled: true });
-    wx.showToast({ title: '提醒已开启', icon: 'success' });
-  },
-
-  disableReminder() {
-    const settings = storage.getSettings();
-    settings.remindEnabled = false;
-    storage.saveSettings(settings);
-    this.setData({ remindEnabled: false });
-    wx.showToast({ title: '提醒已关闭', icon: 'success' });
-  },
-
-  setRemindTime() {
-    // 使用时间选择器
-    wx.showModal({
-      title: '设置提醒时间',
-      content: '当前提醒时间：' + this.data.remindTime,
-      editable: true,
-      placeholderText: '08:00',
-      success: (res) => {
-        if (res.confirm && res.content) {
-          const settings = storage.getSettings();
-          settings.remindTime = res.content;
-          storage.saveSettings(settings);
-          this.setData({ remindTime: res.content });
-          wx.showToast({ title: '设置成功', icon: 'success' });
-        }
-      }
-    });
   },
 
   selectTheme() {
@@ -216,23 +174,17 @@ Page({
   setVibrate() {
     const that = this;
     wx.showActionSheet({
-      itemList: ['关闭震动', '轻微', '中等', '强烈'],
+      itemList: ['轻微', '中等', '强烈'],
       success: (res) => {
-        if (res.tapIndex === 0) {
-          // 关闭震动
-          that._saveVibrateSetting('off', 'auto');
-        } else {
-          // 选择强度后，再选择方式
-          const intensities = ['light', 'medium', 'heavy'];
-          const intensity = intensities[res.tapIndex - 1];
-          wx.showActionSheet({
-            itemList: ['自动停止（震动几次后停止）', '持续震动（弹窗点击停止）'],
-            success: (res2) => {
-              const mode = res2.tapIndex === 0 ? 'auto' : 'manual';
-              that._saveVibrateSetting(intensity, mode);
-            }
-          });
-        }
+        const intensities = ['light', 'medium', 'heavy'];
+        const intensity = intensities[res.tapIndex];
+        wx.showActionSheet({
+          itemList: ['自动停止（震动几次后停止）', '持续震动（弹窗点击停止）'],
+          success: (res2) => {
+            const mode = res2.tapIndex === 0 ? 'auto' : 'manual';
+            that._saveVibrateSetting(intensity, mode);
+          }
+        });
       }
     });
   },
@@ -243,9 +195,9 @@ Page({
     settings.vibrateMode = mode;
     storage.saveSettings(settings);
 
-    const intensityNameMap = { off: '关闭', light: '轻微', medium: '中等', heavy: '强烈' };
+    const intensityNameMap = { light: '轻微', medium: '中等', heavy: '强烈' };
     const modeNameMap = { auto: '自动停止', manual: '持续震动' };
-    const vibrateName = intensity === 'off' ? '关闭' : `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
+    const vibrateName = `${intensityNameMap[intensity]}·${modeNameMap[mode]}`;
 
     this.setData({
       vibrateIntensity: intensity,
@@ -254,10 +206,8 @@ Page({
     });
 
     // 震动反馈
-    if (intensity !== 'off') {
-      const type = intensity === 'heavy' ? 'heavy' : 'light';
-      wx.vibrateShort({ type: type });
-    }
+    const type = intensity === 'heavy' ? 'heavy' : 'light';
+    wx.vibrateShort({ type: type });
 
     wx.showToast({ title: '已设置', icon: 'success' });
   },

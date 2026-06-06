@@ -176,7 +176,7 @@ Page({
         ctx.fillStyle = '#A8BFA9';
         ctx.font = '16px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('长按识别小程序，开始你的打卡之旅', width / 2, height - 50);
+        ctx.fillText('保存海报，分享你的坚持', width / 2, height - 50);
 
         // 导出图片
         setTimeout(() => {

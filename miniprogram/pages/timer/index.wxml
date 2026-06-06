@@ -24,10 +24,10 @@
   <view class="timer-display" wx:if="{{timerMode === 'pomodoro'}}">
     <!-- 环形进度 -->
     <view class="ring-container">
-      <canvas type="2d" id="timerCanvas" class="timer-canvas"></canvas>
+      <view class="timer-ring"></view>
       <view class="ring-center">
         <text class="timer-time">{{pomodoroDisplay}}</text>
-        <text class="timer-phase">{{pomodoroPhase === 'work' ? '专注中' : '休息中'}}</text>
+        <text class="timer-phase">{{pomodoroState === 'paused' && pomodoroRemaining <= 0 ? (pomodoroPhase === 'work' ? '专注结束' : '休息结束') : (pomodoroPhase === 'work' ? '专注中' : '休息中')}}</text>
       </view>
     </view>
 
@@ -35,9 +35,14 @@
     <view class="pomodoro-count">
       <text class="pc-label">已完成</text>
       <view class="pc-dots">
-        <view class="pc-dot {{index < pomodoroSession ? 'done' : ''}}"
-          wx:for="{{4}}" wx:key="index">
-        </view>
+        <view wx:if="{{pomodoroSession >= 1}}" class="pc-dot done"></view>
+        <view wx:else class="pc-dot"></view>
+        <view wx:if="{{pomodoroSession >= 2}}" class="pc-dot done"></view>
+        <view wx:else class="pc-dot"></view>
+        <view wx:if="{{pomodoroSession >= 3}}" class="pc-dot done"></view>
+        <view wx:else class="pc-dot"></view>
+        <view wx:if="{{pomodoroSession >= 4}}" class="pc-dot done"></view>
+        <view wx:else class="pc-dot"></view>
       </view>
       <text class="pc-num">{{pomodoroSession}}/4</text>
     </view>
@@ -56,7 +61,7 @@
       <view class="ctrl-btn primary {{pomodoroState === 'running' ? 'pause' : ''}}"
         bindtap="togglePomodoro">
         <text class="ctrl-icon">{{pomodoroState === 'running' ? '⏸' : '▶'}}</text>
-        <text class="ctrl-label">{{pomodoroState === 'running' ? '暂停' : '开始'}}</text>
+        <text class="ctrl-label">{{pomodoroState === 'running' ? '暂停' : (pomodoroState === 'paused' && pomodoroRemaining <= 0 ? (pomodoroPhase === 'work' ? '休息' : '专注') : '开始')}}</text>
       </view>
       <view class="ctrl-btn secondary" bindtap="skipPomodoro" wx:if="{{pomodoroState !== 'idle'}}">
         <text class="ctrl-icon">⏭</text>
@@ -117,11 +122,11 @@
   </view>
 </view>
 
-<!-- 震动提醒弹窗 -->
+<!-- 震动提示弹窗 -->
 <view class="vibrate-alert-overlay" wx:if="{{showVibrateAlert}}" bindtap="stopVibrate">
   <view class="vibrate-alert-modal" catchtap="stopVibrate">
     <text class="vibrate-alert-icon">🔔</text>
-    <text class="vibrate-alert-text">时间到！</text>
-    <text class="vibrate-alert-hint">点击任意位置停止震动</text>
+    <text class="vibrate-alert-text">{{vibrateAlertText}}</text>
+    <text class="vibrate-alert-hint">{{vibrateAlertHint}}</text>
   </view>
 </view>

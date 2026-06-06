@@ -2,6 +2,16 @@ const api = require('../../utils/api');
 const storage = require('../../utils/storage');
 
 const app = getApp();
+const POMODORO_SESSION_PREFIX = 'jiese_pomodoro_session';
+
+function normalizePomodoroSession(session) {
+  const value = Number(session) || 0;
+  return Math.min(Math.max(value, 0), 4);
+}
+
+function getPomodoroSessionKey(goalId) {
+  return `${POMODORO_SESSION_PREFIX}_${storage.getTodayStr()}_${goalId || 'default'}`;
+}
 
 Page({
   data: {
@@ -28,23 +38,30 @@ Page({
     // 今日会话
     sessions: [],
     themeClass: '',
-    showVibrateAlert: false
+    showVibrateAlert: false,
+    vibrateAlertText: '时间到！',
+    vibrateAlertHint: '点击任意位置停止震动'
   },
 
   _timer: null,
-  _canvasCtx: null,
-  _canvasSize: 0,
+  _pomodoroEndTimestamp: 0,
+  _pomodoroPhaseStartedAt: 0,
+  _clockRunStartedAt: 0,
+  _clockElapsedBeforeStart: 0,
+  _clockSessionStartedAt: 0,
+  _vibrateTimers: [],
 
   onLoad(options) {
     app.applyNavBarColor(app.globalData.theme);
     const goalId = options.goalId || '';
-    this.setData({ goalId, themeClass: app.globalData.themeClass });
+    const pomodoroSession = this.loadPomodoroSession(goalId);
+    this.setData({
+      goalId,
+      themeClass: app.globalData.themeClass,
+      pomodoroSession
+    });
     this.loadGoal(goalId);
     this.loadSessions(goalId);
-  },
-
-  onReady() {
-    this.initCanvas();
   },
 
   onHide() {
@@ -53,12 +70,9 @@ Page({
   },
 
   onUnload() {
+    this.saveCurrentProgress(true);
     this.clearTimer();
     this.stopVibrate();
-    // 如果时钟正在运行，保存当前进度
-    if (this.data.clockState === 'running' || this.data.clockState === 'paused') {
-      this.saveClockDuration();
-    }
   },
 
   async loadGoal(goalId) {
@@ -84,11 +98,16 @@ Page({
   },
 
   // 切换模式
-  switchMode(e) {
+  async switchMode(e) {
     const mode = e.currentTarget.dataset.mode;
     if (mode === this.data.timerMode) return;
-    // 如果有计时器在运行，先停止
+    await this.saveCurrentProgress(true);
     this.clearTimer();
+    this._pomodoroEndTimestamp = 0;
+    this._pomodoroPhaseStartedAt = 0;
+    this._clockRunStartedAt = 0;
+    this._clockElapsedBeforeStart = 0;
+    this._clockSessionStartedAt = 0;
     this.setData({
       timerMode: mode,
       pomodoroState: 'idle',
@@ -99,72 +118,35 @@ Page({
     if (mode === 'pomodoro') {
       this.resetPomodoroDisplay();
     }
+    this.loadSessions(this.data.goalId);
   },
 
   // ========== 番茄钟 ==========
-  initCanvas() {
-    const query = this.createSelectorQuery();
-    query.select('#timerCanvas')
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        if (!res[0]) return;
-        const canvas = res[0].node;
-        const ctx = canvas.getContext('2d');
-        const dpr = wx.getWindowInfo().pixelRatio;
-        const size = res[0].width;
-        canvas.width = size * dpr;
-        canvas.height = size * dpr;
-        ctx.scale(dpr, dpr);
-        this._canvasCtx = ctx;
-        this._canvasSize = size;
-        this.drawRing(1);
-      });
+  loadPomodoroSession(goalId) {
+    return normalizePomodoroSession(storage.get(getPomodoroSessionKey(goalId), 0));
   },
 
-  drawRing(percent) {
-    const ctx = this._canvasCtx;
-    const size = this._canvasSize;
-    if (!ctx) return;
+  savePomodoroSession(session, goalId) {
+    const targetGoalId = goalId || this.data.goalId;
+    storage.set(getPomodoroSessionKey(targetGoalId), normalizePomodoroSession(session), 2 * 24 * 60 * 60 * 1000);
+  },
 
-    const cx = size / 2;
-    const cy = size / 2;
-    const r = size / 2 - 12;
-    const lineWidth = 10;
-
-    ctx.clearRect(0, 0, size, size);
-
-    // 背景环
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.strokeStyle = '#E8F5E9';
-    ctx.lineWidth = lineWidth;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    // 进度环
-    if (percent > 0) {
-      const startAngle = -Math.PI / 2;
-      const endAngle = startAngle + Math.PI * 2 * percent;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, startAngle, endAngle);
-      const gradient = ctx.createLinearGradient(0, 0, size, size);
-      gradient.addColorStop(0, '#5B9A6F');
-      gradient.addColorStop(1, '#8BC4A0');
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = lineWidth;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    }
+  setPomodoroSession(session, goalId) {
+    const nextSession = normalizePomodoroSession(session);
+    this.savePomodoroSession(nextSession, goalId);
+    this.setData({ pomodoroSession: nextSession });
+    return nextSession;
   },
 
   resetPomodoroDisplay() {
     const totalSec = this.data.workMin * 60;
+    this._pomodoroEndTimestamp = 0;
+    this._pomodoroPhaseStartedAt = 0;
     this.setData({
       pomodoroDisplay: this.formatTime(totalSec),
       pomodoroRemaining: totalSec,
       pomodoroPhase: 'work'
     });
-    this.drawRing(1);
   },
 
   togglePomodoro() {
@@ -181,24 +163,16 @@ Page({
         // 专注结束，切换到休息
         const breakSec = this.data.breakMin * 60;
         this.setData({
-          pomodoroPhase: 'break',
-          pomodoroRemaining: breakSec,
-          pomodoroDisplay: this.formatTime(breakSec),
-          pomodoroState: 'running'
+          pomodoroPhase: 'break'
         });
-        this.drawRing(1);
-        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+        this.startPomodoroPhase('break', breakSec);
       } else {
         // 休息结束，切换到专注
         const workSec = this.data.workMin * 60;
         this.setData({
-          pomodoroPhase: 'work',
-          pomodoroRemaining: workSec,
-          pomodoroDisplay: this.formatTime(workSec),
-          pomodoroState: 'running'
+          pomodoroPhase: 'work'
         });
-        this.drawRing(1);
-        this._timer = setInterval(() => this.pomodoroTick(), 1000);
+        this.startPomodoroPhase('work', workSec);
       }
     } else {
       this.startPomodoro();
@@ -208,81 +182,145 @@ Page({
   startPomodoro() {
     if (this.data.pomodoroState === 'idle') {
       const totalSec = this.data.workMin * 60;
-      this.setData({
-        pomodoroRemaining: totalSec,
-        pomodoroPhase: 'work',
-        pomodoroDisplay: this.formatTime(totalSec)
-      });
+      this.startPomodoroPhase('work', totalSec);
+      return;
     }
-    this.setData({ pomodoroState: 'running' });
+    const remaining = this.getPomodoroRemaining();
+    this._pomodoroEndTimestamp = Date.now() + remaining * 1000;
+    this.setData({
+      pomodoroState: 'running',
+      pomodoroRemaining: remaining,
+      pomodoroDisplay: this.formatTime(remaining)
+    });
+    this.clearTimer();
     this._timer = setInterval(() => this.pomodoroTick(), 1000);
   },
 
-  pausePomodoro() {
+  startPomodoroPhase(phase, seconds) {
     this.clearTimer();
-    this.setData({ pomodoroState: 'paused' });
+    this._pomodoroEndTimestamp = Date.now() + seconds * 1000;
+    this._pomodoroPhaseStartedAt = Date.now();
+    const shouldResetSession = phase === 'work' && this.data.pomodoroSession >= 4;
+    const session = shouldResetSession ? 0 : normalizePomodoroSession(this.data.pomodoroSession);
+    if (shouldResetSession) {
+      this.setPomodoroSession(0);
+    }
+    this.setData({
+      pomodoroPhase: phase,
+      pomodoroRemaining: seconds,
+      pomodoroDisplay: this.formatTime(seconds),
+      pomodoroState: 'running',
+      pomodoroSession: session
+    });
+    this._timer = setInterval(() => this.pomodoroTick(), 1000);
+  },
+
+  getPomodoroRemaining() {
+    if (!this._pomodoroEndTimestamp) return this.data.pomodoroRemaining;
+    return Math.max(0, Math.ceil((this._pomodoroEndTimestamp - Date.now()) / 1000));
+  },
+
+  pausePomodoro() {
+    const remaining = this.getPomodoroRemaining();
+    this.clearTimer();
+    this._pomodoroEndTimestamp = 0;
+    this.setData({
+      pomodoroState: 'paused',
+      pomodoroRemaining: remaining,
+      pomodoroDisplay: this.formatTime(remaining)
+    });
   },
 
   pomodoroTick() {
-    let remaining = this.data.pomodoroRemaining - 1;
-    if (remaining < 0) {
-      // 阶段结束
-      this.clearTimer();
-      if (this.data.pomodoroPhase === 'work') {
-        // 工作阶段结束，保存时长
-        const workSec = this.data.workMin * 60;
-        this.saveDuration(workSec, 'pomodoro');
-        const session = this.data.pomodoroSession + 1;
-        this.setData({ pomodoroSession: session });
-
-        // 静默发放宠物道具
-        api.grantItem('candy', 1);
-
-        if (session >= 4) {
-          api.grantItem('crystal', 1);
-          wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
-          this.triggerVibrate();
-          this.setData({ pomodoroSession: 0, pomodoroState: 'idle' });
-          this.resetPomodoroDisplay();
-          return;
-        }
-
-        // 专注结束，震动提醒，等待手动切换到休息
-        this.triggerVibrate();
-        wx.showToast({ title: '专注结束，点击开始休息', icon: 'none' });
-        this.setData({ pomodoroState: 'paused' });
-      } else {
-        // 休息结束，震动提醒，等待手动切换到专注
-        this.triggerVibrate();
-        wx.showToast({ title: '休息结束，点击开始专注', icon: 'none' });
-        this.setData({ pomodoroState: 'paused' });
-      }
+    const remaining = this.getPomodoroRemaining();
+    if (remaining <= 0) {
+      this.finishPomodoroPhase({ skipped: false });
       return;
     }
-
-    const totalSec = this.data.pomodoroPhase === 'work'
-      ? this.data.workMin * 60
-      : this.data.breakMin * 60;
-    const percent = remaining / totalSec;
 
     this.setData({
       pomodoroRemaining: remaining,
       pomodoroDisplay: this.formatTime(remaining)
     });
-    this.drawRing(percent);
+  },
+
+  finishPomodoroPhase(options) {
+    const skipped = !!(options && options.skipped);
+    const phase = this.data.pomodoroPhase;
+    const workSec = this.data.workMin * 60;
+    const remaining = this.getPomodoroRemaining();
+    const used = skipped ? Math.max(0, workSec - remaining) : workSec;
+    const isWork = phase === 'work';
+    const currentSession = normalizePomodoroSession(this.data.pomodoroSession);
+    const nextSession = isWork ? Math.min(currentSession + 1, 4) : currentSession;
+    const alertText = isWork ? '专注结束' : '休息结束';
+    const alertHint = isWork ? '点击开始休息' : '点击开始专注';
+
+    this.clearTimer();
+    this._pomodoroEndTimestamp = 0;
+    this._pomodoroPhaseStartedAt = 0;
+    if (isWork) {
+      this.setPomodoroSession(nextSession);
+    }
+
+    this.setData({
+      pomodoroRemaining: 0,
+      pomodoroDisplay: this.formatTime(0),
+      pomodoroState: 'paused',
+      pomodoroSession: nextSession,
+      showVibrateAlert: true,
+      vibrateAlertText: alertText,
+      vibrateAlertHint: alertHint
+    });
+
+    this.triggerPomodoroAlert();
+
+    if (isWork) {
+      if (used > 10) {
+        const startAt = Date.now() - used * 1000;
+        this.saveDuration(used, 'pomodoro', startAt, true);
+      }
+      if (used > 10) {
+        api.grantItem('candy', 1);
+      }
+      if (nextSession >= 4) {
+        api.grantItem('crystal', 1);
+        wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
+      } else {
+        wx.showToast({ title: skipped ? '已跳过，点击开始休息' : '专注结束，点击开始休息', icon: 'none' });
+      }
+      return;
+    }
+
+    wx.showToast({ title: skipped ? '已跳过，点击开始专注' : '休息结束，点击开始专注', icon: 'none' });
+  },
+
+  triggerPomodoroAlert() {
+    this.triggerVibrate({ showAlert: true });
   },
 
   // 触发震动
-  triggerVibrate() {
-    const settings = storage.getSettings();
-    const intensity = settings.vibrateIntensity || 'medium';
-    const mode = settings.vibrateMode || 'auto';
+  triggerVibrate(options) {
+    options = options || {};
+    this.clearVibrateTimers();
 
-    if (intensity === 'off') return;
+    const settings = storage.getSettings();
+    const validIntensities = ['light', 'medium', 'heavy'];
+    const validModes = ['auto', 'manual'];
+    const intensity = validIntensities.includes(settings.vibrateIntensity)
+      ? settings.vibrateIntensity
+      : 'medium';
+    const mode = validModes.includes(settings.vibrateMode)
+      ? settings.vibrateMode
+      : 'auto';
+
+    if (options.showAlert || mode === 'manual') {
+      // 番茄钟阶段结束必须有可见提示，避免用户错过。
+      this.setData({ showVibrateAlert: true });
+    }
 
     if (mode === 'manual') {
       // 持续震动 + 显示弹窗
-      this.setData({ showVibrateAlert: true });
       this._doContinuousVibrate(intensity);
     } else {
       // 自动停止
@@ -294,16 +332,16 @@ Page({
   _doAutoVibrate(intensity) {
     if (intensity === 'light') {
       // 轻微：长震动1次
-      wx.vibrateLong();
+      this._doVibrateOnce(intensity);
     } else if (intensity === 'medium') {
       // 中等：长震动2次
-      wx.vibrateLong();
-      setTimeout(() => wx.vibrateLong(), 800);
+      this._doVibrateOnce(intensity);
+      this._scheduleVibrate(800, intensity);
     } else if (intensity === 'heavy') {
       // 强烈：长震动3次
-      wx.vibrateLong();
-      setTimeout(() => wx.vibrateLong(), 600);
-      setTimeout(() => wx.vibrateLong(), 1200);
+      this._doVibrateOnce(intensity);
+      this._scheduleVibrate(600, intensity);
+      this._scheduleVibrate(1200, intensity);
     }
   },
 
@@ -311,50 +349,78 @@ Page({
   _doContinuousVibrate(intensity) {
     const that = this;
     // 立即震动一次
-    wx.vibrateLong();
+    this._doVibrateOnce(intensity);
     if (intensity === 'light') {
       // 轻微：每2秒长震动
       that._vibrateInterval = setInterval(() => {
-        wx.vibrateLong();
+        that._doVibrateOnce(intensity);
       }, 2000);
     } else if (intensity === 'medium') {
       // 中等：每1.2秒长震动
       that._vibrateInterval = setInterval(() => {
-        wx.vibrateLong();
+        that._doVibrateOnce(intensity);
       }, 1200);
     } else if (intensity === 'heavy') {
       // 强烈：每0.8秒长震动
       that._vibrateInterval = setInterval(() => {
-        wx.vibrateLong();
+        that._doVibrateOnce(intensity);
       }, 800);
     }
   },
 
+  _scheduleVibrate(delay, intensity) {
+    const timer = setTimeout(() => {
+      this._doVibrateOnce(intensity);
+    }, delay);
+    this._vibrateTimers.push(timer);
+  },
+
+  _doVibrateOnce(intensity) {
+    const type = intensity === 'heavy' ? 'heavy' : intensity === 'light' ? 'light' : 'medium';
+    const fallback = () => wx.vibrateShort && wx.vibrateShort({ type });
+
+    try {
+      if (wx.vibrateLong) {
+        wx.vibrateLong({ fail: fallback });
+      } else {
+        fallback();
+      }
+    } catch (err) {
+      fallback();
+    }
+  },
+
   // 停止震动
-  stopVibrate() {
+  clearVibrateTimers() {
     if (this._vibrateInterval) {
       clearInterval(this._vibrateInterval);
       this._vibrateInterval = null;
     }
+    if (this._vibrateTimers.length > 0) {
+      this._vibrateTimers.forEach(timer => clearTimeout(timer));
+      this._vibrateTimers = [];
+    }
+  },
+
+  stopVibrate() {
+    this.clearVibrateTimers();
     this.setData({ showVibrateAlert: false });
   },
 
   resetPomodoro() {
     this.clearTimer();
-    this.setData({ pomodoroState: 'idle', pomodoroSession: 0 });
+    this._pomodoroEndTimestamp = 0;
+    this._pomodoroPhaseStartedAt = 0;
+    this.setPomodoroSession(0);
+    this.setData({
+      pomodoroState: 'idle',
+      pomodoroSession: 0
+    });
     this.resetPomodoroDisplay();
   },
 
-  skipPomodoro() {
-    this.clearTimer();
-    if (this.data.pomodoroPhase === 'work') {
-      // 跳过当前工作阶段，保存已用时间
-      const used = this.data.workMin * 60 - this.data.pomodoroRemaining;
-      if (used > 10) this.saveDuration(used, 'pomodoro');
-    }
-    // 直接触发 tick 处理阶段切换
-    this.setData({ pomodoroRemaining: 0 });
-    this.pomodoroTick();
+  async skipPomodoro() {
+    this.finishPomodoroPhase({ skipped: true });
   },
 
   adjustSetting(e) {
@@ -390,35 +456,59 @@ Page({
 
   startClock() {
     if (this.data.clockState === 'idle') {
+      const now = Date.now();
+      this._clockElapsedBeforeStart = 0;
+      this._clockSessionStartedAt = now;
       this.setData({
         clockElapsed: 0,
-        clockStartTimestamp: Date.now(),
+        clockStartTimestamp: now,
         clockDisplay: '00:00:00'
       });
+    } else {
+      this._clockElapsedBeforeStart = this.data.clockElapsed;
     }
+    this._clockRunStartedAt = Date.now();
+    this.clearTimer();
     this.setData({ clockState: 'running' });
     this._timer = setInterval(() => this.clockTick(), 1000);
   },
 
   pauseClock() {
+    const elapsed = this.getClockElapsed();
     this.clearTimer();
-    this.setData({ clockState: 'paused' });
+    this._clockRunStartedAt = 0;
+    this._clockElapsedBeforeStart = elapsed;
+    this.setData({
+      clockState: 'paused',
+      clockElapsed: elapsed,
+      clockDisplay: this.formatClock(elapsed)
+    });
   },
 
   clockTick() {
-    const elapsed = this.data.clockElapsed + 1;
+    const elapsed = this.getClockElapsed();
     this.setData({
       clockElapsed: elapsed,
       clockDisplay: this.formatClock(elapsed)
     });
   },
 
-  stopClock() {
-    this.clearTimer();
-    const elapsed = this.data.clockElapsed;
-    if (elapsed > 10) {
-      this.saveDuration(elapsed, 'clock');
+  getClockElapsed() {
+    if (this.data.clockState !== 'running' || !this._clockRunStartedAt) {
+      return this.data.clockElapsed;
     }
+    return this._clockElapsedBeforeStart + Math.floor((Date.now() - this._clockRunStartedAt) / 1000);
+  },
+
+  async stopClock() {
+    const elapsed = this.getClockElapsed();
+    this.clearTimer();
+    if (elapsed > 10) {
+      await this.saveDuration(elapsed, 'clock', this._clockSessionStartedAt || this.data.clockStartTimestamp || Date.now() - elapsed * 1000);
+    }
+    this._clockRunStartedAt = 0;
+    this._clockElapsedBeforeStart = 0;
+    this._clockSessionStartedAt = 0;
     this.setData({
       clockState: 'idle',
       clockElapsed: 0,
@@ -426,24 +516,52 @@ Page({
     });
   },
 
-  async saveClockDuration() {
-    const elapsed = this.data.clockElapsed;
+  async saveClockDuration(silent) {
+    silent = !!silent;
+    const elapsed = this.getClockElapsed();
     if (elapsed > 10) {
-      await this.saveDuration(elapsed, 'clock');
+      await this.saveDuration(elapsed, 'clock', this._clockSessionStartedAt || this.data.clockStartTimestamp || Date.now() - elapsed * 1000, silent);
     }
   },
 
+  async savePomodoroProgress(silent) {
+    silent = !!silent;
+    if (this.data.timerMode !== 'pomodoro') return;
+    if (this.data.pomodoroPhase !== 'work') return;
+    if (this.data.pomodoroState !== 'running' && this.data.pomodoroState !== 'paused') return;
+
+    const remaining = this.getPomodoroRemaining();
+    if (remaining <= 0) return;
+
+    const used = this.data.workMin * 60 - remaining;
+    if (used > 10) {
+      await this.saveDuration(used, 'pomodoro', this._pomodoroPhaseStartedAt || Date.now() - used * 1000, silent);
+    }
+  },
+
+  async saveCurrentProgress(silent) {
+    silent = !!silent;
+    if (this.data.clockState === 'running' || this.data.clockState === 'paused') {
+      await this.saveClockDuration(silent);
+      return;
+    }
+    await this.savePomodoroProgress(silent);
+  },
+
   // ========== 通用 ==========
-  async saveDuration(seconds, timerType) {
+  async saveDuration(seconds, timerType, startTimestamp, silent) {
+    silent = !!silent;
     try {
       await api.saveDuration(
         this.data.goalId,
         seconds,
-        this.data.clockStartTimestamp || Date.now(),
+        startTimestamp || Date.now() - seconds * 1000,
         timerType
       );
-      wx.showToast({ title: `已记录${api._formatDuration(seconds)}`, icon: 'success' });
-      this.loadSessions(this.data.goalId);
+      if (!silent) {
+        wx.showToast({ title: `已记录${api._formatDuration(seconds)}`, icon: 'success' });
+        this.loadSessions(this.data.goalId);
+      }
     } catch (e) {
       console.error('保存时长失败:', e);
     }

@@ -88,11 +88,10 @@ const storage = {
   // 获取设置
   getSettings() {
     return this.get(KEYS.SETTINGS, {
-      remindEnabled: true,
-      remindTime: '08:00',
-      theme: 'light',
+      theme: 'green',
       nickname: '打卡用户',
-      vibrateIntensity: 'medium', // off, light, medium, heavy
+      avatarUrl: '',
+      vibrateIntensity: 'medium', // light, medium, heavy
       vibrateMode: 'auto', // auto: 震动几次后停止, manual: 持续震动直到点击
       countdowns: [] // 倒数日列表 [{id, name, date}]
     });

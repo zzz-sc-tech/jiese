@@ -41,6 +41,16 @@
   height: 100%;
 }
 
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-light);
+  color: #fff;
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
 .user-detail {
   margin-left: 24rpx;
   margin-bottom: 8rpx;

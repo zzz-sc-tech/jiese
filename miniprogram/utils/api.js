@@ -1,5 +1,6 @@
 const storage = require('./storage');
 const dateUtil = require('./date');
+const challengeUtil = require('./challenge');
 
 // 语录库
 const QUOTES = [
@@ -162,7 +163,9 @@ const ACHIEVEMENTS = [
   { id: 'total_50', name: '半百之志', desc: '累计打卡50天', days: 50, type: 'total' },
   { id: 'total_100', name: '百日修行', desc: '累计打卡100天', days: 100, type: 'total' },
   { id: 'total_200', name: '二百里程', desc: '累计打卡200天', days: 200, type: 'total' },
-  { id: 'total_365', name: '一年有成', desc: '累计打卡365天', days: 365, type: 'total' }
+  { id: 'total_365', name: '一年有成', desc: '累计打卡365天', days: 365, type: 'total' },
+  { id: 'total_500', name: '五百传奇', desc: '累计打卡500天', days: 500, type: 'total' },
+  { id: 'total_1000', name: '千日不辍', desc: '累计打卡1000天', days: 1000, type: 'total' }
 ];
 
 // 挑战勋章定义
@@ -628,6 +631,46 @@ function calcGoalStat(goalId, checkins) {
   return { totalDays, currentStreak, longestStreak, lastCheckinDate };
 }
 
+function getActualCheckinDaysFrom(checkins) {
+  return new Set((checkins || []).map(c => c.date)).size;
+}
+
+function getChallengeViews(challenges, goals, checkins, sessions, persist = false) {
+  const today = dateUtil.today();
+  const newlyCompleted = [];
+  let changed = false;
+
+  const views = challenges.map(challenge => {
+    const goal = goals.find(g => g.id === challenge.goalId);
+    const progressInfo = challengeUtil.getChallengeProgress(challenge, goal, checkins, sessions, today);
+
+    if (challenge.status !== progressInfo.status) {
+      changed = true;
+      challenge.status = progressInfo.status;
+      if (progressInfo.status === 'completed') {
+        challenge.completedAt = challenge.completedAt || Date.now();
+        newlyCompleted.push(challenge);
+      } else if (progressInfo.status === 'failed') {
+        challenge.failedAt = challenge.failedAt || Date.now();
+      }
+    }
+
+    return {
+      ...challenge,
+      ...progressInfo,
+      goalName: goal ? goal.name : '未知目标',
+      goalIcon: goal ? goal.icon : '🎯',
+      goalColor: goal ? goal.color : '#5B9A6F'
+    };
+  });
+
+  if (persist && changed) {
+    saveChallenges(challenges);
+  }
+
+  return { views, newlyCompleted };
+}
+
 // ========== 对外接口 ==========
 const api = {
   // 获取预设图标列表
@@ -644,8 +687,7 @@ const api = {
   // 获取实际打卡天数（去重后的天数）
   getActualCheckinDays() {
     const checkins = getCheckins();
-    const uniqueDates = new Set(checkins.map(c => c.date));
-    return uniqueDates.size;
+    return getActualCheckinDaysFrom(checkins);
   },
 
   // ========== 宠物系统接口 ==========
@@ -1258,16 +1300,23 @@ const api = {
 
     const global = getGlobalStats();
     const allGoalStats = Object.values(allStats);
-    const totalDays = allGoalStats.reduce((sum, s) => sum + s.totalDays, 0);
+    const totalDays = getActualCheckinDaysFrom(checkins);
+    const goalActiveDays = allGoalStats.reduce((sum, s) => sum + s.totalDays, 0);
     const maxStreak = Math.max(0, ...allGoalStats.map(s => s.currentStreak));
     const maxLongest = Math.max(0, ...allGoalStats.map(s => s.longestStreak));
     global.totalDays = totalDays;
+    global.goalActiveDays = goalActiveDays;
+    global.totalCheckins = checkins.length;
     global.longestStreak = Math.max(global.longestStreak || 0, maxLongest);
     const newAchievements = checkAchievements(totalDays, maxStreak, global.achievements);
     global.achievements = [...(global.achievements || []), ...newAchievements];
     saveGlobalStats(global);
 
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+    const challenges = getChallenges();
+    const sessions = getDurationSessions();
+    const { newlyCompleted } = getChallengeViews(challenges, getGoals(), checkins, sessions, true);
 
     // 应用宠物技能效果
     const skillEffects = this.applyPetSkills();
@@ -1294,23 +1343,9 @@ const api = {
         this.grantItem(randomItem, 1);
       }
 
-      // 检查挑战完成
-      const challenges = getChallenges();
-      const goalChallenges = challenges.filter(c => c.goalId === goal.id && c.status === 'active');
-      const now = new Date();
-      goalChallenges.forEach(ch => {
-        const startDate = new Date(ch.startDate);
-        const completedDays = Math.min(
-          Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-          ch.targetDays
-        );
-        if (completedDays >= ch.targetDays) {
-          this.grantItem('rainbow', 1);
-          ch.status = 'completed';
-          ch.completedAt = Date.now();
-        }
-      });
-      saveChallenges(challenges);
+      if (newlyCompleted.length > 0) {
+        this.grantItem('rainbow', newlyCompleted.length);
+      }
 
       // 随机事件（受幸运加成影响）
       this._triggerRandomEvent(skillEffects.luckBoost);
@@ -1621,8 +1656,6 @@ const api = {
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     const daysInMonth = dateUtil.getDaysInMonth(year, month);
-    const today = dateUtil.today();
-
     // 筛选打卡记录
     const filteredCheckins = goalId
       ? checkins.filter(c => c.goalId === goalId)
@@ -1658,22 +1691,26 @@ const api = {
     // 如果指定了目标，返回该目标的统计
     if (goalId) {
       const stat = allStats[goalId] || { totalDays: 0, currentStreak: 0, longestStreak: 0 };
+      const { views } = getChallengeViews(getChallenges(), goals, checkins, getDurationSessions(), true);
       return {
         code: 0,
         data: {
           ...stat,
           monthlyData,
           weeklyData,
-          recentChallenges: getChallenges().filter(c => c.goalId === goalId).slice(0, 5)
+          recentChallenges: views.filter(c => c.goalId === goalId).slice(0, 5)
         }
       };
     }
 
     // 全局统计
     const allGoalStats = Object.values(allStats);
-    const totalDays = allGoalStats.reduce((sum, s) => sum + s.totalDays, 0);
+    const totalDays = getActualCheckinDaysFrom(checkins);
+    const goalActiveDays = allGoalStats.reduce((sum, s) => sum + s.totalDays, 0);
+    const totalCheckins = checkins.length;
     const maxCurrentStreak = Math.max(0, ...allGoalStats.map(s => s.currentStreak));
     const maxLongestStreak = Math.max(0, ...allGoalStats.map(s => s.longestStreak));
+    const { views: challengeViews } = getChallengeViews(getChallenges(), goals, checkins, getDurationSessions(), true);
 
     // 各目标统计
     const goalStats = goals.map(goal => {
@@ -1685,13 +1722,15 @@ const api = {
       code: 0,
       data: {
         totalDays,
+        goalActiveDays,
+        totalCheckins,
         currentStreak: maxCurrentStreak,
         longestStreak: maxLongestStreak,
         achievements: global.achievements || [],
         monthlyData,
         weeklyData,
         goalStats,
-        recentChallenges: getChallenges().slice(0, 5)
+        recentChallenges: challengeViews.slice(0, 5)
       }
     };
   },
@@ -1700,8 +1739,9 @@ const api = {
   async createChallenge(targetDays, goalId) {
     if (!goalId) return { code: 1, message: '请选择关联目标' };
     const list = getChallenges();
+    const { views } = getChallengeViews(list, getGoals(), getCheckins(), getDurationSessions(), true);
     // 检查该目标是否已有活跃挑战
-    const existing = list.find(c => c.goalId === goalId && c.status === 'active');
+    const existing = views.find(c => c.goalId === goalId && c.status === 'active');
     if (existing) return { code: 1, message: '该目标已有进行中的挑战' };
     const ch = {
       _id: 'ch_' + Date.now(),
@@ -1719,10 +1759,14 @@ const api = {
   // 获取挑战列表
   async getChallenges(goalId) {
     const list = getChallenges();
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const sessions = getDurationSessions();
+    const { views } = getChallengeViews(list, goals, checkins, sessions, true);
     if (goalId) {
-      return { code: 0, data: list.filter(c => c.goalId === goalId) };
+      return { code: 0, data: views.filter(c => c.goalId === goalId) };
     }
-    return { code: 0, data: list };
+    return { code: 0, data: views };
   },
 
   // 获取昨日总结
@@ -1854,22 +1898,8 @@ const api = {
     const weekRate = totalPossible > 0 ? Math.round((totalWeekCheckins / totalPossible) * 100) : 0;
 
     // 挑战完成情况
-    const activeChallenges = challenges.filter(c => c.status === 'active').map(ch => {
-      const startDate = new Date(ch.startDate);
-      const completedDays = Math.min(
-        Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-        ch.targetDays
-      );
-      const progress = Math.min(100, Math.round((completedDays / ch.targetDays) * 100));
-      const goal = goals.find(g => g.id === ch.goalId);
-      return {
-        ...ch,
-        completedDays,
-        progress,
-        goalName: goal ? goal.name : '未知目标',
-        goalIcon: goal ? goal.icon : '🎯'
-      };
-    });
+    const { views: challengeViews } = getChallengeViews(challenges, goals, checkins, getDurationSessions(), true);
+    const activeChallenges = challengeViews.filter(c => c.status === 'active');
 
     // 数据分析
     const analysis = [];
@@ -1894,7 +1924,7 @@ const api = {
     // 找出需改进的目标
     const weakGoals = goalReports.filter(g => g.weekRate < 50);
     if (weakGoals.length > 0) {
-      analysis.push(`${weakGoals.map(g => g.name).join('、')}需要加强，建议设定提醒。`);
+      analysis.push(`${weakGoals.map(g => g.name).join('、')}需要加强，可以放到每天固定时段完成。`);
     }
 
     // 时段分析
@@ -1951,48 +1981,20 @@ const api = {
   // 获取挑战统计数据
   async getChallengeStats() {
     const challenges = getChallenges();
-    const now = new Date();
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const sessions = getDurationSessions();
+    const { views } = getChallengeViews(challenges, goals, checkins, sessions, true);
 
     // 统计数据
-    const totalChallenges = challenges.length;
-    const completedChallenges = challenges.filter(c => c.status === 'completed').length;
-    const activeChallenges = challenges.filter(c => c.status === 'active').length;
-    const failedChallenges = challenges.filter(c => c.status === 'failed').length;
-
-    // 计算总挑战天数
-    let totalChallengeDays = 0;
-    challenges.forEach(ch => {
-      if (ch.status === 'completed') {
-        totalChallengeDays += ch.targetDays;
-      } else if (ch.status === 'active') {
-        const startDate = new Date(ch.startDate);
-        const completedDays = Math.min(
-          Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-          ch.targetDays
-        );
-        totalChallengeDays += completedDays;
-      }
-    });
+    const totalChallenges = views.length;
+    const completedChallenges = views.filter(c => c.status === 'completed').length;
+    const activeChallenges = views.filter(c => c.status === 'active').length;
+    const failedChallenges = views.filter(c => c.status === 'failed').length;
+    const totalChallengeDays = views.reduce((sum, ch) => sum + ch.completedDays, 0);
 
     // 当前进行中的挑战详情
-    const activeList = challenges.filter(c => c.status === 'active').map(ch => {
-      const startDate = new Date(ch.startDate);
-      const completedDays = Math.min(
-        Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-        ch.targetDays
-      );
-      const progress = Math.min(100, Math.round((completedDays / ch.targetDays) * 100));
-      const goals = getGoals();
-      const goal = goals.find(g => g.id === ch.goalId);
-      return {
-        ...ch,
-        completedDays,
-        progress,
-        goalName: goal ? goal.name : '未知目标',
-        goalIcon: goal ? goal.icon : '🎯',
-        goalColor: goal ? goal.color : '#5B9A6F'
-      };
-    });
+    const activeList = views.filter(c => c.status === 'active');
 
     return {
       code: 0,
@@ -2011,7 +2013,10 @@ const api = {
   async getChallengeMedals() {
     const challenges = getChallenges();
     const goals = getGoals();
-    const completedChallenges = challenges.filter(c => c.status === 'completed');
+    const checkins = getCheckins();
+    const sessions = getDurationSessions();
+    const { views } = getChallengeViews(challenges, goals, checkins, sessions, true);
+    const completedChallenges = views.filter(c => c.status === 'completed');
 
     // 统计每个勋章的获得情况
     const medalMap = {};
@@ -2084,33 +2089,10 @@ const api = {
     const challenges = getChallenges();
     const goals = getGoals();
     const goal = goals.find(g => g.id === goalId);
-    const now = new Date();
-
-    const goalChallenges = challenges.filter(c => c.goalId === goalId).map(ch => {
-      const startDate = new Date(ch.startDate);
-      let completedDays = 0;
-      let progress = 0;
-
-      if (ch.status === 'active') {
-        completedDays = Math.min(
-          Math.floor((now - startDate) / (1000 * 60 * 60 * 24)) + 1,
-          ch.targetDays
-        );
-        progress = Math.min(100, Math.round((completedDays / ch.targetDays) * 100));
-      } else if (ch.status === 'completed') {
-        completedDays = ch.targetDays;
-        progress = 100;
-      }
-
-      return {
-        ...ch,
-        completedDays,
-        progress,
-        goalName: goal ? goal.name : '未知目标',
-        goalIcon: goal ? goal.icon : '🎯',
-        goalColor: goal ? goal.color : '#5B9A6F'
-      };
-    });
+    const checkins = getCheckins();
+    const sessions = getDurationSessions();
+    const { views } = getChallengeViews(challenges, goals, checkins, sessions, true);
+    const goalChallenges = views.filter(c => c.goalId === goalId);
 
     // 统计
     const totalChallenges = goalChallenges.length;

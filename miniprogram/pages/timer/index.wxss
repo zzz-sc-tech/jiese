@@ -96,11 +96,20 @@
   width: 480rpx;
   height: 480rpx;
   margin-bottom: 40rpx;
+  flex-shrink: 0;
 }
 
-.timer-canvas {
+.timer-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 24rpx solid #5B9A6F;
+  background: transparent;
+  box-shadow: 0 8rpx 28rpx rgba(91, 154, 111, 0.12);
 }
 
 .ring-center {
@@ -337,7 +346,7 @@
   color: #2C3E2D;
 }
 
-/* 震动提醒弹窗 */
+/* 震动提示弹窗 */
 .vibrate-alert-overlay {
   position: fixed;
   top: 0;
