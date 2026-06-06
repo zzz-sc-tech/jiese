@@ -8,6 +8,12 @@ App({
       if (oldChallenges.length > 0 && !storage.get('jiese_challenges_v1_backup')) {
         storage.set('jiese_challenges_v1_backup', oldChallenges);
       }
+      // 如果主挑战列表被清空但备份存在，将旧数据合并回来
+      const currentChallenges = storage.get('jiese_challenges', []);
+      const backup = storage.get('jiese_challenges_v1_backup', []);
+      if (currentChallenges.length === 0 && backup.length > 0) {
+        storage.set('jiese_challenges', backup);
+      }
       storage.set('jiese_migration_v2_done', true);
     }
 
