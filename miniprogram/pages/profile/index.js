@@ -212,6 +212,81 @@ Page({
     wx.showToast({ title: '已设置', icon: 'success' });
   },
 
+  // 导出数据
+  exportData() {
+    wx.showModal({
+      title: '导出数据',
+      content: '将所有数据复制到剪贴板，您可以粘贴保存到备忘录或其他地方。',
+      success: (res) => {
+        if (res.confirm) {
+          const data = {
+            version: '1.0.0',
+            exportTime: new Date().toISOString(),
+            goals: wx.getStorageSync('jiese_goals') || [],
+            checkins: wx.getStorageSync('jiese_checkins') || [],
+            challenges: wx.getStorageSync('jiese_challenges') || [],
+            settings: wx.getStorageSync('jiese_settings') || {},
+            pets: wx.getStorageSync('jiese_pets') || [],
+            petItems: wx.getStorageSync('jiese_pet_items') || {},
+            globalStats: wx.getStorageSync('jiese_global_stats') || {}
+          };
+
+          const dataStr = JSON.stringify(data);
+          wx.setClipboardData({
+            data: dataStr,
+            success: () => {
+              wx.showToast({ title: '已复制到剪贴板', icon: 'success' });
+            }
+          });
+        }
+      }
+    });
+  },
+
+  // 导入数据
+  importData() {
+    wx.showModal({
+      title: '导入数据',
+      content: '请先复制数据到剪贴板，然后点击确定导入。注意：导入会覆盖当前数据！',
+      success: (res) => {
+        if (res.confirm) {
+          wx.getClipboardData({
+            success: (clipRes) => {
+              try {
+                const data = JSON.parse(clipRes.data);
+                if (!data.version || !data.goals) {
+                  wx.showToast({ title: '数据格式错误', icon: 'none' });
+                  return;
+                }
+
+                wx.showModal({
+                  title: '确认导入',
+                  content: `将导入 ${data.goals.length} 个目标、${data.checkins ? data.checkins.length : 0} 条打卡记录。确定吗？`,
+                  success: (confirmRes) => {
+                    if (confirmRes.confirm) {
+                      if (data.goals) wx.setStorageSync('jiese_goals', data.goals);
+                      if (data.checkins) wx.setStorageSync('jiese_checkins', data.checkins);
+                      if (data.challenges) wx.setStorageSync('jiese_challenges', data.challenges);
+                      if (data.settings) wx.setStorageSync('jiese_settings', data.settings);
+                      if (data.pets) wx.setStorageSync('jiese_pets', data.pets);
+                      if (data.petItems) wx.setStorageSync('jiese_pet_items', data.petItems);
+                      if (data.globalStats) wx.setStorageSync('jiese_global_stats', data.globalStats);
+
+                      wx.showToast({ title: '导入成功', icon: 'success' });
+                      this.loadUserData();
+                    }
+                  }
+                });
+              } catch (err) {
+                wx.showToast({ title: '数据格式错误', icon: 'none' });
+              }
+            }
+          });
+        }
+      }
+    });
+  },
+
   showAbout() {
     wx.showModal({
       title: '关于守心',
