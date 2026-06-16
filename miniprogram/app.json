@@ -14,7 +14,8 @@
     "pages/pet-background/index",
     "pages/goal-templates/index",
     "pages/annual-report/index",
-    "pages/reminder/index"
+    "pages/reminder/index",
+    "pages/insights/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
