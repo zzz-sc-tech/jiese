@@ -138,8 +138,103 @@ Page({
           this.setData({ challengeMedals: medalsRes.data });
         }
       }
+
+      // 加载热力图数据
+      this.loadHeatmapData();
     } catch (err) {
       console.error('加载数据失败:', err);
+    }
+  },
+
+  // 加载热力图数据
+  loadHeatmapData() {
+    const { heatmapYear } = this.data;
+    const checkins = api.getCheckins();
+    const yearCheckins = checkins.filter(c => c.date.startsWith(heatmapYear.toString()));
+
+    // 统计每天的打卡次数
+    const dateCountMap = {};
+    yearCheckins.forEach(c => {
+      dateCountMap[c.date] = (dateCountMap[c.date] || 0) + 1;
+    });
+
+    // 计算热力图数据（52周 × 7天）
+    const heatmapData = [];
+    const startDate = new Date(heatmapYear, 0, 1);
+    const endDate = new Date(heatmapYear, 11, 31);
+
+    // 找到第一周的周日
+    const firstDay = startDate.getDay();
+    const firstDate = new Date(startDate);
+    firstDate.setDate(firstDate.getDate() - firstDay);
+
+    let currentDate = new Date(firstDate);
+    let totalDays = 0;
+    let maxStreak = 0;
+    let currentStreak = 0;
+
+    while (currentDate <= endDate || currentDate.getDay() !== 0) {
+      const week = { weekIndex: heatmapData.length, days: [] };
+
+      for (let i = 0; i < 7; i++) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const count = dateCountMap[dateStr] || 0;
+        const isCurrentYear = currentDate.getFullYear() === heatmapYear;
+
+        let level = 0;
+        if (isCurrentYear && count > 0) {
+          totalDays++;
+          currentStreak++;
+          if (count >= 5) level = 4;
+          else if (count >= 3) level = 3;
+          else if (count >= 2) level = 2;
+          else level = 1;
+        } else if (isCurrentYear) {
+          currentStreak = 0;
+        }
+
+        maxStreak = Math.max(maxStreak, currentStreak);
+
+        week.days.push({
+          date: dateStr,
+          count: isCurrentYear ? count : 0,
+          level: isCurrentYear ? level : 0
+        });
+
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      heatmapData.push(week);
+
+      if (currentDate > endDate && currentDate.getDay() === 0) break;
+    }
+
+    this.setData({
+      heatmapData,
+      heatmapTotalDays: totalDays,
+      heatmapMaxStreak: maxStreak
+    });
+  },
+
+  // 热力图年份切换
+  prevHeatmapYear() {
+    this.setData({ heatmapYear: this.data.heatmapYear - 1 });
+    this.loadHeatmapData();
+  },
+
+  nextHeatmapYear() {
+    this.setData({ heatmapYear: this.data.heatmapYear + 1 });
+    this.loadHeatmapData();
+  },
+
+  // 显示热力图详情
+  showHeatmapDetail(e) {
+    const { date, count } = e.currentTarget.dataset;
+    if (count > 0) {
+      wx.showToast({
+        title: `${date}: ${count}次`,
+        icon: 'none'
+      });
     }
   },
 
