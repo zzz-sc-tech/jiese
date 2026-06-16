@@ -18,7 +18,8 @@
     "pages/insights/index",
     "pages/habit-chain/index",
     "pages/diary/index",
-    "pages/share-card/index"
+    "pages/share-card/index",
+    "pages/monthly-report/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
