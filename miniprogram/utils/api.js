@@ -83,7 +83,14 @@ const api = {
   getHabitGuides: statsService.getHabitGuides.bind(statsService),
   getSmartRecommendations: statsService.getSmartRecommendations.bind(statsService),
   getHabitHealth: statsService.getHabitHealth.bind(statsService),
-  getPersonalizedQuote: statsService.getPersonalizedQuote.bind(statsService)
+  getPersonalizedQuote: statsService.getPersonalizedQuote.bind(statsService),
+
+  // ========== 数据导出 ==========
+  exportCheckinsCSV: exportService.exportCheckinsCSV.bind(exportService),
+  exportStatsCSV: exportService.exportStatsCSV.bind(exportService),
+  saveToFile: exportService.saveToFile.bind(exportService),
+  copyToClipboard: exportService.copyToClipboard.bind(exportService),
+  generateShareData: exportService.generateShareData.bind(exportService)
 };
 
 module.exports = api;
