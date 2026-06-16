@@ -1,0 +1,135 @@
+<view class="page-chain {{themeClass}}">
+  <!-- 习惯链列表 -->
+  <view class="chain-list" wx:if="{{chains.length > 0}}">
+    <view class="chain-item card" wx:for="{{chains}}" wx:key="id">
+      <view class="chain-header">
+        <view class="chain-title-row">
+          <text class="chain-name">{{item.name}}</text>
+          <text class="chain-type">{{item.type === 'sequence' ? '顺序' : '并行'}}</text>
+        </view>
+        <view class="chain-actions">
+          <text class="chain-progress">{{item.completedCount}}/{{item.totalCount}}</text>
+          <view class="chain-delete" bindtap="deleteChain" data-id="{{item.id}}">
+            <text class="delete-icon">×</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 进度条 -->
+      <view class="chain-progress-bar">
+        <view class="progress-track">
+          <view class="progress-fill" style="width: {{item.completionRate}}%;"></view>
+        </view>
+      </view>
+
+      <!-- 习惯列表 -->
+      <view class="chain-goals">
+        <view class="chain-goal-item {{goal.checked ? 'checked' : ''}}" wx:for="{{item.progress}}" wx:for-item="goal" wx:key="goalId">
+          <view class="goal-connector" wx:if="{{index > 0 && item.type === 'sequence'}}">
+            <text class="connector-line">→</text>
+          </view>
+          <view class="goal-node">
+            <view class="goal-check" style="background: {{goal.checked ? goal.goalColor : 'var(--color-border)'}};">
+              <text class="check-icon" wx:if="{{goal.checked}}">✓</text>
+            </view>
+            <text class="goal-icon">{{goal.goalIcon}}</text>
+            <text class="goal-name">{{goal.goalName}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 完成状态 -->
+      <view class="chain-status" wx:if="{{item.isCompleted}}">
+        <text class="status-icon">🎉</text>
+        <text class="status-text">今日已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">🔗</text>
+    <text class="empty-title">还没有习惯链</text>
+    <text class="empty-desc">创建习惯链，将多个目标串联起来</text>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn-wrap">
+    <button class="btn-add" bindtap="showAddChainModal">
+      <text class="add-icon">+</text>
+      <text>创建习惯链</text>
+    </button>
+  </view>
+
+  <!-- 添加习惯链弹窗 -->
+  <view class="modal-overlay" wx:if="{{showAddChain}}" bindtap="hideAddChainModal">
+    <view class="modal-content" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">创建习惯链</text>
+        <view class="modal-close" bindtap="hideAddChainModal">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <scroll-view scroll-y class="modal-body">
+        <!-- 名称 -->
+        <view class="form-group">
+          <text class="form-label">习惯链名称</text>
+          <input class="form-input" placeholder="如：早起习惯链" value="{{newChainName}}" bindinput="onChainNameInput" maxlength="10" />
+        </view>
+
+        <!-- 类型选择 -->
+        <view class="form-group">
+          <text class="form-label">执行方式</text>
+          <view class="type-selector">
+            <view class="type-option {{chainType === 'sequence' ? 'selected' : ''}}" bindtap="switchChainType" data-type="sequence">
+              <text class="type-icon">→</text>
+              <text class="type-name">顺序执行</text>
+              <text class="type-desc">完成一个再做下一个</text>
+            </view>
+            <view class="type-option {{chainType === 'parallel' ? 'selected' : ''}}" bindtap="switchChainType" data-type="parallel">
+              <text class="type-icon">∥</text>
+              <text class="type-name">并行执行</text>
+              <text class="type-desc">同时进行多个目标</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 快捷模板 -->
+        <view class="form-group">
+          <text class="form-label">快捷模板</text>
+          <view class="template-list">
+            <view class="template-item" wx:for="{{templates}}" wx:key="name" bindtap="useTemplate" data-index="{{index}}">
+              <text class="template-icon">{{item.icon}}</text>
+              <view class="template-info">
+                <text class="template-name">{{item.name}}</text>
+                <text class="template-desc">{{item.desc}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 选择目标 -->
+        <view class="form-group">
+          <text class="form-label">选择目标（至少2个）</text>
+          <view class="goal-grid">
+            <view
+              class="goal-option {{selectedGoals.includes(item.id) ? 'selected' : ''}}"
+              wx:for="{{goals}}"
+              wx:key="id"
+              bindtap="toggleGoal"
+              data-goal-id="{{item.id}}"
+            >
+              <text class="goal-option-icon">{{item.icon}}</text>
+              <text class="goal-option-name">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer">
+        <button class="btn-save" bindtap="saveChain" disabled="{{selectedGoals.length < 2}}">创建习惯链</button>
+      </view>
+    </view>
+  </view>
+</view>
