@@ -566,11 +566,14 @@
 .bar-chart-wrap {
   width: 100%;
   height: 300rpx;
+  position: relative;
+  overflow: hidden;
 }
 
 .bar-canvas {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 /* 扇形图 */
