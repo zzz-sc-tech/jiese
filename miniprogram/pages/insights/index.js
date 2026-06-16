@@ -186,9 +186,37 @@ Page({
         suggestions,
         goalAnalysis
       });
+
+      // 加载智能分析数据
+      this.loadAdvancedAnalysis();
     } catch (err) {
       console.error('数据分析失败:', err);
       this.setData({ loading: false });
+    }
+  },
+
+  // 加载高级分析数据
+  async loadAdvancedAnalysis() {
+    try {
+      // 习惯稳定性评分
+      const stabilityRes = await api.getStabilityScore();
+      if (stabilityRes.code === 0) {
+        this.setData({ stability: stabilityRes.data });
+      }
+
+      // 对比分析
+      const comparisonRes = await api.getComparisonAnalysis();
+      if (comparisonRes.code === 0) {
+        this.setData({ comparison: comparisonRes.data });
+      }
+
+      // 最佳时段推荐
+      const bestTimeRes = await api.getBestTimeRecommendation();
+      if (bestTimeRes.code === 0) {
+        this.setData({ bestTime: bestTimeRes.data });
+      }
+    } catch (err) {
+      console.error('加载高级分析失败:', err);
     }
   },
 
