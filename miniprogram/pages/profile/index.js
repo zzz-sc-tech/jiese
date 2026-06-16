@@ -225,33 +225,71 @@ Page({
 
   // 导出数据
   exportData() {
-    wx.showModal({
-      title: '导出数据',
-      content: '将所有数据复制到剪贴板，您可以粘贴保存到备忘录或其他地方。',
+    wx.showActionSheet({
+      itemList: ['导出全部数据（JSON）', '导出打卡记录（CSV）', '导出统计数据（CSV）'],
       success: (res) => {
-        if (res.confirm) {
-          const data = {
-            version: '1.0.0',
-            exportTime: new Date().toISOString(),
-            goals: wx.getStorageSync('jiese_goals') || [],
-            checkins: wx.getStorageSync('jiese_checkins') || [],
-            challenges: wx.getStorageSync('jiese_challenges') || [],
-            settings: wx.getStorageSync('jiese_settings') || {},
-            pets: wx.getStorageSync('jiese_pets') || [],
-            petItems: wx.getStorageSync('jiese_pet_items') || {},
-            globalStats: wx.getStorageSync('jiese_global_stats') || {}
-          };
-
-          const dataStr = JSON.stringify(data);
-          wx.setClipboardData({
-            data: dataStr,
-            success: () => {
-              wx.showToast({ title: '已复制到剪贴板', icon: 'success' });
-            }
-          });
+        if (res.tapIndex === 0) {
+          this.exportAllData();
+        } else if (res.tapIndex === 1) {
+          this.exportCheckinsCSV();
+        } else if (res.tapIndex === 2) {
+          this.exportStatsCSV();
         }
       }
     });
+  },
+
+  // 导出全部数据
+  exportAllData() {
+    const data = {
+      version: '1.0.0',
+      exportTime: new Date().toISOString(),
+      goals: wx.getStorageSync('jiese_goals') || [],
+      checkins: wx.getStorageSync('jiese_checkins') || [],
+      challenges: wx.getStorageSync('jiese_challenges') || [],
+      settings: wx.getStorageSync('jiese_settings') || {},
+      pets: wx.getStorageSync('jiese_pets') || [],
+      petItems: wx.getStorageSync('jiese_pet_items') || {},
+      globalStats: wx.getStorageSync('jiese_global_stats') || {}
+    };
+
+    const dataStr = JSON.stringify(data);
+    wx.setClipboardData({
+      data: dataStr,
+      success: () => {
+        wx.showToast({ title: '已复制到剪贴板', icon: 'success' });
+      }
+    });
+  },
+
+  // 导出打卡记录CSV
+  exportCheckinsCSV() {
+    const res = api.exportCheckinsCSV();
+    if (res.code === 0) {
+      wx.setClipboardData({
+        data: res.data,
+        success: () => {
+          wx.showToast({ title: '打卡记录已复制', icon: 'success' });
+        }
+      });
+    } else {
+      wx.showToast({ title: res.message, icon: 'none' });
+    }
+  },
+
+  // 导出统计数据CSV
+  exportStatsCSV() {
+    const res = api.exportStatsCSV();
+    if (res.code === 0) {
+      wx.setClipboardData({
+        data: res.data,
+        success: () => {
+          wx.showToast({ title: '统计数据已复制', icon: 'success' });
+        }
+      });
+    } else {
+      wx.showToast({ title: res.message, icon: 'none' });
+    }
   },
 
   // 导入数据
