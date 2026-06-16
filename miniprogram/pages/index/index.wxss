@@ -840,7 +840,7 @@
 
 .report-modal {
   width: 85%;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 32rpx;
   overflow: hidden;
   max-height: 80vh;
