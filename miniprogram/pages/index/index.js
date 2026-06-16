@@ -35,7 +35,14 @@ Page({
     countdown: null,
     showCountdown: false,
     countdownName: '',
-    countdownDate: ''
+    countdownDate: '',
+    // 打卡日记
+    showDiary: false,
+    diaryGoalId: '',
+    diaryGoalName: '',
+    diaryGoalIcon: '',
+    diaryText: '',
+    diaryMood: ''
   },
 
   onLoad() {
