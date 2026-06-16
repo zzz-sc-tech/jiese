@@ -93,7 +93,8 @@ const storage = {
       avatarUrl: '',
       vibrateIntensity: 'medium', // light, medium, heavy
       vibrateMode: 'auto', // auto: 震动几次后停止, manual: 持续震动直到点击
-      countdowns: [] // 倒数日列表 [{id, name, date}]
+      countdowns: [], // 倒数日列表 [{id, name, date}]
+      enableDiary: false // 是否开启打卡日记
     });
   },
 
