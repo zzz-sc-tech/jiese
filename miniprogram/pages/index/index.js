@@ -53,7 +53,11 @@ Page({
     showStreakBadge: false,
     currentStreak: 0,
     showCheckinSuccess: false,
-    checkinSuccessGoal: ''
+    checkinSuccessGoal: '',
+    // 排序状态
+    isSortMode: false,
+    sortDragging: false,
+    dragIndex: -1
   },
 
   onLoad() {
