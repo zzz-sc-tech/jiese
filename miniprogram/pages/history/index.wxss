@@ -206,6 +206,154 @@
   color: var(--color-text-secondary);
 }
 
+/* 年度热力图 */
+.heatmap-section {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.heatmap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.heatmap-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.heatmap-nav {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.heatmap-year {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 80rpx;
+  text-align: center;
+}
+
+.heatmap-container {
+  overflow-x: auto;
+  padding-bottom: 16rpx;
+}
+
+.heatmap-months {
+  display: flex;
+  margin-bottom: 8rpx;
+  margin-left: 40rpx;
+}
+
+.heatmap-month {
+  font-size: 18rpx;
+  color: var(--color-text-secondary);
+  width: calc(100% / 12);
+  text-align: center;
+}
+
+.heatmap-grid {
+  display: flex;
+  gap: 4rpx;
+}
+
+.heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.heatmap-day {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.heatmap-day-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 4rpx;
+}
+
+.heatmap-day.level-0 {
+  background: var(--color-border);
+}
+
+.heatmap-day.level-1 {
+  background: rgba(91, 154, 111, 0.3);
+}
+
+.heatmap-day.level-2 {
+  background: rgba(91, 154, 111, 0.5);
+}
+
+.heatmap-day.level-3 {
+  background: rgba(91, 154, 111, 0.7);
+}
+
+.heatmap-day.level-4 {
+  background: rgba(91, 154, 111, 0.9);
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4rpx;
+  margin-top: 12rpx;
+}
+
+.legend-text {
+  font-size: 18rpx;
+  color: var(--color-text-secondary);
+  margin: 0 4rpx;
+}
+
+.legend-day {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+}
+
+.legend-day.level-0 {
+  background: var(--color-border);
+}
+
+.legend-day.level-1 {
+  background: rgba(91, 154, 111, 0.3);
+}
+
+.legend-day.level-2 {
+  background: rgba(91, 154, 111, 0.5);
+}
+
+.legend-day.level-3 {
+  background: rgba(91, 154, 111, 0.7);
+}
+
+.legend-day.level-4 {
+  background: rgba(91, 154, 111, 0.9);
+}
+
+.heatmap-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.heatmap-stat {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
 /* 日历 */
 .calendar {
   margin-bottom: 24rpx;
