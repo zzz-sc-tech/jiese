@@ -314,6 +314,66 @@
   display: block;
 }
 
+/* 每日一问 */
+.daily-question {
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, rgba(107, 141, 214, 0.1), rgba(107, 141, 214, 0.05));
+}
+
+.dq-header {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.dq-icon {
+  font-size: 28rpx;
+}
+
+.dq-category {
+  font-size: 22rpx;
+  color: #6B8DD6;
+  font-weight: 600;
+}
+
+.dq-text {
+  font-size: 28rpx;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* 习惯小贴士 */
+.habit-tip {
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  background: linear-gradient(135deg, rgba(232, 184, 109, 0.1), rgba(232, 184, 109, 0.05));
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.tip-icon {
+  font-size: 28rpx;
+}
+
+.tip-label {
+  font-size: 22rpx;
+  color: #E8B86D;
+  font-weight: 600;
+}
+
+.tip-text {
+  font-size: 28rpx;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
 /* 目标区域 */
 .goals-section {
   margin-bottom: 40rpx;
