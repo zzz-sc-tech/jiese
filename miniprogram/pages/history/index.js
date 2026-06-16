@@ -158,6 +158,30 @@ Page({
       dateCountMap[c.date] = (dateCountMap[c.date] || 0) + 1;
     });
 
+    // 获取所有有打卡的日期（去重）
+    const checkedDates = Object.keys(dateCountMap).filter(d => d.startsWith(heatmapYear.toString()));
+    const totalDays = checkedDates.length;
+
+    // 计算最长连续天数
+    const sortedDates = checkedDates.sort();
+    let maxStreak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < sortedDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prev = new Date(sortedDates[i - 1]);
+        const curr = new Date(sortedDates[i]);
+        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+
     // 计算热力图数据（52周 × 7天）
     const heatmapData = [];
     const startDate = new Date(heatmapYear, 0, 1);
@@ -169,31 +193,25 @@ Page({
     firstDate.setDate(firstDate.getDate() - firstDay);
 
     let currentDate = new Date(firstDate);
-    let totalDays = 0;
-    let maxStreak = 0;
-    let currentStreak = 0;
 
     while (currentDate <= endDate || currentDate.getDay() !== 0) {
       const week = { weekIndex: heatmapData.length, days: [] };
 
       for (let i = 0; i < 7; i++) {
-        const dateStr = currentDate.toISOString().split('T')[0];
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day}`;
         const count = dateCountMap[dateStr] || 0;
         const isCurrentYear = currentDate.getFullYear() === heatmapYear;
 
         let level = 0;
         if (isCurrentYear && count > 0) {
-          totalDays++;
-          currentStreak++;
           if (count >= 5) level = 4;
           else if (count >= 3) level = 3;
           else if (count >= 2) level = 2;
           else level = 1;
-        } else if (isCurrentYear) {
-          currentStreak = 0;
         }
-
-        maxStreak = Math.max(maxStreak, currentStreak);
 
         week.days.push({
           date: dateStr,
