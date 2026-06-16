@@ -181,27 +181,23 @@ Page({
   // 保存到相册
   async saveToAlbum() {
     try {
-      const query = wx.createSelectorQuery();
-      query.select('#cardCanvas')
-        .fields({ node: true })
-        .exec(async (res) => {
-          if (!res || !res[0]) return;
-
-          const canvas = res[0].node;
-          const tempFilePath = await new Promise((resolve) => {
-            canvas.toTempFilePath({
-              success: (res) => resolve(res.tempFilePath),
-              fail: () => resolve(null)
-            });
+      wx.canvasToTempFilePath({
+        canvas: this._canvas,
+        success: (res) => {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: () => {
+              wx.showToast({ title: '已保存到相册', icon: 'success' });
+            },
+            fail: () => {
+              wx.showToast({ title: '保存失败', icon: 'none' });
+            }
           });
-
-          if (tempFilePath) {
-            await wx.saveImageToPhotosAlbum({ filePath: tempFilePath });
-            wx.showToast({ title: '已保存到相册', icon: 'success' });
-          } else {
-            wx.showToast({ title: '保存失败', icon: 'none' });
-          }
-        });
+        },
+        fail: () => {
+          wx.showToast({ title: '保存失败', icon: 'none' });
+        }
+      });
     } catch (err) {
       console.error('保存失败:', err);
       wx.showToast({ title: '保存失败', icon: 'none' });
