@@ -6,6 +6,8 @@ Page({
   data: {
     goals: [],
     activeChallenges: [],
+    completedChallenges: [],
+    failedChallenges: [],
     selectedGoalId: '',
     challengeOptions: [
       { days: 7, icon: '🌱', name: '一周坚持', desc: '养成好习惯', selected: false },
@@ -17,7 +19,9 @@ Page({
       { days: 365, icon: '💎', name: '年度挑战', desc: '365天传奇', selected: false }
     ],
     selectedDays: 0,
-    themeClass: ''
+    themeClass: '',
+    showCelebration: false,
+    celebrationData: null
   },
 
   onLoad() {
