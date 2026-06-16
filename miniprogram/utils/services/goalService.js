@@ -308,6 +308,58 @@ const goalService = {
     };
   },
 
+  // 获取打卡日记列表
+  async getCheckinDiaries(limit = 30) {
+    const checkins = getCheckins();
+    const goals = getGoals();
+
+    // 筛选有日记或心情的打卡记录
+    const diaries = checkins
+      .filter(c => c.diary || c.mood)
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .slice(0, limit)
+      .map(c => {
+        const goal = goals.find(g => g.id === c.goalId);
+        return {
+          ...c,
+          goalName: goal ? goal.name : '未知目标',
+          goalIcon: goal ? goal.icon : '❓',
+          goalColor: goal ? goal.color : '#999'
+        };
+      });
+
+    return { code: 0, data: diaries };
+  },
+
+  // 获取里程碑统计
+  async getMilestones() {
+    const checkins = getCheckins();
+    const goals = getGoals();
+    const allStats = getGoalStats();
+    const global = getGlobalStats();
+
+    const totalDays = global.totalDays || 0;
+    const longestStreak = global.longestStreak || 0;
+
+    // 里程碑定义
+    const milestones = [
+      { id: 'first_checkin', name: '初次打卡', desc: '完成第一次打卡', icon: '🎯', target: 1, current: totalDays },
+      { id: 'week_streak', name: '一周坚持', desc: '连续打卡7天', icon: '🔥', target: 7, current: longestStreak },
+      { id: 'month_streak', name: '月度之星', desc: '连续打卡30天', icon: '⭐', target: 30, current: longestStreak },
+      { id: 'total_100', name: '百日修行', desc: '累计打卡100天', icon: '🏆', target: 100, current: totalDays },
+      { id: 'total_365', name: '年度传奇', desc: '累计打卡365天', icon: '👑', target: 365, current: totalDays }
+    ];
+
+    return {
+      code: 0,
+      data: milestones.map(m => ({
+        ...m,
+        achieved: m.current >= m.target,
+        progress: Math.min(100, Math.round((m.current / m.target) * 100))
+      }))
+    };
+  },
+
   // 格式化时长
   _formatDuration(seconds) {
     if (seconds < 60) return `${seconds}秒`;
