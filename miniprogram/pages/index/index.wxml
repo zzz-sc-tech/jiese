@@ -10,6 +10,22 @@
     <view class="bg-particle particle-4"></view>
   </view>
 
+  <!-- 撒花特效 -->
+  <view class="confetti-container" wx:if="{{showConfetti}}">
+    <view class="confetti confetti-1">🎉</view>
+    <view class="confetti confetti-2">✨</view>
+    <view class="confetti confetti-3">🌟</view>
+    <view class="confetti confetti-4">🎊</view>
+    <view class="confetti confetti-5">⭐</view>
+    <view class="confetti confetti-6">💫</view>
+  </view>
+
+  <!-- 连击徽章 -->
+  <view class="streak-badge" wx:if="{{showStreakBadge}}">
+    <text class="streak-number">{{currentStreak || stats.currentStreak}}</text>
+    <text class="streak-text">天连击</text>
+  </view>
+
   <!-- 顶部状态栏 -->
   <view class="status-bar" style="height: {{statusBarHeight}}px;">
     <view class="status-content">
