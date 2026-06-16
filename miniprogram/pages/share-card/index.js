@@ -58,6 +58,9 @@ Page({
         canvas.height = height * dpr;
         ctx.scale(dpr, dpr);
 
+        // 保存canvas引用
+        this._canvas = canvas;
+
         const { cardData } = this.data;
 
         // 背景
