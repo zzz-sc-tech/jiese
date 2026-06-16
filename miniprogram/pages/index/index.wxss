@@ -1151,7 +1151,7 @@
 .tc-track {
   position: relative;
   height: 60rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 12rpx;
   overflow: visible;
 }

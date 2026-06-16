@@ -158,7 +158,7 @@
 }
 
 .week-day.checked .day-dot {
-  background: #fff;
+  background: var(--color-bg-card);
   box-shadow: 0 0 8rpx rgba(255, 255, 255, 0.5);
 }
 

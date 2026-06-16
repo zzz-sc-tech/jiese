@@ -14,7 +14,7 @@
   gap: 16rpx;
   margin-bottom: 32rpx;
   padding: 24rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 20rpx;
   box-shadow: 0 4rpx 16rpx rgba(91, 154, 111, 0.08);
 }
@@ -61,7 +61,7 @@
   justify-content: center;
   gap: 10rpx;
   padding: 20rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 16rpx;
   border: 3rpx solid transparent;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
@@ -243,7 +243,7 @@
 .ctrl-btn.secondary {
   width: 100rpx;
   height: 100rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
@@ -278,7 +278,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
@@ -334,7 +334,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16rpx 20rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 12rpx;
   margin-bottom: 8rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);

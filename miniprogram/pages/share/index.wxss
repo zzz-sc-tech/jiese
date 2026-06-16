@@ -53,7 +53,7 @@
 }
 
 .btn-share {
-  background: #fff;
+  background: var(--color-bg-card);
   color: #5B9A6F;
   border: 2rpx solid #5B9A6F;
 }
