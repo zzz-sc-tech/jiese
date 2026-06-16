@@ -11,7 +11,9 @@
     "pages/pet-achievement/index",
     "pages/pet-skill/index",
     "pages/pet-costume/index",
-    "pages/pet-background/index"
+    "pages/pet-background/index",
+    "pages/goal-templates/index",
+    "pages/annual-report/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
