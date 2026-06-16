@@ -98,7 +98,7 @@
       </view>
 
       <!-- 目标卡片列表 -->
-      <view class="goal-card card {{item.checked ? 'checked' : ''}}"
+      <view class="goal-card card {{item.checked ? 'checked' : ''}} {{item.paused ? 'paused' : ''}}"
         wx:for="{{goals}}"
         wx:key="id"
       >
