@@ -712,6 +712,228 @@ const statsService = {
         analysis
       }
     };
+  },
+
+  // ========== 智能分析 ==========
+
+  // 智能目标推荐
+  async getSmartRecommendations() {
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const allStats = getGoalStats();
+
+    if (checkins.length < 7) {
+      return { code: 0, data: { hasData: false, recommendations: [] } };
+    }
+
+    const recommendations = [];
+
+    // 分析用户的打卡模式
+    const hourCounts = new Array(24).fill(0);
+    const dayOfWeekCounts = new Array(7).fill(0);
+    checkins.forEach(c => {
+      const d = new Date(c.timestamp);
+      hourCounts[d.getHours()]++;
+      dayOfWeekCounts[d.getDay()]++;
+    });
+
+    // 找出最佳时段
+    const bestHour = hourCounts.indexOf(Math.max(...hourCounts));
+
+    // 找出最活跃的一天
+    const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const bestDay = dayNames[dayOfWeekCounts.indexOf(Math.max(...dayOfWeekCounts))];
+
+    // 根据已有目标推荐相关目标
+    const existingTypes = goals.map(g => g.type);
+    const existingNames = goals.map(g => g.name);
+
+    // 推荐逻辑
+    if (!existingNames.some(n => n.includes('早起') || n.includes('起床'))) {
+      recommendations.push({
+        name: '早起',
+        icon: '🌅',
+        reason: '早起是一天好习惯的开始',
+        tip: '建议在最佳时段（如早晨）打卡'
+      });
+    }
+
+    if (!existingNames.some(n => n.includes('阅读') || n.includes('读书'))) {
+      recommendations.push({
+        name: '阅读',
+        icon: '📖',
+        reason: '每天阅读30分钟，拓展视野',
+        tip: '可以利用碎片时间阅读'
+      });
+    }
+
+    if (!existingNames.some(n => n.includes('运动') || n.includes('锻炼'))) {
+      recommendations.push({
+        name: '运动',
+        icon: '🏃',
+        reason: '坚持运动，保持健康',
+        tip: '建议固定时间运动，更容易坚持'
+      });
+    }
+
+    if (!existingNames.some(n => n.includes('冥想') || n.includes('静心'))) {
+      recommendations.push({
+        name: '冥想',
+        icon: '🧘',
+        reason: '每天冥想10分钟，放松身心',
+        tip: '适合在早晨或睡前进行'
+      });
+    }
+
+    if (!existingNames.some(n => n.includes('写日记') || n.includes('日记'))) {
+      recommendations.push({
+        name: '写日记',
+        icon: '📝',
+        reason: '记录生活，反思成长',
+        tip: '建议在睡前回顾一天'
+      });
+    }
+
+    return {
+      code: 0,
+      data: {
+        hasData: true,
+        bestHour: `${String(bestHour).padStart(2, '0')}:00`,
+        bestDay,
+        recommendations: recommendations.slice(0, 3)
+      }
+    };
+  },
+
+  // 习惯健康度评估
+  async getHabitHealth() {
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const allStats = getGoalStats();
+
+    if (goals.length === 0 || checkins.length < 7) {
+      return { code: 0, data: { hasData: false } };
+    }
+
+    const now = new Date();
+
+    // 1. 一致性评分 (40分) - 连续打卡天数
+    const uniqueDates = [...new Set(checkins.map(c => c.date))].sort();
+    let maxStreak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < uniqueDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prev = new Date(uniqueDates[i - 1]);
+        const curr = new Date(uniqueDates[i]);
+        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+    const consistencyScore = Math.min(40, Math.round(maxStreak / 14 * 40));
+
+    // 2. 平衡性评分 (30分) - 各目标完成率的均衡程度
+    const completionRates = goals.map(goal => {
+      const stat = allStats[goal.id] || { totalDays: 0 };
+      return stat.totalDays;
+    });
+    const avgRate = completionRates.reduce((a, b) => a + b, 0) / completionRates.length;
+    const variance = completionRates.reduce((sum, r) => sum + Math.pow(r - avgRate, 2), 0) / completionRates.length;
+    const stdDev = Math.sqrt(variance);
+    const balanceScore = Math.max(0, Math.min(30, 30 - stdDev));
+
+    // 3. 进步性评分 (30分) - 最近一周vs上一周
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+    const twoWeeksAgo = new Date(now);
+    twoWeeksAgo.setDate(now.getDate() - 14);
+
+    const thisWeek = checkins.filter(c => new Date(c.date) >= weekAgo).length;
+    const lastWeek = checkins.filter(c => {
+      const d = new Date(c.date);
+      return d >= twoWeeksAgo && d < weekAgo;
+    }).length;
+
+    const progressScore = lastWeek > 0
+      ? Math.min(30, Math.round((thisWeek / lastWeek) * 20))
+      : (thisWeek > 0 ? 20 : 0);
+
+    // 总分
+    const totalScore = Math.round(consistencyScore + balanceScore + progressScore);
+
+    // 评级和建议
+    let level, color, advice;
+    if (totalScore >= 85) {
+      level = '优秀';
+      color = '#5B9A6F';
+      advice = '你的习惯非常健康！继续保持，可以尝试挑战更高难度的目标。';
+    } else if (totalScore >= 70) {
+      level = '良好';
+      color = '#6B8DD6';
+      advice = '习惯养成进展顺利，注意保持各目标的平衡发展。';
+    } else if (totalScore >= 50) {
+      level = '一般';
+      color = '#E8B86D';
+      advice = '习惯正在形成中，建议设定提醒，保持连续性。';
+    } else {
+      level = '需改进';
+      color = '#E87461';
+      advice = '习惯还不稳定，建议从一个小目标开始，逐步增加。';
+    }
+
+    return {
+      code: 0,
+      data: {
+        hasData: true,
+        score: totalScore,
+        level,
+        color,
+        advice,
+        breakdown: {
+          consistency: { score: Math.round(consistencyScore), max: 40 },
+          balance: { score: Math.round(balanceScore), max: 30 },
+          progress: { score: Math.round(progressScore), max: 30 }
+        }
+      }
+    };
+  },
+
+  // 个性化语录推荐
+  async getPersonalizedQuote() {
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const allStats = getGoalStats();
+    const global = getGlobalStats();
+
+    const { QUOTES } = require('./config');
+
+    // 根据用户状态选择语录类别
+    let category = '自律';
+
+    const totalDays = global.totalDays || 0;
+    const currentStreak = Math.max(0, ...Object.values(allStats).map(s => s.currentStreak));
+
+    if (currentStreak >= 7) {
+      category = '坚忍'; // 连续打卡7天以上，推荐坚忍类
+    } else if (totalDays >= 30) {
+      category = '省思'; // 累计30天以上，推荐省思类
+    } else if (totalDays >= 100) {
+      category = '智慧'; // 累计100天以上，推荐智慧类
+    }
+
+    // 从对应类别中随机选择
+    const categoryQuotes = QUOTES.filter(q => q.category === category);
+    const quote = categoryQuotes.length > 0
+      ? categoryQuotes[Math.floor(Math.random() * categoryQuotes.length)]
+      : QUOTES[Math.floor(Math.random() * QUOTES.length)];
+
+    return { code: 0, data: quote };
   }
 };
 
