@@ -36,26 +36,28 @@
 }
 
 .confetti-1 { left: 10%; animation-delay: 0s; }
-.confetti-2 { left: 30%; animation-delay: 0.2s; }
-.confetti-3 { left: 50%; animation-delay: 0.4s; }
-.confetti-4 { left: 70%; animation-delay: 0.6s; }
-.confetti-5 { left: 90%; animation-delay: 0.8s; }
-.confetti-6 { left: 50%; animation-delay: 1s; }
+.confetti-2 { left: 20%; animation-delay: 0.15s; }
+.confetti-3 { left: 35%; animation-delay: 0.3s; }
+.confetti-4 { left: 50%; animation-delay: 0.45s; }
+.confetti-5 { left: 65%; animation-delay: 0.6s; }
+.confetti-6 { left: 80%; animation-delay: 0.75s; }
+.confetti-7 { left: 45%; animation-delay: 0.9s; }
+.confetti-8 { left: 55%; animation-delay: 1.05s; }
 
 @keyframes confettiFall {
   0% {
-    top: -10%;
+    top: -5%;
     opacity: 1;
-    transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(0.5);
   }
-  50% {
+  20% {
     opacity: 1;
-    transform: rotate(180deg) scale(1.2);
+    transform: rotate(72deg) scale(1);
   }
   100% {
     top: 100%;
     opacity: 0;
-    transform: rotate(360deg) scale(0.5);
+    transform: rotate(360deg) scale(0.3);
   }
 }
 
@@ -64,16 +66,33 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 32rpx 48rpx;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-  border-radius: 24rpx;
-  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #E8B86D, #F5D89A);
+  border-radius: 32rpx;
+  box-shadow: 0 12rpx 40rpx rgba(232, 184, 109, 0.4);
   z-index: 9999;
-  animation: streakBadgeIn 0.3s ease-out;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.streak-badge.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.streak-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+  animation: fireWiggle 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes fireWiggle {
+  0% { transform: rotate(-5deg) scale(1); }
+  100% { transform: rotate(5deg) scale(1.1); }
 }
 
 .streak-number {
@@ -89,18 +108,38 @@
   margin-top: 8rpx;
 }
 
-@keyframes streakBadgeIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
+/* 打卡成功提示 */
+.checkin-success {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx 48rpx;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 48rpx;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.checkin-success.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.success-icon {
+  font-size: 36rpx;
+  color: #4CAF50;
+  font-weight: 700;
+}
+
+.success-text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
 }
 
 .bg-circle {
