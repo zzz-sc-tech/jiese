@@ -1,0 +1,112 @@
+<view class="page-report {{themeClass}}">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">生成报告中...</text>
+  </view>
+
+  <block wx:if="{{report && !loading}}">
+    <!-- 年份切换 -->
+    <view class="year-nav">
+      <view class="nav-btn" bindtap="prevYear">
+        <text>‹</text>
+      </view>
+      <text class="year-title">{{report.year}} 年度报告</text>
+      <view class="nav-btn" bindtap="nextYear">
+        <text>›</text>
+      </view>
+    </view>
+
+    <!-- 总览卡片 -->
+    <view class="report-hero card">
+      <text class="hero-title">我的 {{report.year}}</text>
+      <view class="hero-stats">
+        <view class="hero-stat">
+          <text class="hero-value">{{report.totalDays}}</text>
+          <text class="hero-label">打卡天数</text>
+        </view>
+        <view class="hero-stat">
+          <text class="hero-value">{{report.maxStreak}}</text>
+          <text class="hero-label">最长连续</text>
+        </view>
+        <view class="hero-stat">
+          <text class="hero-value">{{report.totalCheckins}}</text>
+          <text class="hero-label">总打卡次数</text>
+        </view>
+      </view>
+      <view class="hero-progress">
+        <text class="progress-text">这一年你坚持了 {{report.yearProgress}}% 的日子</text>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{report.yearProgress}}%;"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 月度打卡 -->
+    <view class="report-section card">
+      <text class="section-title">📊 月度打卡</text>
+      <view class="monthly-chart">
+        <view class="month-bar" wx:for="{{report.monthlyData}}" wx:key="month">
+          <view class="bar-fill" style="height: {{report.bestMonthDays > 0 ? item.days / report.bestMonthDays * 100 : 0}}%;"></view>
+          <text class="bar-value" wx:if="{{item.days > 0}}">{{item.days}}</text>
+          <text class="bar-label">{{item.month}}月</text>
+        </view>
+      </view>
+      <text class="section-highlight">最佳月份：{{report.bestMonth}}（{{report.bestMonthDays}}天）</text>
+    </view>
+
+    <!-- 目标排行 -->
+    <view class="report-section card" wx:if="{{report.goalStats.length > 0}}">
+      <text class="section-title">🏆 目标排行</text>
+      <view class="goal-rank-list">
+        <view class="goal-rank-item" wx:for="{{report.goalStats}}" wx:key="id">
+          <text class="rank-index">{{index + 1}}</text>
+          <text class="rank-icon">{{item.icon}}</text>
+          <text class="rank-name">{{item.name}}</text>
+          <text class="rank-days">{{item.days}}天</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 趣味数据 -->
+    <view class="report-section card">
+      <text class="section-title">🎯 趣味数据</text>
+      <view class="fun-stats">
+        <view class="fun-stat">
+          <text class="fun-icon">⏰</text>
+          <text class="fun-text">你最常在{{report.peakPeriod}}打卡</text>
+        </view>
+        <view class="fun-stat">
+          <text class="fun-icon">📅</text>
+          <text class="fun-text">平均每月打卡 {{report.avgPerMonth}} 天</text>
+        </view>
+        <view class="fun-stat" wx:if="{{report.petInfo}}">
+          <text class="fun-icon">{{report.petInfo.icon}}</text>
+          <text class="fun-text">宠物「{{report.petInfo.name}}」陪你成长到 Lv.{{report.petInfo.level}}</text>
+        </view>
+        <view class="fun-stat">
+          <text class="fun-icon">🏅</text>
+          <text class="fun-text">解锁了 {{report.achievementCount}} 个成就</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 年度总结 -->
+    <view class="report-section card">
+      <text class="section-title">✨ 年度总结</text>
+      <view class="summary-text">
+        <text wx:if="{{report.totalDays >= 300}}">这一年你展现了惊人的自律！几乎每天都在坚持打卡，你是真正的自律达人！</text>
+        <text wx:elif="{{report.totalDays >= 200}}">这一年你非常努力！超过一半的时间都在坚持打卡，继续保持！</text>
+        <text wx:elif="{{report.totalDays >= 100}}">这一年你有了不错的开始！100多天的坚持证明了你的决心，明年继续加油！</text>
+        <text wx:else">新的一年，新的开始！从现在开始坚持打卡，明年你会感谢今天的自己！</text>
+      </view>
+    </view>
+
+    <!-- 分享按钮 -->
+    <view class="share-section">
+      <button class="btn-share" open-type="share">
+        <text class="share-icon">📤</text>
+        <text>分享我的年度报告</text>
+      </button>
+    </view>
+  </block>
+</view>
