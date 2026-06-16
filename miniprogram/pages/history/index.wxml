@@ -401,6 +401,50 @@
     </view>
   </view>
 
+  <!-- 日期详情弹窗 -->
+  <view class="day-detail-overlay" wx:if="{{showDayDetail}}" bindtap="hideDayDetail">
+    <view class="day-detail-modal" catchtap>
+      <view class="day-detail-header">
+        <text class="day-detail-date">{{selectedDate}}</text>
+        <text class="day-detail-count">{{dayCheckins.length}} 条记录</text>
+      </view>
+
+      <view class="day-detail-body" wx:if="{{dayCheckins.length > 0}}">
+        <view class="day-checkin-item" wx:for="{{dayCheckins}}" wx:key="id">
+          <view class="day-checkin-left">
+            <view class="day-checkin-icon" style="background: {{item.goalColor}}20;">
+              <text>{{item.goalIcon}}</text>
+            </view>
+            <view class="day-checkin-info">
+              <text class="day-checkin-goal">{{item.goalName}}</text>
+              <text class="day-checkin-time" wx:if="{{item.timeStr}}">{{item.timeStr}}</text>
+            </view>
+          </view>
+          <view class="day-checkin-right">
+            <text class="day-checkin-mood" wx:if="{{item.moodIcon}}">{{item.moodIcon}}</text>
+          </view>
+        </view>
+
+        <!-- 日记内容 -->
+        <view class="day-diary" wx:for="{{dayCheckins}}" wx:key="id" wx:if="{{item.diary}}">
+          <text class="day-diary-label">📝 {{item.goalName}} 日记</text>
+          <text class="day-diary-text">{{item.diary}}</text>
+        </view>
+      </view>
+
+      <view class="day-detail-empty" wx:else>
+        <text class="empty-icon">📝</text>
+        <text class="empty-text">这天没有打卡记录</text>
+      </view>
+
+      <view class="day-detail-footer">
+        <view class="day-detail-close-btn" bindtap="hideDayDetail">
+          <text>关闭</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 自定义TabBar -->
   <tab-bar selected="{{1}}" />
 </view>
