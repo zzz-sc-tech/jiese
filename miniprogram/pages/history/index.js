@@ -291,6 +291,43 @@ Page({
     wx.navigateTo({ url: '/pages/insights/index' });
   },
 
+  // 点击日期查看详情
+  onDayTap(e) {
+    const date = e.currentTarget.dataset.date;
+    if (!date) return;
+
+    const checkins = api.getCheckins();
+    const goals = api.getGoals();
+    const goalsList = goals.code === 0 ? goals.data : [];
+
+    // 获取当天的打卡记录
+    const dayCheckins = checkins
+      .filter(c => c.date === date)
+      .map(c => {
+        const goal = goalsList.find(g => g.id === c.goalId);
+        return {
+          ...c,
+          goalName: goal ? goal.name : '未知目标',
+          goalIcon: goal ? goal.icon : '❓',
+          goalColor: goal ? goal.color : '#999',
+          timeStr: c.timestamp ? new Date(c.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) : '',
+          moodIcon: c.mood === 'happy' ? '😊' : c.mood === 'good' ? '😌' : c.mood === 'normal' ? '😐' : c.mood === 'tired' ? '😮‍💨' : c.mood === 'sad' ? '😔' : ''
+        };
+      })
+      .sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+
+    this.setData({
+      showDayDetail: true,
+      selectedDate: date,
+      dayCheckins
+    });
+  },
+
+  // 关闭日期详情
+  hideDayDetail() {
+    this.setData({ showDayDetail: false });
+  },
+
   // 切换统计视图
   switchStatsView(e) {
     const view = e.currentTarget.dataset.view;
