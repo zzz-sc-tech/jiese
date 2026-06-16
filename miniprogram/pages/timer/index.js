@@ -559,7 +559,7 @@ Page({
         timerType
       );
       if (!silent) {
-        wx.showToast({ title: `已记录${api._formatDuration(seconds)}`, icon: 'success' });
+        wx.showToast({ title: `已记录${api.formatDuration(seconds)}`, icon: 'success' });
         this.loadSessions(this.data.goalId);
       }
     } catch (e) {
