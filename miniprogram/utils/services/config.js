@@ -314,26 +314,40 @@ const BG_TYPES = {
 
 // 每日一问
 const DAILY_QUESTIONS = [
-  { question: '今天最让你感恩的一件事是什么？', category: '感恩' },
-  { question: '你今天学到了什么新东西？', category: '成长' },
-  { question: '如果可以重来今天，你会做什么不同的选择？', category: '反思' },
-  { question: '今天你帮助了谁？', category: '善良' },
-  { question: '你今天最开心的时刻是什么时候？', category: '快乐' },
-  { question: '今天有什么让你感到骄傲的事？', category: '成就' },
-  { question: '你今天是如何照顾自己的？', category: '自爱' },
-  { question: '今天有什么让你感到困惑的事？', category: '思考' },
-  { question: '你今天做了什么让自己更接近目标？', category: '目标' },
-  { question: '今天你最想感谢谁？', category: '感恩' },
-  { question: '你今天是如何应对压力的？', category: '情绪' },
-  { question: '今天有什么让你感到温暖的事？', category: '温暖' },
-  { question: '你今天是如何保持专注的？', category: '专注' },
-  { question: '今天有什么让你感到惊讶的事？', category: '惊喜' },
-  { question: '你今天是如何平衡工作和生活的？', category: '平衡' },
-  { question: '今天有什么让你感到满足的事？', category: '满足' },
-  { question: '你今天是如何面对挑战的？', category: '勇气' },
-  { question: '今天有什么让你感到平静的事？', category: '平静' },
-  { question: '你今天是如何表达爱的？', category: '爱' },
-  { question: '今天有什么让你感到希望的事？', category: '希望' }
+  // 感悟类
+  { question: '如果今天是你生命的最后一天，你会怎么过？', category: '感悟' },
+  { question: '十年后的你会感谢今天做了什么？', category: '未来' },
+  { question: '今天你做的哪个决定最能代表真实的自己？', category: '自我' },
+  { question: '如果可以给今天的自己一个建议，你会说什么？', category: '反思' },
+  { question: '今天你最想记住的一个瞬间是什么？', category: '记忆' },
+
+  // 成长类
+  { question: '今天你克服了什么困难？', category: '勇气' },
+  { question: '今天你学到了什么可以教给别人的东西？', category: '分享' },
+  { question: '今天你做了什么让自己感到骄傲的小事？', category: '成就' },
+  { question: '今天你如何走出舒适区了？', category: '突破' },
+  { question: '今天你对自己的哪个习惯感到满意？', category: '习惯' },
+
+  // 生活类
+  { question: '今天你最享受的一顿饭是什么？', category: '美食' },
+  { question: '今天你听到的最动听的声音是什么？', category: '感官' },
+  { question: '今天你看到的最美的一幕是什么？', category: '美好' },
+  { question: '今天你最放松的时刻是什么时候？', category: '放松' },
+  { question: '今天你最投入做的一件事是什么？', category: '专注' },
+
+  // 人际类
+  { question: '今天谁让你感到温暖？', category: '温暖' },
+  { question: '今天你想对谁说声谢谢？', category: '感恩' },
+  { question: '今天你如何让别人的一天变得更好？', category: '善良' },
+  { question: '今天你最想和谁分享你的快乐？', category: '分享' },
+  { question: '今天谁的话对你产生了影响？', category: '影响' },
+
+  // 创意类
+  { question: '如果今天是一首歌，它会是什么旋律？', category: '创意' },
+  { question: '如果用一种颜色形容今天，你会选什么？', category: '想象' },
+  { question: '如果今天发生的事写成故事，标题是什么？', category: '故事' },
+  { question: '如果可以重播今天的一个片段，你会选哪个？', category: '回放' },
+  { question: '如果今天有一种味道，那会是什么？', category: '通感' }
 ];
 
 // 习惯小贴士
