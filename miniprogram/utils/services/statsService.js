@@ -307,6 +307,255 @@ const statsService = {
     return { code: 0, data: shuffled.slice(0, count) };
   },
 
+  // ========== 智能分析 ==========
+
+  // 习惯稳定性评分
+  async getStabilityScore(goalId) {
+    const checkins = getCheckins();
+    const allStats = getGoalStats();
+    const goalCheckins = goalId
+      ? checkins.filter(c => c.goalId === goalId)
+      : checkins;
+
+    if (goalCheckins.length < 7) {
+      return { code: 0, data: { score: 0, level: 'insufficient', message: '数据不足，需要至少7次打卡' } };
+    }
+
+    // 计算各项指标
+    const uniqueDates = [...new Set(goalCheckins.map(c => c.date))].sort();
+    const totalDays = uniqueDates.length;
+
+    // 1. 连续性评分 (40分)
+    let maxStreak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < uniqueDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prev = new Date(uniqueDates[i - 1]);
+        const curr = new Date(uniqueDates[i]);
+        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+    const continuityScore = Math.min(40, Math.round(maxStreak / 30 * 40));
+
+    // 2. 规律性评分 (30分) - 打卡时间的一致性
+    const hourCounts = new Array(24).fill(0);
+    goalCheckins.forEach(c => {
+      const hour = new Date(c.timestamp).getHours();
+      hourCounts[hour]++;
+    });
+    const maxHourCount = Math.max(...hourCounts);
+    const regularityScore = Math.min(30, Math.round(maxHourCount / totalDays * 30));
+
+    // 3. 完成率评分 (30分) - 最近30天的完成率
+    const now = new Date();
+    let completedDays = 0;
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (uniqueDates.includes(dateStr)) {
+        completedDays++;
+      }
+    }
+    const completionScore = Math.min(30, Math.round(completedDays / 30 * 30));
+
+    // 总分
+    const totalScore = continuityScore + regularityScore + completionScore;
+
+    // 评级
+    let level = '';
+    let message = '';
+    if (totalScore >= 90) {
+      level = 'excellent';
+      message = '习惯非常稳定，继续保持！';
+    } else if (totalScore >= 70) {
+      level = 'good';
+      message = '习惯基本稳定，还有提升空间。';
+    } else if (totalScore >= 50) {
+      level = 'fair';
+      message = '习惯正在养成中，坚持打卡！';
+    } else {
+      level = 'poor';
+      message = '习惯还不稳定，需要更多坚持。';
+    }
+
+    return {
+      code: 0,
+      data: {
+        score: totalScore,
+        level,
+        message,
+        breakdown: {
+          continuity: { score: continuityScore, max: 40, desc: '连续性' },
+          regularity: { score: regularityScore, max: 30, desc: '规律性' },
+          completion: { score: completionScore, max: 30, desc: '完成率' }
+        }
+      }
+    };
+  },
+
+  // 对比分析（本周 vs 上周）
+  async getComparisonAnalysis() {
+    const checkins = getCheckins();
+    const goals = getGoals();
+    const now = new Date();
+
+    // 计算本周和上周的日期范围
+    const dayOfWeek = now.getDay() || 7;
+    const thisWeekStart = new Date(now);
+    thisWeekStart.setDate(now.getDate() - dayOfWeek + 1);
+    thisWeekStart.setHours(0, 0, 0, 0);
+
+    const lastWeekStart = new Date(thisWeekStart);
+    lastWeekStart.setDate(thisWeekStart.getDate() - 7);
+
+    const lastWeekEnd = new Date(thisWeekStart);
+    lastWeekEnd.setDate(thisWeekStart.getDate() - 1);
+
+    // 统计本周和上周的打卡数据
+    const thisWeekCheckins = checkins.filter(c => {
+      const d = new Date(c.date);
+      return d >= thisWeekStart;
+    });
+
+    const lastWeekCheckins = checkins.filter(c => {
+      const d = new Date(c.date);
+      return d >= lastWeekStart && d < thisWeekStart;
+    });
+
+    // 各目标对比
+    const goalComparisons = goals.map(goal => {
+      const thisWeekGoal = thisWeekCheckins.filter(c => c.goalId === goal.id);
+      const lastWeekGoal = lastWeekCheckins.filter(c => c.goalId === goal.id);
+
+      const thisWeekDays = new Set(thisWeekGoal.map(c => c.date)).size;
+      const lastWeekDays = new Set(lastWeekGoal.map(c => c.date)).size;
+
+      const change = thisWeekDays - lastWeekDays;
+      const changePercent = lastWeekDays > 0 ? Math.round(change / lastWeekDays * 100) : (thisWeekDays > 0 ? 100 : 0);
+
+      return {
+        id: goal.id,
+        name: goal.name,
+        icon: goal.icon,
+        color: goal.color,
+        thisWeek: thisWeekDays,
+        lastWeek: lastWeekDays,
+        change,
+        changePercent,
+        trend: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
+      };
+    });
+
+    // 总体对比
+    const thisWeekTotal = thisWeekCheckins.length;
+    const lastWeekTotal = lastWeekCheckins.length;
+    const totalChange = thisWeekTotal - lastWeekTotal;
+    const totalChangePercent = lastWeekTotal > 0 ? Math.round(totalChange / lastWeekTotal * 100) : 0;
+
+    return {
+      code: 0,
+      data: {
+        thisWeek: {
+          start: `${thisWeekStart.getFullYear()}-${String(thisWeekStart.getMonth() + 1).padStart(2, '0')}-${String(thisWeekStart.getDate()).padStart(2, '0')}`,
+          total: thisWeekTotal,
+          uniqueDays: new Set(thisWeekCheckins.map(c => c.date)).size
+        },
+        lastWeek: {
+          start: `${lastWeekStart.getFullYear()}-${String(lastWeekStart.getMonth() + 1).padStart(2, '0')}-${String(lastWeekStart.getDate()).padStart(2, '0')}`,
+          total: lastWeekTotal,
+          uniqueDays: new Set(lastWeekCheckins.map(c => c.date)).size
+        },
+        totalChange,
+        totalChangePercent,
+        trend: totalChange > 0 ? 'up' : totalChange < 0 ? 'down' : 'stable',
+        goalComparisons
+      }
+    };
+  },
+
+  // 最佳打卡时段推荐
+  async getBestTimeRecommendation() {
+    const checkins = getCheckins();
+    const goals = getGoals();
+
+    if (checkins.length < 14) {
+      return { code: 0, data: { hasData: false, message: '数据不足，需要至少14次打卡' } };
+    }
+
+    // 统计每小时的打卡次数
+    const hourCounts = new Array(24).fill(0);
+    const hourSuccess = new Array(24).fill(0);
+
+    checkins.forEach(c => {
+      const hour = new Date(c.timestamp).getHours();
+      hourCounts[hour]++;
+    });
+
+    // 找出最佳时段（前3个）
+    const bestHours = [];
+    const tempHourCounts = [...hourCounts];
+    for (let i = 0; i < 3; i++) {
+      const maxHour = tempHourCounts.indexOf(Math.max(...tempHourCounts));
+      if (tempHourCounts[maxHour] > 0) {
+        bestHours.push({
+          hour: maxHour,
+          count: tempHourCounts[maxHour],
+          timeStr: `${String(maxHour).padStart(2, '0')}:00`,
+          period: maxHour < 6 ? '凌晨' : maxHour < 9 ? '早晨' : maxHour < 12 ? '上午' :
+            maxHour < 14 ? '中午' : maxHour < 18 ? '下午' : maxHour < 22 ? '晚上' : '深夜'
+        });
+      }
+      tempHourCounts[maxHour] = 0;
+    }
+
+    // 分析工作日/周末差异
+    const weekdayCheckins = checkins.filter(c => {
+      const day = new Date(c.date).getDay();
+      return day >= 1 && day <= 5;
+    });
+    const weekendCheckins = checkins.filter(c => {
+      const day = new Date(c.date).getDay();
+      return day === 0 || day === 6;
+    });
+
+    const weekdayDays = new Set(weekdayCheckins.map(c => c.date)).size;
+    const weekendDays = new Set(weekendCheckins.map(c => c.date)).size;
+    const weekdayAvg = weekdayDays > 0 ? Math.round(weekdayCheckins.length / weekdayDays * 10) / 10 : 0;
+    const weekendAvg = weekendDays > 0 ? Math.round(weekendCheckins.length / weekendDays * 10) / 10 : 0;
+
+    // 生成建议
+    const suggestions = [];
+    if (bestHours.length > 0) {
+      suggestions.push(`你最常在${bestHours[0].timeStr}打卡，建议在这个时间设置提醒。`);
+    }
+    if (weekendAvg > weekdayAvg * 1.5) {
+      suggestions.push('你周末打卡更积极，建议工作日也保持同样的节奏。');
+    } else if (weekdayAvg > weekendAvg * 1.5) {
+      suggestions.push('你工作日更稳定，周末也要坚持哦。');
+    }
+
+    return {
+      code: 0,
+      data: {
+        hasData: true,
+        bestHours,
+        weekdayAvg,
+        weekendAvg,
+        isWeekendBetter: weekendAvg > weekdayAvg,
+        suggestions
+      }
+    };
+  },
+
   // 获取昨日总结
   async getYesterdaySummary() {
     const now = new Date();
