@@ -230,6 +230,8 @@
           class="calendar-day {{item.empty ? 'empty' : ''}} {{item.checked ? 'checked' : ''}} {{item.isToday ? 'today' : ''}}"
           wx:for="{{calendarDays}}"
           wx:key="date"
+          bindtap="onDayTap"
+          data-date="{{item.date}}"
         >
           <text class="day-number">{{item.day}}</text>
           <view class="check-dot" wx:if="{{item.checked}}"></view>
