@@ -22,7 +22,9 @@ Page({
     selectedDays: 0,
     themeClass: '',
     showCelebration: false,
-    celebrationData: null
+    celebrationData: null,
+    showChallengeDetail: false,
+    selectedChallenge: null
   },
 
   onLoad() {
