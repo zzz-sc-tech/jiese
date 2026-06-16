@@ -21,6 +21,7 @@ const api = {
   updateGoal: goalService.updateGoal.bind(goalService),
   deleteGoal: goalService.deleteGoal.bind(goalService),
   getGoals: goalService.getGoals.bind(goalService),
+  reorderGoals: goalService.reorderGoals.bind(goalService),
   checkin: goalService.checkin.bind(goalService),
   checkinCount: goalService.checkinCount.bind(goalService),
   saveDuration: goalService.saveDuration.bind(goalService),
