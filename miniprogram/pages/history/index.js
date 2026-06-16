@@ -163,6 +163,7 @@ Page({
       this.loadWeekStats();
     } catch (err) {
       console.error('加载数据失败:', err);
+      ui.showError('数据加载失败', () => this.loadData());
     }
   },
 
