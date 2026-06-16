@@ -419,6 +419,22 @@
   background: linear-gradient(135deg, rgba(91, 154, 111, 0.05), rgba(139, 196, 160, 0.08));
 }
 
+.goal-card.paused {
+  opacity: 0.6;
+}
+
+.goal-card.paused::after {
+  content: '已暂停';
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  font-size: 18rpx;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
 .goal-card:active {
   transform: scale(0.98);
 }
