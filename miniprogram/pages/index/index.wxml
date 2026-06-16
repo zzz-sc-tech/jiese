@@ -122,6 +122,10 @@
       <view class="section-header">
         <text class="section-title">目标</text>
         <view class="header-right">
+          <view class="sort-btn" bindtap="toggleSortMode" wx:if="{{goals.length > 1}}">
+            <text class="sort-icon">{{isSortMode ? '✓' : '↕️'}}</text>
+            <text class="sort-text">{{isSortMode ? '完成' : '排序'}}</text>
+          </view>
           <view class="template-btn" bindtap="goTemplates">
             <text class="template-icon">📋</text>
             <text class="template-text">模板</text>
@@ -140,10 +144,21 @@
         <text class="empty-hint">点击「模板」快速创建或自定义添加</text>
       </view>
 
+      <!-- 排序模式提示 -->
+      <view class="sort-hint" wx:if="{{isSortMode}}">
+        <text class="sort-hint-text">长按拖拽调整顺序</text>
+      </view>
+
       <!-- 目标卡片列表 -->
-      <view class="goal-card card {{item.checked ? 'checked' : ''}} {{item.paused ? 'paused' : ''}}"
+      <view class="goal-card card {{item.checked ? 'checked' : ''}} {{item.paused ? 'paused' : ''}} {{isSortMode ? 'sortable' : ''}}"
         wx:for="{{goals}}"
         wx:key="id"
+        bindlongpress="onGoalLongPress"
+        bindtouchstart="onGoalTouchStart"
+        bindtouchmove="onGoalTouchMove"
+        bindtouchend="onGoalTouchEnd"
+        data-goal-id="{{item.id}}"
+        data-index="{{index}}"
       >
         <view class="goal-left" bindtap="{{item.type === 'duration' ? 'goTimer' : 'doCheckin'}}" data-goal-id="{{item.id}}">
           <view class="goal-icon-wrap" style="background: {{item.color}}20;">
