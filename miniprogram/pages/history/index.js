@@ -343,16 +343,9 @@ Page({
     }));
 
     // 找出峰值时段
-    const peakPeriod = timeDistribution.reduce((a, b) => a.count > b.count ? a : b).period;
-
-    // 计算本周统计
-    const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - now.getDay());
-    const weekCheckins = checkins.filter(c => {
-      const d = new Date(c.date);
-      return d >= weekStart;
-    }).length;
-    const weekRate = Math.round((weekCheckins / 7) * 100);
+    const peakPeriod = timeDistribution.length > 0
+      ? timeDistribution.reduce((a, b) => a.count > b.count ? a : b).period
+      : '';
 
     this.setData({
       trendData,
@@ -360,10 +353,40 @@ Page({
       trendMax,
       trendTotal,
       timeDistribution,
-      peakPeriod,
+      peakPeriod
+    });
+  },
+
+  // 计算本周统计
+  loadWeekStats() {
+    const checkins = api.getCheckins();
+    const now = new Date();
+
+    // 计算本周起始（周日）
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+
+    // 统计本周打卡天数（去重）
+    const weekDates = new Set();
+    checkins.forEach(c => {
+      const d = new Date(c.date);
+      if (d >= weekStart) {
+        weekDates.add(c.date);
+      }
+    });
+
+    const weekCheckins = weekDates.size;
+    const weekRate = Math.round((weekCheckins / 7) * 100);
+
+    // 格式化日期范围
+    const weekEnd = new Date(now);
+    const weekRange = `${dateUtil.format(weekStart)} ~ ${dateUtil.format(weekEnd)}`;
+
+    this.setData({
       weekCheckins,
       weekRate,
-      weekRange: `${dateUtil.format(weekStart)} ~ ${dateUtil.format(now)}`
+      weekRange
     });
   },
 
