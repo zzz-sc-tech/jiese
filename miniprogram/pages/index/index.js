@@ -512,6 +512,10 @@ Page({
     wx.navigateTo({ url: '/pages/pet/index' });
   },
 
+  goReminder() {
+    wx.navigateTo({ url: '/pages/reminder/index' });
+  },
+
   goTemplates() {
     wx.navigateTo({ url: '/pages/goal-templates/index' });
   },
