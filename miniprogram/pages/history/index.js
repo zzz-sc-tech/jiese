@@ -514,12 +514,20 @@ Page({
 
   // ========== Canvas 图表 ==========
   redrawCharts(data) {
+    // 防止重复绘制
+    if (this._drawing) return;
+    this._drawing = true;
+
     if (data && data.dailyTotals) {
       this.initBarCanvas(data.dailyTotals);
     }
     if (data && data.showPie && data.goalDistribution) {
       this.initPieCanvas(data.goalDistribution);
     }
+
+    setTimeout(() => {
+      this._drawing = false;
+    }, 500);
   },
 
   initBarCanvas(dailyTotals) {
