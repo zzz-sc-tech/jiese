@@ -56,7 +56,20 @@ Page({
             ...ch,
             timeline: this.generateTimeline(ch.targetDays, ch.completedDays)
           }));
-        this.setData({ activeChallenges: active });
+
+        const completed = res.data
+          .filter(c => c.status === 'completed')
+          .slice(0, 5);
+
+        const failed = res.data
+          .filter(c => c.status === 'failed')
+          .slice(0, 5);
+
+        this.setData({
+          activeChallenges: active,
+          completedChallenges: completed,
+          failedChallenges: failed
+        });
       }
     } catch (err) {
       console.error('加载挑战失败:', err);
