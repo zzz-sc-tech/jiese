@@ -42,7 +42,11 @@ Page({
     diaryGoalName: '',
     diaryGoalIcon: '',
     diaryText: '',
-    diaryMood: ''
+    diaryMood: '',
+    // 每日一问
+    dailyQuestion: null,
+    // 习惯小贴士
+    habitTip: null
   },
 
   onLoad() {
