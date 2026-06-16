@@ -34,7 +34,13 @@ Page({
     goalChallenges: null,
     // 勋章弹窗
     showMedalDetail: false,
-    selectedMedal: null
+    selectedMedal: null,
+    // 年度热力图
+    heatmapYear: 2026,
+    heatmapData: [],
+    heatmapMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    heatmapTotalDays: 0,
+    heatmapMaxStreak: 0
   },
 
   _barCtx: null,
