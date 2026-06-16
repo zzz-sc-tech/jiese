@@ -514,6 +514,8 @@ Page({
     if (!this.data.isSortMode) return;
     const index = e.currentTarget.dataset.index;
     this.setData({ sortDragging: true, dragIndex: index });
+    // 震动反馈
+    wx.vibrateShort({ type: 'medium' });
   },
 
   onGoalTouchStart(e) {
