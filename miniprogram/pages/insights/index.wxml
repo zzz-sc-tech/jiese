@@ -187,6 +187,63 @@
       </view>
     </view>
 
+    <!-- 习惯健康度 -->
+    <view class="health-card card" wx:if="{{habitHealth && habitHealth.hasData}}">
+      <text class="section-title">习惯健康度</text>
+      <view class="health-content">
+        <view class="health-score-wrap">
+          <view class="health-score" style="border-color: {{habitHealth.color}};">
+            <text class="health-score-value" style="color: {{habitHealth.color}};">{{habitHealth.score}}</text>
+            <text class="health-score-label">分</text>
+          </view>
+          <text class="health-level" style="color: {{habitHealth.color}};">{{habitHealth.level}}</text>
+        </view>
+        <view class="health-detail">
+          <text class="health-advice">{{habitHealth.advice}}</text>
+          <view class="health-breakdown">
+            <view class="health-item">
+              <text class="health-item-label">一致性</text>
+              <view class="health-item-bar">
+                <view class="health-item-fill" style="width: {{habitHealth.breakdown.consistency.score / habitHealth.breakdown.consistency.max * 100}}%;"></view>
+              </view>
+              <text class="health-item-score">{{habitHealth.breakdown.consistency.score}}/{{habitHealth.breakdown.consistency.max}}</text>
+            </view>
+            <view class="health-item">
+              <text class="health-item-label">平衡性</text>
+              <view class="health-item-bar">
+                <view class="health-item-fill" style="width: {{habitHealth.breakdown.balance.score / habitHealth.breakdown.balance.max * 100}}%;"></view>
+              </view>
+              <text class="health-item-score">{{habitHealth.breakdown.balance.score}}/{{habitHealth.breakdown.balance.max}}</text>
+            </view>
+            <view class="health-item">
+              <text class="health-item-label">进步性</text>
+              <view class="health-item-bar">
+                <view class="health-item-fill" style="width: {{habitHealth.breakdown.progress.score / habitHealth.breakdown.progress.max * 100}}%;"></view>
+              </view>
+              <text class="health-item-score">{{habitHealth.breakdown.progress.score}}/{{habitHealth.breakdown.progress.max}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 智能推荐 -->
+    <view class="recommend-card card" wx:if="{{recommendations && recommendations.hasData}}">
+      <text class="section-title">智能推荐</text>
+      <view class="recommend-info">
+        <text class="recommend-text">你最常在{{recommendations.bestHour}}打卡，{{recommendations.bestDay}}最活跃</text>
+      </view>
+      <view class="recommend-list" wx:if="{{recommendations.recommendations.length > 0}}">
+        <view class="recommend-item" wx:for="{{recommendations.recommendations}}" wx:key="name">
+          <text class="recommend-icon">{{item.icon}}</text>
+          <view class="recommend-detail">
+            <text class="recommend-name">{{item.name}}</text>
+            <text class="recommend-reason">{{item.reason}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 分享按钮 -->
     <view class="share-section">
       <button class="btn-share" open-type="share">
