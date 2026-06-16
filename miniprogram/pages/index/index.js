@@ -327,20 +327,18 @@ Page({
           currentQuote: res.data.quote,
           newAchievements: res.data.newAchievements || [],
           globalTotalDays: res.data.globalTotalDays,
-          showQuote: true,
           currentStreak
         });
 
-        // 显示打卡动画
-        ui.showCheckinAnimation(this);
+        ui.hideLoading();
+
+        // 显示打卡成功动画
+        this.showCheckinAnimation(goal.name, currentStreak);
 
         // 成就解锁震动
         if (res.data.newAchievements && res.data.newAchievements.length > 0) {
           ui.vibrate('medium');
         }
-
-        ui.hideLoading();
-        ui.showSuccess(`${goal.name} 打卡成功`);
 
         this.loadData();
       } else {
@@ -354,6 +352,50 @@ Page({
       });
       console.error('打卡失败:', err);
     }
+  },
+
+  // 显示打卡动画
+  showCheckinAnimation(goalName, streak) {
+    // 1. 显示成功提示
+    this.setData({
+      showCheckinSuccess: true,
+      checkinSuccessGoal: goalName
+    });
+
+    // 2. 显示撒花
+    setTimeout(() => {
+      this.setData({ showConfetti: true });
+    }, 200);
+
+    // 3. 显示连击徽章（连续打卡>1天）
+    if (streak > 1) {
+      setTimeout(() => {
+        this.setData({ showStreakBadge: true });
+      }, 500);
+    }
+
+    // 4. 震动反馈
+    ui.vibrate('light');
+
+    // 5. 自动隐藏
+    setTimeout(() => {
+      this.setData({ showCheckinSuccess: false });
+    }, 1500);
+
+    setTimeout(() => {
+      this.setData({ showConfetti: false });
+    }, 2500);
+
+    if (streak > 1) {
+      setTimeout(() => {
+        this.setData({ showStreakBadge: false });
+      }, 2000);
+    }
+
+    // 6. 显示语录弹窗
+    setTimeout(() => {
+      this.setData({ showQuote: true });
+    }, 800);
   },
 
   // 计数打卡 +1
