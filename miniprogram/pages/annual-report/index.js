@@ -85,11 +85,15 @@ Page({
     // 宠物信息
     const petsRes = api.getPetsInfo();
     const pets = petsRes.code === 0 ? petsRes.data : [];
-    const petInfo = pets.length > 0 ? {
-      name: pets[0].name,
-      icon: api.getPetTypes()[pets[0].petId]?.icon || '🐾',
-      level: api.getPetInfo(0).data?.level || 1
-    } : null;
+    let petInfo = null;
+    if (pets.length > 0) {
+      const petInfoRes = api.getPetInfo(0);
+      petInfo = {
+        name: pets[0].name,
+        icon: api.getPetTypes()[pets[0].petId]?.icon || '🐾',
+        level: petInfoRes.code === 0 ? (petInfoRes.data?.level || 1) : 1
+      };
+    }
 
     // 成就统计
     const statsRes = api.getStats();
