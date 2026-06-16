@@ -388,6 +388,11 @@ const goalService = {
     const m = Math.floor((seconds % 3600) / 60);
     if (h > 0) return `${h}时${m}分`;
     return `${m}分`;
+  },
+
+  // 格式化时长（公共接口）
+  formatDuration(seconds) {
+    return this._formatDuration(seconds);
   }
 };
 
