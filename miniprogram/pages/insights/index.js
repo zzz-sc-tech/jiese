@@ -32,7 +32,13 @@ Page({
     // 建议
     suggestions: [],
     // 各目标分析
-    goalAnalysis: []
+    goalAnalysis: [],
+    // 习惯稳定性
+    stability: null,
+    // 对比分析
+    comparison: null,
+    // 最佳时段推荐
+    bestTime: null
   },
 
   onLoad() {
