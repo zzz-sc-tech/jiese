@@ -79,7 +79,10 @@ const api = {
   getBestTimeRecommendation: statsService.getBestTimeRecommendation.bind(statsService),
   getDailyQuestion: statsService.getDailyQuestion.bind(statsService),
   getHabitTip: statsService.getHabitTip.bind(statsService),
-  getHabitGuides: statsService.getHabitGuides.bind(statsService)
+  getHabitGuides: statsService.getHabitGuides.bind(statsService),
+  getSmartRecommendations: statsService.getSmartRecommendations.bind(statsService),
+  getHabitHealth: statsService.getHabitHealth.bind(statsService),
+  getPersonalizedQuote: statsService.getPersonalizedQuote.bind(statsService)
 };
 
 module.exports = api;
