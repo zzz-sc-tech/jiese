@@ -103,7 +103,7 @@ Page({
   },
 
   // 更新目标提醒设置
-  updateGoalReminder(goalId, times) {
+  async updateGoalReminder(goalId, times) {
     const goals = this.data.goals.map(g => {
       if (g.id === goalId) {
         return {
@@ -118,7 +118,7 @@ Page({
     });
 
     // 保存到本地
-    const goalsRes = api.getGoals();
+    const goalsRes = await api.getGoals();
     if (goalsRes.code === 0) {
       const allGoals = goalsRes.data.map(g => {
         if (g.id === goalId) {
