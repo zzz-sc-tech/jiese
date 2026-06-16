@@ -934,6 +934,110 @@ const statsService = {
       : QUOTES[Math.floor(Math.random() * QUOTES.length)];
 
     return { code: 0, data: quote };
+  },
+
+  // 生成月度报告
+  async getMonthlyReport(year, month) {
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const allStats = getGoalStats();
+
+    // 获取指定月份的日期范围
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const monthStr = `${year}-${String(month).padStart(2, '0')}`;
+
+    // 统计本月打卡数据
+    const monthCheckins = checkins.filter(c => c.date.startsWith(monthStr));
+    const uniqueDates = new Set(monthCheckins.map(c => c.date));
+    const totalDays = uniqueDates.size;
+    const completionRate = Math.round((totalDays / daysInMonth) * 100);
+
+    // 各目标统计
+    const goalStats = goals.map(goal => {
+      const goalMonthCheckins = monthCheckins.filter(c => c.goalId === goal.id);
+      const goalUniqueDays = new Set(goalMonthCheckins.map(c => c.date)).size;
+      const goalTotal = goalMonthCheckins.length;
+
+      return {
+        id: goal.id,
+        name: goal.name,
+        icon: goal.icon,
+        color: goal.color,
+        days: goalUniqueDays,
+        count: goalTotal,
+        rate: Math.round((goalUniqueDays / daysInMonth) * 100)
+      };
+    }).filter(g => g.days > 0).sort((a, b) => b.days - a.days);
+
+    // 每日打卡数据
+    const dailyData = [];
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${monthStr}-${String(d).padStart(2, '0')}`;
+      const dayCheckins = monthCheckins.filter(c => c.date === dateStr);
+      dailyData.push({
+        day: d,
+        date: dateStr,
+        count: dayCheckins.length,
+        checked: dayCheckins.length > 0
+      });
+    }
+
+    // 最佳打卡时段
+    const hourCounts = new Array(24).fill(0);
+    monthCheckins.forEach(c => {
+      const hour = new Date(c.timestamp).getHours();
+      hourCounts[hour]++;
+    });
+    const bestHour = hourCounts.indexOf(Math.max(...hourCounts));
+
+    // 最长连续天数
+    const sortedDates = [...uniqueDates].sort();
+    let maxStreak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < sortedDates.length; i++) {
+      if (i === 0) {
+        currentStreak = 1;
+      } else {
+        const prev = new Date(sortedDates[i - 1]);
+        const curr = new Date(sortedDates[i]);
+        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (diff === 1) {
+          currentStreak++;
+        } else {
+          currentStreak = 1;
+        }
+      }
+      maxStreak = Math.max(maxStreak, currentStreak);
+    }
+
+    // 生成总结
+    let summary = '';
+    if (completionRate >= 90) {
+      summary = '本月表现优秀，打卡率超过90%！继续保持！';
+    } else if (completionRate >= 70) {
+      summary = '本月表现不错，打卡率超过70%。';
+    } else if (completionRate >= 50) {
+      summary = '本月打卡过半，还有提升空间。';
+    } else {
+      summary = '本月打卡较少，下月加油！';
+    }
+
+    return {
+      code: 0,
+      data: {
+        year,
+        month,
+        daysInMonth,
+        totalDays,
+        completionRate,
+        maxStreak,
+        bestHour: `${String(bestHour).padStart(2, '0')}:00`,
+        goalStats,
+        dailyData,
+        summary,
+        totalCheckins: monthCheckins.length
+      }
+    };
   }
 };
 
