@@ -185,5 +185,25 @@ Page({
   // 隐藏庆祝动画
   hideCelebration() {
     this.setData({ showCelebration: false, celebrationData: null });
+  },
+
+  // 查看挑战详情
+  viewChallengeDetail(e) {
+    const challengeId = e.currentTarget.dataset.id;
+    const challenge = this.data.activeChallenges.find(c => c._id === challengeId);
+    if (challenge) {
+      this.setData({
+        showChallengeDetail: true,
+        selectedChallenge: challenge
+      });
+    }
+  },
+
+  // 隐藏挑战详情
+  hideChallengeDetail() {
+    this.setData({
+      showChallengeDetail: false,
+      selectedChallenge: null
+    });
   }
 });
