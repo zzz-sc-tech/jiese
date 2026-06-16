@@ -15,7 +15,8 @@
     "pages/goal-templates/index",
     "pages/annual-report/index",
     "pages/reminder/index",
-    "pages/insights/index"
+    "pages/insights/index",
+    "pages/habit-chain/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
