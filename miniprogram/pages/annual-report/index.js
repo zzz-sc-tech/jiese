@@ -92,7 +92,8 @@ Page({
     } : null;
 
     // 成就统计
-    const achievements = api.getStats().data?.achievements || [];
+    const statsRes = api.getStats();
+    const achievements = statsRes.code === 0 ? (statsRes.data?.achievements || []) : [];
 
     // 生成报告
     const report = {
