@@ -154,6 +154,9 @@ Page({
 
       // 加载热力图数据
       this.loadHeatmapData();
+
+      // 加载趋势数据
+      this.loadTrendData();
     } catch (err) {
       console.error('加载数据失败:', err);
     }
