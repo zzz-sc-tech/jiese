@@ -94,15 +94,17 @@ const ui = {
     page.setData({ showConfetti: true });
     setTimeout(() => {
       page.setData({ showConfetti: false });
-    }, 2000);
+    }, 2500);
 
     // 连击天数展示
     const streak = page.data.currentStreak || page.data.stats?.currentStreak || 0;
     if (streak > 1) {
-      page.setData({ showStreakBadge: true });
+      setTimeout(() => {
+        page.setData({ showStreakBadge: true });
+      }, 300);
       setTimeout(() => {
         page.setData({ showStreakBadge: false });
-      }, 1500);
+      }, 2000);
     }
   },
 
@@ -115,7 +117,7 @@ const ui = {
     this.vibrate('medium');
     setTimeout(() => {
       page.setData({ showLevelUp: false });
-    }, 2000);
+    }, 2500);
   },
 
   // 显示成就解锁动画
@@ -128,6 +130,24 @@ const ui = {
     setTimeout(() => {
       page.setData({ showAchievement: false });
     }, 3000);
+  },
+
+  // 显示连击特效
+  showComboEffect(page, combo) {
+    if (combo >= 30) {
+      // 月度连击：满屏烟花
+      page.setData({ showFireworks: true });
+      this.vibrate('long');
+      setTimeout(() => page.setData({ showFireworks: false }), 3000);
+    } else if (combo >= 7) {
+      // 周连击：撒花
+      page.setData({ showConfetti: true });
+      this.vibrate('medium');
+      setTimeout(() => page.setData({ showConfetti: false }), 2500);
+    } else if (combo >= 3) {
+      // 3天连击：简单特效
+      this.vibrate('light');
+    }
   },
 
   // ========== 空状态 ==========
