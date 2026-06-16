@@ -249,7 +249,15 @@ Page({
       return;
     }
 
-    // single 类型弹出日记输入
+    // 检查是否开启了日记功能
+    const settings = storage.getSettings();
+    if (!settings.enableDiary) {
+      // 未开启日记，直接打卡
+      this._doCheckin(goalId, type, goal);
+      return;
+    }
+
+    // 开启了日记，弹出日记输入
     this.setData({
       showDiary: true,
       diaryGoalId: goalId,
