@@ -53,7 +53,8 @@ Page({
     this.setData({
       currentMonth: `${now.getMonth() + 1}月`,
       calendarYear: now.getFullYear(),
-      calendarMonth: now.getMonth() + 1
+      calendarMonth: now.getMonth() + 1,
+      heatmapYear: now.getFullYear()
     });
   },
 
