@@ -28,7 +28,11 @@ Page({
     try {
       const res = await api.getMonthlyReport(this.data.year, this.data.month);
       if (res.code === 0) {
-        this.setData({ report: res.data, loading: false });
+        const report = res.data;
+        const avgPerDay = report.totalCheckins > 0
+          ? (report.totalCheckins / report.daysInMonth).toFixed(1)
+          : '0';
+        this.setData({ report, avgPerDay, loading: false });
       }
     } catch (err) {
       console.error('加载月度报告失败:', err);
