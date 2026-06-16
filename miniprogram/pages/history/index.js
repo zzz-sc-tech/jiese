@@ -36,6 +36,10 @@ Page({
     // 勋章弹窗
     showMedalDetail: false,
     selectedMedal: null,
+    // 日期详情弹窗
+    showDayDetail: false,
+    selectedDate: '',
+    dayCheckins: [],
     // 年度热力图
     heatmapYear: 2026,
     heatmapData: [],
