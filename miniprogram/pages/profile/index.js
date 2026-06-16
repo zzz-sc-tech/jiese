@@ -99,11 +99,21 @@ Page({
         themeName: themeNameMap[theme] || '清新绿',
         vibrateIntensity: intensity,
         vibrateMode: mode,
-        vibrateName
+        vibrateName,
+        enableDiary: settings.enableDiary || false
       });
     } catch (err) {
       console.error('加载用户数据失败:', err);
     }
+  },
+
+  // 切换打卡日记
+  toggleDiary() {
+    const settings = storage.getSettings();
+    settings.enableDiary = !settings.enableDiary;
+    storage.saveSettings(settings);
+    this.setData({ enableDiary: settings.enableDiary });
+    wx.showToast({ title: settings.enableDiary ? '已开启' : '已关闭', icon: 'success' });
   },
 
   editNickname() {
