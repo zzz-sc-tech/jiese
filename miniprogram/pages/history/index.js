@@ -286,6 +286,14 @@ Page({
     wx.navigateTo({ url: '/pages/annual-report/index' });
   },
 
+  // 跳转月度报告
+  goMonthlyReport() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    wx.navigateTo({ url: `/pages/monthly-report/index?year=${year}&month=${month}` });
+  },
+
   // 跳转数据洞察
   goInsights() {
     wx.navigateTo({ url: '/pages/insights/index' });
