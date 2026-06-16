@@ -1,0 +1,28 @@
+<view class="page-share-card {{themeClass}}">
+  <!-- 卡片预览 -->
+  <view class="card-preview">
+    <canvas
+      type="2d"
+      id="cardCanvas"
+      class="card-canvas"
+      style="width: 600rpx; height: 800rpx;"
+    ></canvas>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <button class="btn-save" bindtap="saveToAlbum">
+      <text class="btn-icon">💾</text>
+      <text>保存到相册</text>
+    </button>
+    <button class="btn-share" open-type="share">
+      <text class="btn-icon">📤</text>
+      <text>分享给好友</text>
+    </button>
+  </view>
+
+  <!-- 提示 -->
+  <view class="tips">
+    <text class="tip-text">保存卡片后可分享到朋友圈</text>
+  </view>
+</view>
