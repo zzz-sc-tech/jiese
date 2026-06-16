@@ -65,6 +65,7 @@ Page({
   _barSize: 0,
   _pieCtx: null,
   _pieSize: 0,
+  _drawing: false,
 
   onLoad() {
     const now = new Date();
