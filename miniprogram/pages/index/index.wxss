@@ -413,6 +413,7 @@
   padding: 28rpx 24rpx;
   margin-bottom: 16rpx;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .goal-card.checked {
