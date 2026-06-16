@@ -5,6 +5,7 @@ const goalService = require('./services/goalService');
 const petService = require('./services/petService');
 const challengeService = require('./services/challengeService');
 const statsService = require('./services/statsService');
+const exportService = require('./services/exportService');
 const { QUOTES } = require('./services/config');
 
 // 组合所有服务
