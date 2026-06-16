@@ -8,7 +8,7 @@
 
     <view class="challenge-list">
       <view class="challenge-item card" wx:for="{{activeChallenges}}" wx:key="_id">
-        <view class="challenge-top" bindtap="toggleChallengeDetail" data-id="{{item._id}}">
+        <view class="challenge-top" bindtap="viewChallengeDetail" data-id="{{item._id}}">
           <view class="challenge-left">
             <view class="challenge-icon-wrap" style="background: {{item.goalColor}}20;">
               <text class="challenge-icon-text">{{item.goalIcon}}</text>
@@ -32,7 +32,7 @@
               <text class="stat-num">{{item.remainingDays}}</text>
               <text class="stat-label">剩余</text>
             </view>
-            <text class="expand-arrow {{item.expanded ? 'expanded' : ''}}">›</text>
+            <text class="expand-arrow">›</text>
           </view>
         </view>
 
