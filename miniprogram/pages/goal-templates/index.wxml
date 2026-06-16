@@ -1,0 +1,47 @@
+<view class="page-templates {{themeClass}}">
+  <view class="templates-header">
+    <text class="templates-title">🎯 选择目标模板</text>
+    <text class="templates-subtitle">一键创建，快速开始</text>
+  </view>
+
+  <!-- 分类选择 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view
+        class="category-item {{selectedCategory === item ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="*this"
+        bindtap="selectCategory"
+        data-category="{{item}}"
+      >
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 模板列表 -->
+  <view class="template-list">
+    <view
+      class="template-item"
+      wx:for="{{filteredTemplates}}"
+      wx:key="id"
+      bindtap="useTemplate"
+      data-id="{{item.id}}"
+    >
+      <view class="template-icon-wrap" style="background: {{item.color}}20;">
+        <text class="template-icon">{{item.icon}}</text>
+      </view>
+      <view class="template-info">
+        <text class="template-name">{{item.name}}</text>
+        <text class="template-desc">{{item.desc}}</text>
+        <view class="template-meta">
+          <text class="template-type">{{item.type === 'single' ? '单次打卡' : item.type === 'count' ? '计数打卡' : '时长打卡'}}</text>
+          <text class="template-target" wx:if="{{item.type === 'count'}}">目标: {{item.targetCount}}次/天</text>
+        </view>
+      </view>
+      <view class="template-action">
+        <text class="action-text">使用</text>
+      </view>
+    </view>
+  </view>
+</view>
