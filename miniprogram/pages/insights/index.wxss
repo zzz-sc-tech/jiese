@@ -187,6 +187,203 @@
   line-height: 1.5;
 }
 
+/* 习惯稳定性 */
+.stability-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.stability-content {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.stability-score {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.score-value {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.stability-info {
+  flex: 1;
+}
+
+.stability-level {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.stability-message {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  display: block;
+}
+
+.stability-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.breakdown-label {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  width: 80rpx;
+}
+
+.breakdown-bar {
+  flex: 1;
+  height: 12rpx;
+  background: var(--color-border);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.breakdown-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 6rpx;
+}
+
+.breakdown-score {
+  font-size: 22rpx;
+  color: var(--color-text);
+  width: 80rpx;
+  text-align: right;
+}
+
+/* 对比分析 */
+.comparison-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.comparison-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.comparison-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comparison-label {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.comparison-value {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.comparison-value.positive {
+  color: var(--color-success);
+}
+
+.comparison-value.negative {
+  color: var(--color-danger);
+}
+
+/* 最佳时段推荐 */
+.besttime-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.besttime-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.besttime-hours {
+  display: flex;
+  gap: 16rpx;
+}
+
+.besttime-hour {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx;
+  background: var(--color-bg);
+  border-radius: 12rpx;
+}
+
+.hour-time {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.hour-period {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+.hour-count {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  margin-top: 4rpx;
+}
+
+.besttime-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.besttime-suggestion {
+  display: flex;
+  align-items: flex-start;
+  gap: 8rpx;
+}
+
+.besttime-suggestion .suggestion-icon {
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+.besttime-suggestion .suggestion-text {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
 /* 各目标分析 */
 .goals-card {
   margin-bottom: 24rpx;
