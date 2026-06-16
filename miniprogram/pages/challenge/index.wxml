@@ -156,3 +156,59 @@
     <button class="btn-celebration" bindtap="hideCelebration">太棒了！</button>
   </view>
 </view>
+
+<!-- 挑战详情弹窗 -->
+<view class="detail-overlay" wx:if="{{showChallengeDetail}}" bindtap="hideChallengeDetail">
+  <view class="detail-modal" catchtap>
+    <view class="detail-header">
+      <text class="detail-icon">{{selectedChallenge.goalIcon}}</text>
+      <text class="detail-title">{{selectedChallenge.goalName}}</text>
+      <text class="detail-target">{{selectedChallenge.targetDays}}天挑战</text>
+    </view>
+
+    <view class="detail-body">
+      <view class="detail-stats">
+        <view class="detail-stat">
+          <text class="detail-stat-value">{{selectedChallenge.completedDays}}</text>
+          <text class="detail-stat-label">已完成</text>
+        </view>
+        <view class="detail-stat">
+          <text class="detail-stat-value">{{selectedChallenge.targetDays - selectedChallenge.completedDays}}</text>
+          <text class="detail-stat-label">剩余</text>
+        </view>
+        <view class="detail-stat">
+          <text class="detail-stat-value">{{selectedChallenge.progress}}%</text>
+          <text class="detail-stat-label">进度</text>
+        </view>
+      </view>
+
+      <view class="detail-progress">
+        <view class="detail-progress-track">
+          <view class="detail-progress-fill" style="width: {{selectedChallenge.progress}}%;"></view>
+        </view>
+      </view>
+
+      <view class="detail-timeline" wx:if="{{selectedChallenge.timeline}}">
+        <text class="timeline-title">里程碑</text>
+        <view class="timeline-list">
+          <view
+            class="timeline-item {{tl.passed ? 'passed' : ''}} {{tl.current ? 'current' : ''}}"
+            wx:for="{{selectedChallenge.timeline}}"
+            wx:for-item="tl"
+            wx:key="day"
+          >
+            <view class="timeline-dot"></view>
+            <view class="timeline-content">
+              <text class="timeline-day">第{{tl.day}}天</text>
+              <text class="timeline-desc">{{tl.desc}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="detail-footer">
+      <button class="btn-detail-close" bindtap="hideChallengeDetail">关闭</button>
+    </view>
+  </view>
+</view>
