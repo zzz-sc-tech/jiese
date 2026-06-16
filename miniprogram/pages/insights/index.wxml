@@ -98,6 +98,71 @@
       </view>
     </view>
 
+    <!-- 习惯稳定性 -->
+    <view class="stability-card card" wx:if="{{stability && stability.score > 0}}">
+      <text class="section-title">习惯稳定性</text>
+      <view class="stability-content">
+        <view class="stability-score">
+          <text class="score-value">{{stability.score}}</text>
+          <text class="score-label">分</text>
+        </view>
+        <view class="stability-info">
+          <text class="stability-level">{{stability.level === 'excellent' ? '优秀' : stability.level === 'good' ? '良好' : stability.level === 'fair' ? '一般' : '需改进'}}</text>
+          <text class="stability-message">{{stability.message}}</text>
+        </view>
+      </view>
+      <view class="stability-breakdown" wx:if="{{stability.breakdown}}">
+        <view class="breakdown-item" wx:for="{{stability.breakdown}}" wx:key="desc">
+          <text class="breakdown-label">{{item.desc}}</text>
+          <view class="breakdown-bar">
+            <view class="breakdown-fill" style="width: {{item.score / item.max * 100}}%;"></view>
+          </view>
+          <text class="breakdown-score">{{item.score}}/{{item.max}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 对比分析 -->
+    <view class="comparison-card card" wx:if="{{comparison}}">
+      <text class="section-title">本周 vs 上周</text>
+      <view class="comparison-content">
+        <view class="comparison-item">
+          <text class="comparison-label">本周打卡</text>
+          <text class="comparison-value">{{comparison.thisWeek.total}} 次</text>
+        </view>
+        <view class="comparison-item">
+          <text class="comparison-label">上周打卡</text>
+          <text class="comparison-value">{{comparison.lastWeek.total}} 次</text>
+        </view>
+        <view class="comparison-item">
+          <text class="comparison-label">变化</text>
+          <text class="comparison-value {{comparison.trend === 'up' ? 'positive' : comparison.trend === 'down' ? 'negative' : ''}}">
+            {{comparison.totalChange >= 0 ? '+' : ''}}{{comparison.totalChange}} 次 ({{comparison.totalChangePercent}}%)
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最佳时段推荐 -->
+    <view class="besttime-card card" wx:if="{{bestTime && bestTime.hasData}}">
+      <text class="section-title">最佳打卡时段</text>
+      <view class="besttime-content">
+        <view class="besttime-hours">
+          <view class="besttime-hour" wx:for="{{bestTime.bestHours}}" wx:key="hour">
+            <text class="hour-time">{{item.timeStr}}</text>
+            <text class="hour-period">{{item.period}}</text>
+            <text class="hour-count">{{item.count}}次</text>
+          </view>
+        </view>
+        <view class="besttime-suggestions" wx:if="{{bestTime.suggestions.length > 0}}">
+          <view class="besttime-suggestion" wx:for="{{bestTime.suggestions}}" wx:key="*this">
+            <text class="suggestion-icon">💡</text>
+            <text class="suggestion-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
     <!-- 各目标分析 -->
     <view class="goals-card card" wx:if="{{goalAnalysis.length > 0}}">
       <text class="section-title">各目标分析</text>
