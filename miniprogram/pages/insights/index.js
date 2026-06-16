@@ -215,6 +215,18 @@ Page({
       if (bestTimeRes.code === 0) {
         this.setData({ bestTime: bestTimeRes.data });
       }
+
+      // 习惯健康度
+      const healthRes = await api.getHabitHealth();
+      if (healthRes.code === 0) {
+        this.setData({ habitHealth: healthRes.data });
+      }
+
+      // 智能推荐
+      const recommendRes = await api.getSmartRecommendations();
+      if (recommendRes.code === 0) {
+        this.setData({ recommendations: recommendRes.data });
+      }
     } catch (err) {
       console.error('加载高级分析失败:', err);
     }
