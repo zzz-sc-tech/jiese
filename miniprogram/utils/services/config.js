@@ -209,6 +209,106 @@ const BG_TYPES = {
   bg_lavender: { name: '薰衣草', icon: '💜', desc: '优雅恬静', gradient: 'linear-gradient(180deg, #f8f5ff 0%, #f2eeff 100%)' }
 };
 
+// 每日一问
+const DAILY_QUESTIONS = [
+  { question: '今天最让你感恩的一件事是什么？', category: '感恩' },
+  { question: '你今天学到了什么新东西？', category: '成长' },
+  { question: '如果可以重来今天，你会做什么不同的选择？', category: '反思' },
+  { question: '今天你帮助了谁？', category: '善良' },
+  { question: '你今天最开心的时刻是什么时候？', category: '快乐' },
+  { question: '今天有什么让你感到骄傲的事？', category: '成就' },
+  { question: '你今天是如何照顾自己的？', category: '自爱' },
+  { question: '今天有什么让你感到困惑的事？', category: '思考' },
+  { question: '你今天做了什么让自己更接近目标？', category: '目标' },
+  { question: '今天你最想感谢谁？', category: '感恩' },
+  { question: '你今天是如何应对压力的？', category: '情绪' },
+  { question: '今天有什么让你感到温暖的事？', category: '温暖' },
+  { question: '你今天是如何保持专注的？', category: '专注' },
+  { question: '今天有什么让你感到惊讶的事？', category: '惊喜' },
+  { question: '你今天是如何平衡工作和生活的？', category: '平衡' },
+  { question: '今天有什么让你感到满足的事？', category: '满足' },
+  { question: '你今天是如何面对挑战的？', category: '勇气' },
+  { question: '今天有什么让你感到平静的事？', category: '平静' },
+  { question: '你今天是如何表达爱的？', category: '爱' },
+  { question: '今天有什么让你感到希望的事？', category: '希望' }
+];
+
+// 习惯小贴士
+const HABIT_TIPS = [
+  { tip: '从小目标开始，比如每天只做5分钟', category: '起步' },
+  { tip: '把新习惯绑定在已有习惯之后', category: '绑定' },
+  { tip: '记录你的进步，可视化你的坚持', category: '记录' },
+  { tip: '找到一个 accountability partner，互相监督', category: '伙伴' },
+  { tip: '允许自己偶尔失败，重要的是重新开始', category: '宽容' },
+  { tip: '创造一个有利于习惯的环境', category: '环境' },
+  { tip: '给自己设定奖励，完成目标后犒劳自己', category: '奖励' },
+  { tip: '专注于过程，而不是结果', category: '心态' },
+  { tip: '每天固定时间做同一件事', category: '规律' },
+  { tip: '把大目标分解成小步骤', category: '分解' },
+  { tip: '记录你的感受，而不只是行动', category: '感受' },
+  { tip: '找到习惯的内在价值', category: '价值' },
+  { tip: '不要追求完美，追求进步', category: '进步' },
+  { tip: '学会说不，保护你的时间', category: '边界' },
+  { tip: '定期回顾和调整你的目标', category: '调整' },
+  { tip: '保持好奇心，不断学习', category: '学习' },
+  { tip: '照顾好你的身体，它是习惯的基础', category: '健康' },
+  { tip: '冥想可以帮助你保持专注', category: '专注' },
+  { tip: '充足的睡眠是坚持的基础', category: '睡眠' },
+  { tip: '记住你为什么开始', category: '初心' }
+];
+
+// 习惯养成指南
+const HABIT_GUIDES = [
+  {
+    id: 'guide_start',
+    title: '如何开始养成习惯',
+    icon: '🚀',
+    steps: [
+      '选择一个具体、可衡量的目标',
+      '从极小的行动开始（2分钟规则）',
+      '设定固定的时间和地点',
+      '记录你的行动',
+      '给自己设定奖励'
+    ]
+  },
+  {
+    id: 'guide_streak',
+    title: '如何保持连续打卡',
+    icon: '🔥',
+    steps: [
+      '不要中断两天',
+      '设置提醒，避免忘记',
+      '找到你的 accountability partner',
+      '可视化你的进步',
+      '原谅偶尔的失败'
+    ]
+  },
+  {
+    id: 'guide_break',
+    title: '如何突破瓶颈期',
+    icon: '💪',
+    steps: [
+      '接受瓶颈是正常的',
+      '回顾你的初心',
+      '调整你的目标',
+      '尝试新的方法',
+      '给自己休息的时间'
+    ]
+  },
+  {
+    id: 'guide_balance',
+    title: '如何平衡多个目标',
+    icon: '⚖️',
+    steps: [
+      '优先级排序',
+      '不要同时开始太多',
+      '使用习惯链串联目标',
+      '定期回顾和调整',
+      '学会说不'
+    ]
+  }
+];
+
 // 宠物成就配置
 const PET_ACHIEVEMENTS = [
   { id: 'pet_first', name: '初次相遇', desc: '领养第一只宠物', icon: '🤝', condition: 'adopt_first' },
