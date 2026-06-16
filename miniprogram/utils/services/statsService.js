@@ -307,6 +307,28 @@ const statsService = {
     return { code: 0, data: shuffled.slice(0, count) };
   },
 
+  // 获取每日一问
+  async getDailyQuestion() {
+    const { DAILY_QUESTIONS } = require('./config');
+    const today = new Date();
+    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+    const index = dayOfYear % DAILY_QUESTIONS.length;
+    return { code: 0, data: DAILY_QUESTIONS[index] };
+  },
+
+  // 获取习惯小贴士
+  async getHabitTip() {
+    const { HABIT_TIPS } = require('./config');
+    const index = Math.floor(Math.random() * HABIT_TIPS.length);
+    return { code: 0, data: HABIT_TIPS[index] };
+  },
+
+  // 获取习惯养成指南列表
+  async getHabitGuides() {
+    const { HABIT_GUIDES } = require('./config');
+    return { code: 0, data: HABIT_GUIDES };
+  },
+
   // ========== 智能分析 ==========
 
   // 习惯稳定性评分
