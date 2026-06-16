@@ -5,6 +5,10 @@
       <text class="entry-icon">📊</text>
       <text class="entry-text">年度报告</text>
     </view>
+    <view class="entry-item" bindtap="goMonthlyReport">
+      <text class="entry-icon">📅</text>
+      <text class="entry-text">月度报告</text>
+    </view>
     <view class="entry-item" bindtap="goInsights">
       <text class="entry-icon">💡</text>
       <text class="entry-text">数据洞察</text>
