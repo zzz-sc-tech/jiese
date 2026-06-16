@@ -9,12 +9,19 @@ global.wx = {
         { date: '2026-06-01', goalId: 'g1', timestamp: 1685577600000 },
         { date: '2026-06-02', goalId: 'g1', timestamp: 1685664000000, diary: '今天早起感觉很好', mood: 'happy' }
       ],
-      'jiese_global_stats': { totalDays: 2, longestStreak: 2, achievements: [] }
+      'jiese_global_stats': { totalDays: 2, longestStreak: 2, achievements: [] },
+      'jiese_pets': []
     };
     return data[key] || null;
   },
   setStorageSync: () => {},
-  removeStorageSync: () => {}
+  removeStorageSync: () => {},
+  env: { USER_DATA_PATH: '/tmp' },
+  getFileSystemManager: () => ({
+    writeFileSync: () => {}
+  }),
+  shareFileMessage: () => Promise.resolve(),
+  setClipboardData: (opts) => opts.success && opts.success()
 };
 
 const exportService = require('../utils/services/exportService');
