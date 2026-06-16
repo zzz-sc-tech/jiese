@@ -1,11 +1,14 @@
 <view class="page-history {{themeClass}}">
-  <!-- 年度报告入口 -->
-  <view class="report-entry" bindtap="goAnnualReport">
-    <view class="report-entry-left">
-      <text class="report-entry-icon">📊</text>
-      <text class="report-entry-text">查看年度报告</text>
+  <!-- 功能入口 -->
+  <view class="entry-grid">
+    <view class="entry-item" bindtap="goAnnualReport">
+      <text class="entry-icon">📊</text>
+      <text class="entry-text">年度报告</text>
     </view>
-    <text class="report-entry-arrow">›</text>
+    <view class="entry-item" bindtap="goInsights">
+      <text class="entry-icon">💡</text>
+      <text class="entry-text">数据洞察</text>
+    </view>
   </view>
 
   <!-- 目标筛选 -->
