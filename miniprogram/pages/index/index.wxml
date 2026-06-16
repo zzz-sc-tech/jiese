@@ -102,7 +102,7 @@
         wx:for="{{goals}}"
         wx:key="id"
       >
-        <view class="goal-left" bindtap="doCheckin" data-goal-id="{{item.id}}">
+        <view class="goal-left" bindtap="{{item.type === 'duration' ? 'goTimer' : 'doCheckin'}}" data-goal-id="{{item.id}}">
           <view class="goal-icon-wrap" style="background: {{item.color}}20;">
             <text class="goal-icon">{{item.icon}}</text>
           </view>
@@ -117,6 +117,10 @@
             <view class="goal-stats-row" wx:elif="{{item.type === 'count'}}">
               <text class="goal-streak">今日 {{item.todayCount}}/{{item.targetCount}}</text>
               <text class="goal-total">累计{{item.totalDays}}天</text>
+              <!-- 进度条 -->
+              <view class="count-progress">
+                <view class="count-progress-fill" style="width: {{item.targetCount > 0 ? item.todayCount / item.targetCount * 100 : 0}}%; background: {{item.color}};"></view>
+              </view>
             </view>
             <!-- duration 类型 -->
             <view class="goal-stats-row" wx:elif="{{item.type === 'duration'}}">
@@ -138,20 +142,24 @@
           >
             <text class="check-icon" style="color: {{item.checked ? '#fff' : '#999'}};">{{item.checked ? '✓' : ''}}</text>
           </view>
-          <!-- count: 计数按钮 -->
-          <view class="goal-check-btn {{item.countDone ? 'done' : ''}}"
-            wx:elif="{{item.type === 'count'}}"
-            style="border-color: {{item.countDone ? item.color : '#ddd'}}; background: {{item.countDone ? item.color : 'transparent'}};"
-            bindtap="doCheckin"
-            data-goal-id="{{item.id}}"
-          >
-            <text class="check-icon" style="color: {{item.countDone ? '#fff' : item.color}};">{{item.todayCount}}</text>
+          <!-- count: 快速+1按钮 -->
+          <view class="count-btn-group" wx:elif="{{item.type === 'count'}}">
+            <view class="count-btn minus" wx:if="{{item.todayCount > 0}}" bindtap="doCountMinus" data-goal-id="{{item.id}}">
+              <text class="count-btn-icon">-</text>
+            </view>
+            <view class="count-btn plus {{item.countDone ? 'done' : ''}}"
+              style="border-color: {{item.countDone ? item.color : '#ddd'}}; background: {{item.countDone ? item.color : 'transparent'}};"
+              bindtap="doCountPlus"
+              data-goal-id="{{item.id}}"
+            >
+              <text class="count-btn-icon" style="color: {{item.countDone ? '#fff' : item.color}};">+</text>
+            </view>
           </view>
           <!-- duration: 计时器入口 -->
           <view class="goal-timer-btn"
             wx:elif="{{item.type === 'duration'}}"
             style="border-color: {{item.color}};"
-            bindtap="doCheckin"
+            bindtap="goTimer"
             data-goal-id="{{item.id}}"
           >
             <text class="timer-icon" style="color: {{item.color}};">⏱</text>
