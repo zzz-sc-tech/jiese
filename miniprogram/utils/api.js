@@ -721,6 +721,16 @@ const api = {
     return getActualCheckinDaysFrom(checkins);
   },
 
+  // ========== 目标模板接口 ==========
+  getGoalTemplates() {
+    return GOAL_TEMPLATES;
+  },
+
+  getGoalTemplateCategories() {
+    const categories = [...new Set(GOAL_TEMPLATES.map(t => t.category))];
+    return categories;
+  },
+
   // ========== 宠物系统接口 ==========
 
   // 获取宠物类型列表
