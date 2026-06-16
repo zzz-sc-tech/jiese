@@ -73,7 +73,10 @@ const api = {
   getCountStats: statsService.getCountStats.bind(statsService),
   getQuotes: statsService.getQuotes.bind(statsService),
   getYesterdaySummary: statsService.getYesterdaySummary.bind(statsService),
-  getWeeklyReport: statsService.getWeeklyReport.bind(statsService)
+  getWeeklyReport: statsService.getWeeklyReport.bind(statsService),
+  getStabilityScore: statsService.getStabilityScore.bind(statsService),
+  getComparisonAnalysis: statsService.getComparisonAnalysis.bind(statsService),
+  getBestTimeRecommendation: statsService.getBestTimeRecommendation.bind(statsService)
 };
 
 module.exports = api;
