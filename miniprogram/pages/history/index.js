@@ -277,6 +277,11 @@ Page({
     wx.navigateTo({ url: '/pages/annual-report/index' });
   },
 
+  // 跳转数据洞察
+  goInsights() {
+    wx.navigateTo({ url: '/pages/insights/index' });
+  },
+
   // 切换统计视图
   switchStatsView(e) {
     const view = e.currentTarget.dataset.view;
