@@ -638,6 +638,10 @@ Page({
     wx.navigateTo({ url: '/pages/habit-chain/index' });
   },
 
+  goDiary() {
+    wx.navigateTo({ url: '/pages/diary/index' });
+  },
+
   goTemplates() {
     wx.navigateTo({ url: '/pages/goal-templates/index' });
   },
