@@ -47,7 +47,11 @@ Page({
     // 每日一问
     dailyQuestion: null,
     // 习惯小贴士
-    habitTip: null
+    habitTip: null,
+    // 动画状态
+    showConfetti: false,
+    showStreakBadge: false,
+    currentStreak: 0
   },
 
   onLoad() {
