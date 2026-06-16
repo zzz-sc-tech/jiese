@@ -295,7 +295,14 @@ Page({
 
   // 加载趋势数据
   loadTrendData() {
-    const checkins = api.getCheckins();
+    const { selectedGoalId } = this.data;
+    let checkins = api.getCheckins();
+
+    // 根据选中的目标筛选
+    if (selectedGoalId) {
+      checkins = checkins.filter(c => c.goalId === selectedGoalId);
+    }
+
     const now = new Date();
     const trendData = [];
     const timeCounts = { '凌晨': 0, '早晨': 0, '上午': 0, '中午': 0, '下午': 0, '晚上': 0, '深夜': 0 };
