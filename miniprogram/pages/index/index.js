@@ -500,6 +500,64 @@ Page({
     this.setData({ selectedType: e.currentTarget.dataset.type });
   },
 
+  // 排序相关
+  toggleSortMode() {
+    const isSortMode = !this.data.isSortMode;
+    this.setData({ isSortMode });
+    if (!isSortMode) {
+      // 退出排序模式时保存顺序
+      this.saveGoalOrder();
+    }
+  },
+
+  onGoalLongPress(e) {
+    if (!this.data.isSortMode) return;
+    const index = e.currentTarget.dataset.index;
+    this.setData({ sortDragging: true, dragIndex: index });
+  },
+
+  onGoalTouchStart(e) {
+    if (!this.data.isSortMode) return;
+    this.setData({ touchStartY: e.touches[0].clientY });
+  },
+
+  onGoalTouchMove(e) {
+    if (!this.data.sortDragging) return;
+    const touchY = e.touches[0].clientY;
+    const { touchStartY, dragIndex, goals } = this.data;
+    const diff = touchY - touchStartY;
+
+    // 计算目标位置
+    const itemHeight = 120; // 估计每个卡片高度
+    const moveItems = Math.round(diff / itemHeight);
+
+    if (moveItems !== 0) {
+      const newIndex = Math.max(0, Math.min(goals.length - 1, dragIndex + moveItems));
+      if (newIndex !== dragIndex) {
+        // 交换位置
+        const newGoals = [...goals];
+        const temp = newGoals[dragIndex];
+        newGoals[dragIndex] = newGoals[newIndex];
+        newGoals[newIndex] = temp;
+        this.setData({ goals: newGoals, dragIndex: newIndex, touchStartY: touchY });
+      }
+    }
+  },
+
+  onGoalTouchEnd() {
+    if (!this.data.sortDragging) return;
+    this.setData({ sortDragging: false, dragIndex: -1 });
+  },
+
+  async saveGoalOrder() {
+    const orderedIds = this.data.goals.map(g => g.id);
+    try {
+      await api.reorderGoals(orderedIds);
+    } catch (err) {
+      console.error('保存排序失败:', err);
+    }
+  },
+
   onTargetCountInput(e) {
     let val = parseInt(e.detail.value) || 1;
     if (val < 1) val = 1;
