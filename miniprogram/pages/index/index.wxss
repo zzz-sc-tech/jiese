@@ -384,7 +384,7 @@
   flex-direction: column;
   align-items: center;
   padding: 60rpx 0;
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 24rpx;
   box-shadow: var(--shadow-md);
 }
