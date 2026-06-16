@@ -259,9 +259,9 @@
   padding: 12rpx 24rpx;
   margin-right: 12rpx;
   border-radius: 24rpx;
-  background: #fff;
+  background: var(--color-bg-card);
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
   border: 2rpx solid transparent;
   transition: all 0.2s ease;
