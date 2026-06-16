@@ -516,6 +516,10 @@ Page({
     wx.navigateTo({ url: '/pages/reminder/index' });
   },
 
+  goHabitChain() {
+    wx.navigateTo({ url: '/pages/habit-chain/index' });
+  },
+
   goTemplates() {
     wx.navigateTo({ url: '/pages/goal-templates/index' });
   },
