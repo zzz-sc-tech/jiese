@@ -543,20 +543,22 @@ Page({
   },
 
   initPieCanvas(goalDistribution) {
-    const query = this.createSelectorQuery();
-    query.select('#pieCanvas')
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        if (!res || !res[0]) return;
-        const canvas = res[0].node;
-        const ctx = canvas.getContext('2d');
-        const dpr = wx.getWindowInfo().pixelRatio;
-        const size = res[0].width;
-        canvas.width = size * dpr;
-        canvas.height = size * dpr;
-        ctx.scale(dpr, dpr);
-        this._pieCtx = ctx;
-        this._pieSize = size;
+    // 延迟绘制，确保页面已渲染
+    setTimeout(() => {
+      const query = this.createSelectorQuery();
+      query.select('#pieCanvas')
+        .fields({ node: true, size: true })
+        .exec((res) => {
+          if (!res || !res[0]) return;
+          const canvas = res[0].node;
+          const ctx = canvas.getContext('2d');
+          const dpr = wx.getWindowInfo().pixelRatio;
+          const size = res[0].width;
+          canvas.width = size * dpr;
+          canvas.height = size * dpr;
+          ctx.scale(dpr, dpr);
+          this._pieCtx = ctx;
+          this._pieSize = size;
         this.drawPieChart(goalDistribution);
       });
   },
