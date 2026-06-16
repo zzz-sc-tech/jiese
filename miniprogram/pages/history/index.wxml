@@ -321,6 +321,54 @@
     </view>
   </view>
 
+  <!-- 年度热力图 -->
+  <view class="heatmap-section card">
+    <view class="heatmap-header">
+      <text class="heatmap-title">年度打卡</text>
+      <view class="heatmap-nav">
+        <view class="nav-btn" bindtap="prevHeatmapYear">
+          <text>‹</text>
+        </view>
+        <text class="heatmap-year">{{heatmapYear}}</text>
+        <view class="nav-btn" bindtap="nextHeatmapYear">
+          <text>›</text>
+        </view>
+      </view>
+    </view>
+    <view class="heatmap-container">
+      <view class="heatmap-months">
+        <text class="heatmap-month" wx:for="{{heatmapMonths}}" wx:key="index">{{item}}</text>
+      </view>
+      <view class="heatmap-grid">
+        <view class="heatmap-week" wx:for="{{heatmapData}}" wx:key="weekIndex">
+          <view
+            class="heatmap-day level-{{item.level}}"
+            wx:for="{{item.days}}"
+            wx:key="date"
+            bindtap="showHeatmapDetail"
+            data-date="{{item.date}}"
+            data-count="{{item.count}}"
+          >
+            <view class="heatmap-day-inner"></view>
+          </view>
+        </view>
+      </view>
+      <view class="heatmap-legend">
+        <text class="legend-text">少</text>
+        <view class="legend-day level-0"></view>
+        <view class="legend-day level-1"></view>
+        <view class="legend-day level-2"></view>
+        <view class="legend-day level-3"></view>
+        <view class="legend-day level-4"></view>
+        <text class="legend-text">多</text>
+      </view>
+    </view>
+    <view class="heatmap-stats">
+      <text class="heatmap-stat">全年打卡 {{heatmapTotalDays}} 天</text>
+      <text class="heatmap-stat">最长连续 {{heatmapMaxStreak }} 天</text>
+    </view>
+  </view>
+
   <!-- 日历视图 -->
   <view class="calendar card">
     <view class="calendar-header">
