@@ -7,7 +7,8 @@ Page({
     year: 2026,
     month: 6,
     report: null,
-    loading: true
+    loading: true,
+    avgPerDay: '0'
   },
 
   onLoad(options) {
