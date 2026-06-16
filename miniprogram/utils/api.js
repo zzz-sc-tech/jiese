@@ -2158,6 +2158,177 @@ const api = {
   // 获取所有挑战勋章定义
   getChallengeMedalDefs() {
     return CHALLENGE_MEDALS;
+  },
+
+  // ========== 智能提醒系统 ==========
+
+  // 分析最佳打卡时间
+  analyzeBestTime(goalId) {
+    const checkins = getCheckins();
+    const goalCheckins = goalId
+      ? checkins.filter(c => c.goalId === goalId)
+      : checkins;
+
+    if (goalCheckins.length < 7) {
+      return { code: 1, message: '数据不足，需要至少7次打卡记录' };
+    }
+
+    // 统计每小时的打卡次数
+    const hourCounts = new Array(24).fill(0);
+    goalCheckins.forEach(c => {
+      const hour = new Date(c.timestamp).getHours();
+      hourCounts[hour]++;
+    });
+
+    // 找出最佳时段（前3个）
+    const bestHours = [];
+    for (let i = 0; i < 3; i++) {
+      const maxHour = hourCounts.indexOf(Math.max(...hourCounts));
+      bestHours.push({
+        hour: maxHour,
+        count: hourCounts[maxHour],
+        timeStr: `${String(maxHour).padStart(2, '0')}:00`
+      });
+      hourCounts[maxHour] = 0;
+    }
+
+    // 分析打卡规律
+    const totalCheckins = goalCheckins.length;
+    const uniqueDays = new Set(goalCheckins.map(c => c.date)).size;
+    const avgPerDay = Math.round(totalCheckins / uniqueDays * 10) / 10;
+
+    // 分析工作日/周末差异
+    const weekdayCheckins = goalCheckins.filter(c => {
+      const day = new Date(c.date).getDay();
+      return day >= 1 && day <= 5;
+    });
+    const weekendCheckins = goalCheckins.filter(c => {
+      const day = new Date(c.date).getDay();
+      return day === 0 || day === 6;
+    });
+
+    const weekdayAvg = weekdayCheckins.length / Math.max(1, uniqueDays * 5 / 7);
+    const weekendAvg = weekendCheckins.length / Math.max(1, uniqueDays * 2 / 7);
+
+    return {
+      code: 0,
+      data: {
+        bestHours,
+        totalCheckins,
+        uniqueDays,
+        avgPerDay,
+        weekdayAvg: Math.round(weekdayAvg * 10) / 10,
+        weekendAvg: Math.round(weekendAvg * 10) / 10,
+        isWeekendBetter: weekendAvg > weekdayAvg
+      }
+    };
+  },
+
+  // 获取智能提醒建议
+  getSmartReminderSuggestion(goalId) {
+    const analysis = this.analyzeBestTime(goalId);
+    if (analysis.code !== 0) {
+      return { code: 0, data: { suggestions: [] } };
+    }
+
+    const { bestHours, isWeekendBetter } = analysis.data;
+    const suggestions = [];
+
+    // 基于最佳时间生成建议
+    bestHours.forEach((h, i) => {
+      if (h.count > 0) {
+        suggestions.push({
+          time: h.timeStr,
+          reason: i === 0 ? '你最常在这个时间打卡' : `第${i + 1}常用时段`,
+          confidence: Math.round(h.count / analysis.data.totalCheckins * 100)
+        });
+      }
+    });
+
+    // 如果周末表现更好，建议周末提醒
+    if (isWeekendBetter) {
+      suggestions.push({
+        time: bestHours[0]?.timeStr || '09:00',
+        reason: '你周末打卡更积极，建议周末也设置提醒',
+        confidence: 60,
+        weekendOnly: true
+      });
+    }
+
+    return { code: 0, data: { suggestions } };
+  },
+
+  // 生成提醒文案
+  generateReminderMessage(goalName, goalType) {
+    const messages = {
+      single: [
+        `该「${goalName}」了，坚持就是胜利！`,
+        `今天还没「${goalName}」哦，加油！`,
+        `「${goalName}」时间到，你准备好了吗？`
+      ],
+      count: [
+        `「${goalName}」还没完成，快来打卡吧！`,
+        `今天的目标还差一点，继续努力！`,
+        `「${goalName}」在等你哦~`
+      ],
+      duration: [
+        `开始「${goalName}」吧，专注出成果！`,
+        `「${goalName}」时间到了，准备开始！`,
+        `今天也要「${goalName}」哦，加油！`
+      ]
+    };
+
+    const typeMessages = messages[goalType] || messages.single;
+    return typeMessages[Math.floor(Math.random() * typeMessages.length)];
+  },
+
+  // 获取今日待提醒目标
+  getTodayReminders() {
+    const settings = storage.getSettings();
+    const goals = getGoals();
+    const checkins = getCheckins();
+    const today = dateUtil.today();
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    const reminders = [];
+
+    goals.forEach(goal => {
+      if (goal.paused) return;
+
+      // 检查是否已打卡
+      const isChecked = checkins.some(c => c.goalId === goal.id && c.date === today);
+      if (isChecked) return;
+
+      // 获取目标的提醒设置
+      const reminder = goal.reminder || {};
+      const times = reminder.times || [];
+
+      times.forEach(time => {
+        const [hour, minute] = time.split(':').map(Number);
+
+        // 检查是否是工作日/周末
+        const dayOfWeek = now.getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        if (reminder.weekdayOnly && isWeekend) return;
+        if (reminder.weekendOnly && !isWeekend) return;
+
+        // 检查是否到了提醒时间（前后30分钟内）
+        const timeDiff = (hour - currentHour) * 60 + (minute - currentMinute);
+        if (timeDiff >= -30 && timeDiff <= 30) {
+          reminders.push({
+            goalId: goal.id,
+            goalName: goal.name,
+            goalIcon: goal.icon,
+            time,
+            message: this.generateReminderMessage(goal.name, goal.type || 'single')
+          });
+        }
+      });
+    });
+
+    return { code: 0, data: reminders };
   }
 };
 
