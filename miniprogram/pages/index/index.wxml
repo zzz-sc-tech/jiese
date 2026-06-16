@@ -78,9 +78,15 @@
     <view class="goals-section">
       <view class="section-header">
         <text class="section-title">目标</text>
-        <view class="add-goal-btn" bindtap="showAddGoalModal">
-          <text class="add-icon">+</text>
-          <text class="add-text">添加</text>
+        <view class="header-right">
+          <view class="template-btn" bindtap="goTemplates">
+            <text class="template-icon">📋</text>
+            <text class="template-text">模板</text>
+          </view>
+          <view class="add-goal-btn" bindtap="showAddGoalModal">
+            <text class="add-icon">+</text>
+            <text class="add-text">添加</text>
+          </view>
         </view>
       </view>
 
@@ -88,7 +94,7 @@
       <view class="goals-empty" wx:if="{{goals.length === 0}}">
         <text class="empty-icon">🎯</text>
         <text class="empty-text">还没有设置目标</text>
-        <text class="empty-hint">点击上方「添加」创建你的第一个打卡目标</text>
+        <text class="empty-hint">点击「模板」快速创建或自定义添加</text>
       </view>
 
       <!-- 目标卡片列表 -->
