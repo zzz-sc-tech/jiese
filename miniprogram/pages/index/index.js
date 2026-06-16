@@ -686,6 +686,10 @@ Page({
     wx.navigateTo({ url: '/pages/diary/index' });
   },
 
+  goShareCard() {
+    wx.navigateTo({ url: '/pages/share-card/index' });
+  },
+
   goTemplates() {
     wx.navigateTo({ url: '/pages/goal-templates/index' });
   },
