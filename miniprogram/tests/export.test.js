@@ -1,18 +1,21 @@
 // 守心小程序 - 导出服务单元测试
 
 // 模拟微信小程序环境
+const mockData = {
+  'jiese_goals': [{ id: 'g1', name: '早起', icon: '🌅', type: 'single' }],
+  'jiese_checkins': [
+    { date: '2026-06-01', goalId: 'g1', timestamp: 1685577600000 },
+    { date: '2026-06-02', goalId: 'g1', timestamp: 1685664000000, diary: '今天早起感觉很好', mood: 'happy' }
+  ],
+  'jiese_global_stats': { totalDays: 2, longestStreak: 2, achievements: [] },
+  'jiese_pets': []
+};
+
 global.wx = {
   getStorageSync: (key) => {
-    const data = {
-      'jiese_goals': [{ id: 'g1', name: '早起', icon: '🌅', type: 'single' }],
-      'jiese_checkins': [
-        { date: '2026-06-01', goalId: 'g1', timestamp: 1685577600000 },
-        { date: '2026-06-02', goalId: 'g1', timestamp: 1685664000000, diary: '今天早起感觉很好', mood: 'happy' }
-      ],
-      'jiese_global_stats': { totalDays: 2, longestStreak: 2, achievements: [] },
-      'jiese_pets': []
-    };
-    return data[key] || null;
+    const value = mockData[key];
+    if (value === undefined) return null;
+    return JSON.stringify({ value, timestamp: Date.now() });
   },
   setStorageSync: () => {},
   removeStorageSync: () => {},
