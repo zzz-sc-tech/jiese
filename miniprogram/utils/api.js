@@ -25,6 +25,8 @@ const api = {
   saveDuration: goalService.saveDuration.bind(goalService),
   getTodayStatus: goalService.getTodayStatus.bind(goalService),
   getTodaySessions: goalService.getTodaySessions.bind(goalService),
+  getCheckinDiaries: goalService.getCheckinDiaries.bind(goalService),
+  getMilestones: goalService.getMilestones.bind(goalService),
 
   // ========== 宠物服务 ==========
   getPetTypes: petService.getPetTypes.bind(petService),
