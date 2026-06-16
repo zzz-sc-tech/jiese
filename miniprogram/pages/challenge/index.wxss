@@ -180,16 +180,16 @@
   width: 16rpx;
   height: 16rpx;
   border-radius: 50%;
-  background: #ddd;
+  background: var(--color-border);
   z-index: 1;
 }
 
 .timeline-item.passed .timeline-dot {
-  background: #5B9A6F;
+  background: var(--color-primary);
 }
 
 .timeline-item.current .timeline-dot {
-  background: #E8B86D;
+  background: var(--color-accent);
   box-shadow: 0 0 0 6rpx rgba(232, 184, 109, 0.2);
 }
 
@@ -199,7 +199,7 @@
   top: 24rpx;
   width: 2rpx;
   height: calc(100% - 16rpx);
-  background: #E8F5E9;
+  background: var(--color-border);
 }
 
 .timeline-item.passed .timeline-line {
