@@ -38,7 +38,11 @@ Page({
     // 对比分析
     comparison: null,
     // 最佳时段推荐
-    bestTime: null
+    bestTime: null,
+    // 习惯健康度
+    habitHealth: null,
+    // 智能推荐
+    recommendations: null
   },
 
   onLoad() {
