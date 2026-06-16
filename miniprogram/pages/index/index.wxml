@@ -150,7 +150,7 @@
       </view>
 
       <!-- 目标卡片列表 -->
-      <view class="goal-card card {{item.checked ? 'checked' : ''}} {{item.paused ? 'paused' : ''}} {{isSortMode ? 'sortable' : ''}}"
+      <view class="goal-card card {{item.checked ? 'checked' : ''}} {{item.paused ? 'paused' : ''}} {{isSortMode ? 'sortable' : ''}} {{sortDragging && dragIndex === index ? 'dragging' : ''}}"
         wx:for="{{goals}}"
         wx:key="id"
         bindlongpress="onGoalLongPress"
