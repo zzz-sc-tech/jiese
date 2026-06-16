@@ -83,7 +83,8 @@ Page({
       peakHour < 14 ? '中午' : peakHour < 18 ? '下午' : peakHour < 22 ? '晚上' : '深夜';
 
     // 宠物信息
-    const pets = api.getPets();
+    const petsRes = api.getPetsInfo();
+    const pets = petsRes.code === 0 ? petsRes.data : [];
     const petInfo = pets.length > 0 ? {
       name: pets[0].name,
       icon: api.getPetTypes()[pets[0].petId]?.icon || '🐾',
