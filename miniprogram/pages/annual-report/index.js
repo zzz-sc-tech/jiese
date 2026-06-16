@@ -61,7 +61,8 @@ Page({
     }
 
     // 各目标统计
-    const goals = api.getGoals();
+    const goalsRes = api.getGoals();
+    const goals = goalsRes.code === 0 ? goalsRes.data : [];
     const goalStats = goals.map(goal => {
       const goalCheckins = yearCheckins.filter(c => c.goalId === goal.id);
       const goalDays = new Set(goalCheckins.map(c => c.date)).size;
