@@ -1,6 +1,7 @@
 const api = require('../../utils/api');
 const storage = require('../../utils/storage');
 const dateUtil = require('../../utils/date');
+const ui = require('../../utils/ui');
 
 const app = getApp();
 
