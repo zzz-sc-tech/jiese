@@ -90,7 +90,7 @@
         </view>
         <view class="fun-item">
           <text class="fun-icon">📊</text>
-          <text class="fun-text">日均打卡 {{report.totalCheckins > 0 ? (report.totalCheckins / report.daysInMonth).toFixed(1) : 0}} 次</text>
+          <text class="fun-text">日均打卡 {{avgPerDay}} 次</text>
         </view>
       </view>
     </view>
