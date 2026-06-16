@@ -39,7 +39,8 @@ Page({
     themeName: '清新绿',
     vibrateIntensity: 'medium',
     vibrateMode: 'auto',
-    vibrateName: '中等·自动停止'
+    vibrateName: '中等·自动停止',
+    enableDiary: false
   },
 
   onLoad() {
