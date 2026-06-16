@@ -173,8 +173,8 @@
       </view>
     </view>
 
-    <!-- 时长分析（筛选时长目标时） -->
-    <view class="duration-section" wx:if="{{durationStats && selectedGoalId && selectedGoalType === 'duration'}}">
+    <!-- 时长分析（全部模式 或 筛选时长目标时） -->
+    <view class="duration-section" wx:if="{{durationStats && (!selectedGoalId || selectedGoalType === 'duration')}}">
       <view class="section-header">
         <text class="section-title">时长分析</text>
         <text class="section-sub">{{durationStats.days}}天总览</text>
@@ -190,10 +190,63 @@
           <text class="dur-ov-label">时长目标</text>
         </view>
       </view>
+
+      <!-- 扇形图（仅全部模式，多目标时显示） -->
+      <view class="dur-chart card" wx:if="{{showPie}}">
+        <text class="dur-chart-title">时长分布</text>
+        <view class="pie-chart-wrap">
+          <canvas type="2d" id="pieCanvas" class="pie-canvas"></canvas>
+        </view>
+        <view class="pie-legend">
+          <view class="legend-item" wx:for="{{durationStats.goalDistribution}}" wx:key="id">
+            <view class="legend-dot" style="background: {{item.color}};"></view>
+            <text class="legend-name">{{item.icon}} {{item.name}}</text>
+            <text class="legend-value">{{item.totalStr}}</text>
+            <text class="legend-percent">{{item.percent}}%</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 各目标详情 -->
+      <view class="dur-goals">
+        <text class="dur-goals-title">各目标详情</text>
+        <view class="dur-goal-item card" wx:for="{{durationStats.goalDistribution}}" wx:key="id">
+          <view class="dg-header">
+            <view class="dg-icon-wrap" style="background: {{item.color}}20;">
+              <text class="dg-icon">{{item.icon}}</text>
+            </view>
+            <view class="dg-info">
+              <text class="dg-name">{{item.name}}</text>
+              <text class="dg-detail">{{item.sessionCount}}次会话 · {{item.totalDays}}天</text>
+            </view>
+            <view class="dg-stat">
+              <text class="dg-total">{{item.totalStr}}</text>
+              <text class="dg-avg">日均 {{item.avgPerDayStr}}</text>
+            </view>
+          </view>
+          <view class="dg-bars">
+            <view class="dg-bar-col" wx:for="{{item.recent7}}" wx:for-item="day" wx:key="date">
+              <view class="dg-bar-track">
+                <view class="dg-bar-fill" style="height: {{day.minutes > 0 ? (day.minutes > 1 ? day.minutes / 60 * 100 : 8) : 0}}%; background: {{item.color}};"></view>
+              </view>
+              <text class="dg-bar-label">{{day.date}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 数据分析 -->
+      <view class="dur-analysis card" wx:if="{{durationStats.analysis.length > 0}}">
+        <text class="dur-analysis-title">数据分析</text>
+        <view class="dur-analysis-item" wx:for="{{durationStats.analysis}}" wx:key="index">
+          <text class="dur-analysis-icon">💡</text>
+          <text class="dur-analysis-text">{{item}}</text>
+        </view>
+      </view>
     </view>
 
-    <!-- 计数分析（筛选计数目标时） -->
-    <view class="count-section" wx:if="{{countStats && selectedGoalId && selectedGoalType === 'count'}}">
+    <!-- 计数分析（全部模式 或 筛选计数目标时） -->
+    <view class="count-section" wx:if="{{countStats && (!selectedGoalId || selectedGoalType === 'count')}}">
       <view class="section-header">
         <text class="section-title">计数分析</text>
         <text class="section-sub">{{countStats.days}}天总览</text>
