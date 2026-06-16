@@ -236,6 +236,38 @@ Page({
     }
   },
 
+  // 计数打卡 +1
+  async doCountPlus(e) {
+    const goalId = e.currentTarget.dataset.goalId;
+    const goal = this.data.goals.find(g => g.id === goalId);
+    if (!goal || goal.countDone) return;
+
+    try {
+      const res = await api.checkinCount(goalId);
+      if (res.code === 0) {
+        wx.vibrateShort({ type: 'light' });
+        this.loadData();
+      } else {
+        wx.showToast({ title: res.message, icon: 'none' });
+      }
+    } catch (err) {
+      console.error('打卡失败:', err);
+    }
+  },
+
+  // 计数打卡 -1
+  async doCountMinus(e) {
+    const goalId = e.currentTarget.dataset.goalId;
+    // 这里需要一个减少计数的API，暂时用提示
+    wx.showToast({ title: '暂不支持减少', icon: 'none' });
+  },
+
+  // 跳转计时器
+  goTimer(e) {
+    const goalId = e.currentTarget.dataset.goalId;
+    wx.navigateTo({ url: `/pages/timer/index?goalId=${goalId}` });
+  },
+
   // 显示添加目标弹窗
   showAddGoalModal() {
     const presets = this.data.presetIcons;
