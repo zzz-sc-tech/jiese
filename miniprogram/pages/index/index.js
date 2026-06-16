@@ -459,6 +459,10 @@ Page({
     wx.navigateTo({ url: '/pages/pet/index' });
   },
 
+  goTemplates() {
+    wx.navigateTo({ url: '/pages/goal-templates/index' });
+  },
+
   goChallenge() {
     wx.navigateTo({ url: '/pages/challenge/index' });
   },
