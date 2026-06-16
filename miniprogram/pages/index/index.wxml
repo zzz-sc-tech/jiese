@@ -178,13 +178,13 @@
         <text class="shortcut-icon">🏆</text>
         <text class="shortcut-text">挑战</text>
       </view>
+      <view class="shortcut-item" bindtap="goReminder">
+        <text class="shortcut-icon">🔔</text>
+        <text class="shortcut-text">提醒</text>
+      </view>
       <view class="shortcut-item" bindtap="showWeeklyReport">
         <text class="shortcut-icon">📋</text>
         <text class="shortcut-text">周报</text>
-      </view>
-      <view class="shortcut-item" bindtap="goShare">
-        <text class="shortcut-icon">📤</text>
-        <text class="shortcut-text">分享</text>
       </view>
     </view>
   </view>
