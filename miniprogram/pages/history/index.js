@@ -277,6 +277,91 @@ Page({
     wx.navigateTo({ url: '/pages/annual-report/index' });
   },
 
+  // 切换统计视图
+  switchStatsView(e) {
+    const view = e.currentTarget.dataset.view;
+    this.setData({ statsView: view });
+  },
+
+  // 加载趋势数据
+  loadTrendData() {
+    const checkins = api.getCheckins();
+    const now = new Date();
+    const trendData = [];
+    const timeCounts = { '凌晨': 0, '早晨': 0, '上午': 0, '中午': 0, '下午': 0, '晚上': 0, '深夜': 0 };
+
+    // 最近30天数据
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = dateUtil.format(d);
+      const dayCheckins = checkins.filter(c => c.date === dateStr);
+      const count = dayCheckins.length;
+
+      trendData.push({
+        date: dateStr,
+        day: d.getDate(),
+        count,
+        percent: 0
+      });
+
+      // 统计时间分布
+      dayCheckins.forEach(c => {
+        const hour = new Date(c.timestamp).getHours();
+        if (hour < 6) timeCounts['凌晨']++;
+        else if (hour < 9) timeCounts['早晨']++;
+        else if (hour < 12) timeCounts['上午']++;
+        else if (hour < 14) timeCounts['中午']++;
+        else if (hour < 18) timeCounts['下午']++;
+        else if (hour < 22) timeCounts['晚上']++;
+        else timeCounts['深夜']++;
+      });
+    }
+
+    // 计算百分比
+    const maxCount = Math.max(...trendData.map(d => d.count), 1);
+    trendData.forEach(d => {
+      d.percent = Math.round((d.count / maxCount) * 100);
+    });
+
+    // 计算统计
+    const trendTotal = trendData.reduce((sum, d) => sum + d.count, 0);
+    const trendAvg = Math.round(trendTotal / 30 * 10) / 10;
+    const trendMax = Math.max(...trendData.map(d => d.count));
+
+    // 计算时间分布百分比
+    const totaltimeCounts = Object.values(timeCounts).reduce((a, b) => a + b, 0);
+    const timeDistribution = Object.entries(timeCounts).map(([period, count]) => ({
+      period,
+      count,
+      percent: totaltimeCounts > 0 ? Math.round((count / totaltimeCounts) * 100) : 0
+    }));
+
+    // 找出峰值时段
+    const peakPeriod = timeDistribution.reduce((a, b) => a.count > b.count ? a : b).period;
+
+    // 计算本周统计
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    const weekCheckins = checkins.filter(c => {
+      const d = new Date(c.date);
+      return d >= weekStart;
+    }).length;
+    const weekRate = Math.round((weekCheckins / 7) * 100);
+
+    this.setData({
+      trendData,
+      trendAvg,
+      trendMax,
+      trendTotal,
+      timeDistribution,
+      peakPeriod,
+      weekCheckins,
+      weekRate,
+      weekRange: `${dateUtil.format(weekStart)} ~ ${dateUtil.format(now)}`
+    });
+  },
+
   // 切换目标筛选
   selectGoal(e) {
     const goalId = e.currentTarget.dataset.goalId;
