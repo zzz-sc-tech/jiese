@@ -132,7 +132,7 @@ const goalService = {
   },
 
   // 对某个目标打卡（single 类型：每天一次）
-  async checkin(goalId) {
+  async checkin(goalId, diary = '', mood = '') {
     const today = getTodayStr();
     const checkins = getCheckins();
 
@@ -146,7 +146,10 @@ const goalService = {
     if (!goal) return { code: 2, message: '目标不存在' };
 
     // 记录打卡
-    checkins.push({ date: today, goalId, timestamp: Date.now() });
+    const checkin = { date: today, goalId, timestamp: Date.now() };
+    if (diary) checkin.diary = diary;
+    if (mood) checkin.mood = mood;
+    checkins.push(checkin);
     saveCheckins(checkins);
 
     return this._afterCheckin(goal, checkins);
