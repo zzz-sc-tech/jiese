@@ -157,5 +157,31 @@ Page({
       wx.hideLoading();
       wx.showToast({ title: '创建失败', icon: 'none' });
     }
+  },
+
+  // 重试失败的挑战
+  async retryChallenge(e) {
+    const { goalid, days } = e.currentTarget.dataset;
+    if (!goalid || !days) return;
+
+    wx.showLoading({ title: '重新挑战中...' });
+    try {
+      const res = await api.createChallenge(parseInt(days), goalid);
+      wx.hideLoading();
+      if (res.code === 0) {
+        wx.showToast({ title: '重新挑战开始！', icon: 'success' });
+        this.loadChallenges();
+      } else {
+        wx.showToast({ title: res.message || '创建失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      wx.showToast({ title: '创建失败', icon: 'none' });
+    }
+  },
+
+  // 隐藏庆祝动画
+  hideCelebration() {
+    this.setData({ showCelebration: false, celebrationData: null });
   }
 });
