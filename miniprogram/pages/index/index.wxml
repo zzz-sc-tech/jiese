@@ -216,9 +216,9 @@
         <text class="shortcut-icon">🔗</text>
         <text class="shortcut-text">习惯链</text>
       </view>
-      <view class="shortcut-item" bindtap="goReminder">
-        <text class="shortcut-icon">🔔</text>
-        <text class="shortcut-text">提醒</text>
+      <view class="shortcut-item" bindtap="goDiary">
+        <text class="shortcut-icon">📖</text>
+        <text class="shortcut-text">日记</text>
       </view>
     </view>
   </view>
