@@ -88,7 +88,7 @@ Page({
     if (res.code === 0) {
       const sessions = res.data.sessions.map(s => ({
         ...s,
-        durationStr: api._formatDuration(s.duration)
+        durationStr: api.formatDuration(s.duration)
       }));
       this.setData({
         sessions,
