@@ -74,6 +74,24 @@
       <text class="preview-author">—— {{currentQuote.author}}</text>
     </view>
 
+    <!-- 每日一问 -->
+    <view class="daily-question card" wx:if="{{dailyQuestion}}">
+      <view class="dq-header">
+        <text class="dq-icon">💭</text>
+        <text class="dq-category">{{dailyQuestion.category}}</text>
+      </view>
+      <text class="dq-text">{{dailyQuestion.question}}</text>
+    </view>
+
+    <!-- 习惯小贴士 -->
+    <view class="habit-tip card" wx:if="{{habitTip}}">
+      <view class="tip-header">
+        <text class="tip-icon">💡</text>
+        <text class="tip-label">习惯小贴士</text>
+      </view>
+      <text class="tip-text">{{habitTip.tip}}</text>
+    </view>
+
     <!-- 目标列表 -->
     <view class="goals-section">
       <view class="section-header">
