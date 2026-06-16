@@ -360,6 +360,27 @@ const goalService = {
     };
   },
 
+  // 目标排序
+  async reorderGoals(orderedIds) {
+    const goals = getGoals();
+    const goalMap = {};
+    goals.forEach(g => { goalMap[g.id] = g; });
+
+    const reordered = orderedIds
+      .filter(id => goalMap[id])
+      .map(id => goalMap[id]);
+
+    // 添加未在列表中的目标（以防遗漏）
+    goals.forEach(g => {
+      if (!orderedIds.includes(g.id)) {
+        reordered.push(g);
+      }
+    });
+
+    saveGoals(reordered);
+    return { code: 0 };
+  },
+
   // 格式化时长
   _formatDuration(seconds) {
     if (seconds < 60) return `${seconds}秒`;
