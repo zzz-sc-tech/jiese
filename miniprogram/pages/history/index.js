@@ -371,7 +371,14 @@ Page({
 
   // 计算本周统计
   loadWeekStats() {
-    const checkins = api.getCheckins();
+    const { selectedGoalId } = this.data;
+    let checkins = api.getCheckins();
+
+    // 根据选中的目标筛选
+    if (selectedGoalId) {
+      checkins = checkins.filter(c => c.goalId === selectedGoalId);
+    }
+
     const now = new Date();
 
     // 计算本周起始（周日）
