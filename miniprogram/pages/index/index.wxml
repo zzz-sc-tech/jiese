@@ -18,12 +18,21 @@
     <view class="confetti confetti-4">🎊</view>
     <view class="confetti confetti-5">⭐</view>
     <view class="confetti confetti-6">💫</view>
+    <view class="confetti confetti-7">🌈</view>
+    <view class="confetti confetti-8">🎯</view>
   </view>
 
   <!-- 连击徽章 -->
-  <view class="streak-badge" wx:if="{{showStreakBadge}}">
+  <view class="streak-badge {{showStreakBadge ? 'show' : ''}}" wx:if="{{showStreakBadge}}">
+    <view class="streak-icon">🔥</view>
     <text class="streak-number">{{currentStreak || stats.currentStreak}}</text>
     <text class="streak-text">天连击</text>
+  </view>
+
+  <!-- 打卡成功提示 -->
+  <view class="checkin-success {{showCheckinSuccess ? 'show' : ''}}" wx:if="{{showCheckinSuccess}}">
+    <text class="success-icon">✓</text>
+    <text class="success-text">{{checkinSuccessGoal}}</text>
   </view>
 
   <!-- 顶部状态栏 -->
