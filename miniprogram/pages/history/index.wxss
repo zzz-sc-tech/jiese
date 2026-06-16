@@ -1328,3 +1328,205 @@
   font-size: 30rpx;
   font-weight: 600;
 }
+
+/* ===== 统计视图切换 ===== */
+.stats-tabs {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.stats-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx;
+  background: var(--color-bg-card);
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.stats-tab.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* 本周图表 */
+.week-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120rpx;
+  margin-top: 24rpx;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.week-bar-track {
+  width: 24rpx;
+  height: 80rpx;
+  background: var(--color-border);
+  border-radius: 12rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.week-bar-fill {
+  width: 100%;
+  background: var(--color-border);
+  border-radius: 12rpx;
+  transition: height 0.3s ease;
+}
+
+.week-bar-fill.active {
+  background: var(--color-primary);
+}
+
+.week-day-label {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+  margin-top: 8rpx;
+}
+
+.week-day-label.today {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 趋势图 */
+.trend-section {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.trend-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 200rpx;
+  margin-bottom: 24rpx;
+}
+
+.trend-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+}
+
+.trend-bar-track {
+  flex: 1;
+  width: 16rpx;
+  background: var(--color-border);
+  border-radius: 8rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.trend-bar-fill {
+  width: 100%;
+  background: var(--color-primary);
+  border-radius: 8rpx;
+  transition: height 0.3s ease;
+}
+
+.trend-bar-label {
+  font-size: 16rpx;
+  color: var(--color-text-secondary);
+  margin-top: 8rpx;
+}
+
+.trend-stats {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.trend-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trend-stat-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.trend-stat-label {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  margin-top: 4rpx;
+}
+
+/* 时间分布 */
+.time-distribution {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.time-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.time-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.time-period {
+  font-size: 24rpx;
+  color: var(--color-text);
+  width: 80rpx;
+}
+
+.time-bar-track {
+  flex: 1;
+  height: 24rpx;
+  background: var(--color-border);
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.time-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 12rpx;
+  transition: width 0.3s ease;
+}
+
+.time-count {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  width: 60rpx;
+  text-align: right;
+}
+
+.time-summary {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-border);
+  text-align: center;
+}
+
+.time-summary-text {
+  font-size: 26rpx;
+  color: var(--color-primary);
+  font-weight: 500;
+}
