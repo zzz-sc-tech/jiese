@@ -568,8 +568,9 @@ Page({
           ctx.scale(dpr, dpr);
           this._pieCtx = ctx;
           this._pieSize = size;
-        this.drawPieChart(goalDistribution);
-      });
+          this.drawPieChart(goalDistribution);
+        });
+    }, 300);
   },
 
   drawBarChart(dailyTotals) {
