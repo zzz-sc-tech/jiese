@@ -1,0 +1,133 @@
+<view class="page-insights {{themeClass}}">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">分析中...</text>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 概览卡片 -->
+    <view class="overview-card card">
+      <text class="overview-title">数据概览</text>
+      <view class="overview-grid">
+        <view class="overview-item">
+          <text class="overview-value">{{overview.totalDays}}</text>
+          <text class="overview-label">打卡天数</text>
+        </view>
+        <view class="overview-item">
+          <text class="overview-value">{{overview.totalCheckins}}</text>
+          <text class="overview-label">总打卡次数</text>
+        </view>
+        <view class="overview-item">
+          <text class="overview-value">{{overview.avgPerDay}}</text>
+          <text class="overview-label">日均打卡</text>
+        </view>
+        <view class="overview-item">
+          <text class="overview-value">{{overview.completionRate}}%</text>
+          <text class="overview-label">完成率</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 趋势分析 -->
+    <view class="trend-card card">
+      <text class="section-title">趋势分析</text>
+      <view class="trend-content">
+        <view class="trend-item">
+          <text class="trend-label">本周打卡</text>
+          <text class="trend-value">{{trends.thisWeek}} 次</text>
+        </view>
+        <view class="trend-item">
+          <text class="trend-label">上周打卡</text>
+          <text class="trend-value">{{trends.lastWeek}} 次</text>
+        </view>
+        <view class="trend-item">
+          <text class="trend-label">变化</text>
+          <text class="trend-value {{trends.change >= 0 ? 'positive' : 'negative'}}">
+            {{trends.change >= 0 ? '+' : ''}}{{trends.change}} 次 ({{trends.changePercent}}%)
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 打卡规律 -->
+    <view class="pattern-card card">
+      <text class="section-title">打卡规律</text>
+      <view class="pattern-list">
+        <view class="pattern-item">
+          <text class="pattern-icon">⏰</text>
+          <view class="pattern-info">
+            <text class="pattern-label">最佳打卡时间</text>
+            <text class="pattern-value">{{patterns.bestHourStr}}</text>
+          </view>
+        </view>
+        <view class="pattern-item">
+          <text class="pattern-icon">📅</text>
+          <view class="pattern-info">
+            <text class="pattern-label">最活跃的一天</text>
+            <text class="pattern-value">{{patterns.bestDay}}</text>
+          </view>
+        </view>
+        <view class="pattern-item">
+          <text class="pattern-icon">📊</text>
+          <view class="pattern-info">
+            <text class="pattern-label">工作日日均</text>
+            <text class="pattern-value">{{patterns.weekdayAvg}} 次</text>
+          </view>
+        </view>
+        <view class="pattern-item">
+          <text class="pattern-icon">🎯</text>
+          <view class="pattern-info">
+            <text class="pattern-label">周末日均</text>
+            <text class="pattern-value">{{patterns.weekendAvg}} 次</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 智能建议 -->
+    <view class="suggestions-card card" wx:if="{{suggestions.length > 0}}">
+      <text class="section-title">智能建议</text>
+      <view class="suggestion-list">
+        <view class="suggestion-item" wx:for="{{suggestions}}" wx:key="title">
+          <text class="suggestion-icon">{{item.icon}}</text>
+          <view class="suggestion-info">
+            <text class="suggestion-title">{{item.title}}</text>
+            <text class="suggestion-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 各目标分析 -->
+    <view class="goals-card card" wx:if="{{goalAnalysis.length > 0}}">
+      <text class="section-title">各目标分析</text>
+      <view class="goal-list">
+        <view class="goal-item" wx:for="{{goalAnalysis}}" wx:key="id" bindtap="goGoalDetail" data-goal-id="{{item.id}}">
+          <view class="goal-left">
+            <view class="goal-icon-wrap" style="background: {{item.color}}20;">
+              <text class="goal-icon">{{item.icon}}</text>
+            </view>
+            <view class="goal-info">
+              <text class="goal-name">{{item.name}}</text>
+              <text class="goal-detail">累计{{item.totalDays}}天 · 日均{{item.avgPerDay}}次</text>
+            </view>
+          </view>
+          <view class="goal-right">
+            <text class="goal-recent {{item.recent7Rate >= 70 ? 'good' : item.recent7Rate >= 30 ? 'normal' : 'low'}}">
+              近7天{{item.recent7}}天
+            </text>
+            <text class="goal-arrow">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 分享按钮 -->
+    <view class="share-section">
+      <button class="btn-share" open-type="share">
+        <text class="share-icon">📤</text>
+        <text>分享我的数据洞察</text>
+      </button>
+    </view>
+  </block>
+</view>
