@@ -111,6 +111,59 @@
     </view>
   </view>
 
+  <!-- 趋势图 -->
+  <view class="trend-section card" wx:if="{{statsView === 'trend'}}">
+    <view class="section-header">
+      <text class="section-title">打卡趋势</text>
+      <text class="section-sub">最近30天</text>
+    </view>
+
+    <view class="trend-chart">
+      <view class="trend-bar" wx:for="{{trendData}}" wx:key="date">
+        <view class="trend-bar-track">
+          <view class="trend-bar-fill" style="height: {{item.percent}}%;"></view>
+        </view>
+        <text class="trend-bar-label" wx:if="{{index % 5 === 0}}">{{item.day}}</text>
+      </view>
+    </view>
+
+    <view class="trend-stats">
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{trendAvg}}</text>
+        <text class="trend-stat-label">日均打卡</text>
+      </view>
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{trendMax}}</text>
+        <text class="trend-stat-label">最高</text>
+      </view>
+      <view class="trend-stat">
+        <text class="trend-stat-value">{{trendTotal}}</text>
+        <text class="trend-stat-label">总计</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打卡时间分布 -->
+  <view class="time-distribution card" wx:if="{{statsView === 'trend'}}">
+    <view class="section-header">
+      <text class="section-title">打卡时间分布</text>
+    </view>
+
+    <view class="time-bars">
+      <view class="time-bar-item" wx:for="{{timeDistribution}}" wx:key="period">
+        <text class="time-period">{{item.period}}</text>
+        <view class="time-bar-track">
+          <view class="time-bar-fill" style="width: {{item.percent}}%;"></view>
+        </view>
+        <text class="time-count">{{item.count}}</text>
+      </view>
+    </view>
+
+    <view class="time-summary">
+      <text class="time-summary-text">你最常在{{peakPeriod}}打卡</text>
+    </view>
+  </view>
+
   <!-- ===== 全部模式：各目标统计 ===== -->
   <view class="goal-stats-section" wx:if="{{!selectedGoalId && goalStats.length > 0}}">
     <view class="section-header">
