@@ -51,7 +51,9 @@ Page({
     // 动画状态
     showConfetti: false,
     showStreakBadge: false,
-    currentStreak: 0
+    currentStreak: 0,
+    showCheckinSuccess: false,
+    checkinSuccessGoal: ''
   },
 
   onLoad() {
