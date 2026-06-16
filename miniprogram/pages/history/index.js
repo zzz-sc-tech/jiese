@@ -157,6 +157,9 @@ Page({
 
       // 加载趋势数据
       this.loadTrendData();
+
+      // 加载本周统计
+      this.loadWeekStats();
     } catch (err) {
       console.error('加载数据失败:', err);
     }
