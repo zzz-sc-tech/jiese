@@ -27,8 +27,54 @@
     </scroll-view>
   </view>
 
-  <!-- 统计卡片 -->
-  <view class="stats-card card">
+  <!-- 统计视图切换 -->
+  <view class="stats-tabs">
+    <view class="stats-tab {{statsView === 'week' ? 'active' : ''}}" bindtap="switchStatsView" data-view="week">
+      <text>本周</text>
+    </view>
+    <view class="stats-tab {{statsView === 'month' ? 'active' : ''}}" bindtap="switchStatsView" data-view="month">
+      <text>本月</text>
+    </view>
+    <view class="stats-tab {{statsView === 'trend' ? 'active' : ''}}" bindtap="switchStatsView" data-view="trend">
+      <text>趋势</text>
+    </view>
+  </view>
+
+  <!-- 本周统计 -->
+  <view class="stats-card card" wx:if="{{statsView === 'week'}}">
+    <view class="stats-header">
+      <text class="stats-title">本周统计</text>
+      <text class="stats-month">{{weekRange}}</text>
+    </view>
+
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{weekCheckins}}</text>
+        <text class="stat-label">打卡天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{weekRate}}%</text>
+        <text class="stat-label">完成率</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{currentStreak}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+    </view>
+
+    <!-- 本周每日打卡 -->
+    <view class="week-chart">
+      <view class="week-day" wx:for="{{weekData}}" wx:key="date">
+        <view class="week-bar-track">
+          <view class="week-bar-fill {{item.checked ? 'active' : ''}}" style="height: {{item.checked ? '100%' : '20%'}};"></view>
+        </view>
+        <text class="week-day-label {{item.isToday ? 'today' : ''}}">{{item.day}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 本月统计 -->
+  <view class="stats-card card" wx:if="{{statsView === 'month'}}">
     <view class="stats-header">
       <text class="stats-title">{{selectedGoalId ? '目标统计' : '本月打卡统计'}}</text>
       <text class="stats-month">{{currentMonth}}</text>
