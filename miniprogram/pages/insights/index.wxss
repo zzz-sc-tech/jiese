@@ -503,3 +503,151 @@
 .share-icon {
   font-size: 36rpx;
 }
+
+/* 习惯健康度 */
+.health-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.health-content {
+  display: flex;
+  gap: 24rpx;
+}
+
+.health-score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.health-score {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 8rpx solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8rpx;
+}
+
+.health-score-value {
+  font-size: 40rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.health-score-label {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+}
+
+.health-level {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.health-detail {
+  flex: 1;
+}
+
+.health-advice {
+  font-size: 24rpx;
+  color: var(--color-text);
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.health-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.health-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.health-item-label {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  width: 80rpx;
+}
+
+.health-item-bar {
+  flex: 1;
+  height: 12rpx;
+  background: var(--color-border);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.health-item-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 6rpx;
+}
+
+.health-item-score {
+  font-size: 22rpx;
+  color: var(--color-text);
+  width: 80rpx;
+  text-align: right;
+}
+
+/* 智能推荐 */
+.recommend-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+}
+
+.recommend-info {
+  margin-bottom: 16rpx;
+}
+
+.recommend-text {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.recommend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.recommend-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx;
+  background: var(--color-bg);
+  border-radius: 12rpx;
+}
+
+.recommend-icon {
+  font-size: 32rpx;
+}
+
+.recommend-detail {
+  flex: 1;
+}
+
+.recommend-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+}
+
+.recommend-reason {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-top: 4rpx;
+}
