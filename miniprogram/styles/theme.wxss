@@ -69,8 +69,7 @@ page {
   --shadow-xl: 0 16rpx 48rpx rgba(196, 160, 160, 0.2);
 }
 
-/* 墨夜主题 - 支持 page 和 view 元素 */
-page.theme-dark,
+/* 墨夜主题 */
 .theme-dark {
   --color-primary: #6B8A8E;
   --color-primary-light: #8AACB0;
