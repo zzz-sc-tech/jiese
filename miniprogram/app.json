@@ -16,7 +16,8 @@
     "pages/annual-report/index",
     "pages/reminder/index",
     "pages/insights/index",
-    "pages/habit-chain/index"
+    "pages/habit-chain/index",
+    "pages/diary/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
