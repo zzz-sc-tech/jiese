@@ -1,0 +1,445 @@
+@import "../../styles/theme.wxss";
+
+.page-chain {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 24rpx;
+  padding-bottom: calc(160rpx + env(safe-area-inset-bottom));
+}
+
+/* 习惯链列表 */
+.chain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.chain-item {
+  padding: 24rpx;
+}
+
+.chain-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.chain-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.chain-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.chain-type {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  background: rgba(91, 154, 111, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.chain-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.chain-progress {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.chain-delete {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: 50%;
+}
+
+.delete-icon {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+/* 进度条 */
+.chain-progress-bar {
+  margin-bottom: 20rpx;
+}
+
+.progress-track {
+  height: 12rpx;
+  background: var(--color-border);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+  border-radius: 6rpx;
+  transition: width 0.3s ease;
+}
+
+/* 习惯列表 */
+.chain-goals {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.chain-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.goal-connector {
+  margin: 0 4rpx;
+}
+
+.connector-line {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+}
+
+.goal-node {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  background: var(--color-bg);
+  border-radius: 20rpx;
+}
+
+.chain-goal-item.checked .goal-node {
+  background: rgba(91, 154, 111, 0.1);
+}
+
+.goal-check {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-icon {
+  font-size: 18rpx;
+  color: #fff;
+}
+
+.goal-icon {
+  font-size: 24rpx;
+}
+
+.goal-name {
+  font-size: 22rpx;
+  color: var(--color-text);
+}
+
+.chain-goal-item.checked .goal-name {
+  color: var(--color-primary);
+}
+
+/* 完成状态 */
+.chain-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.status-icon {
+  font-size: 28rpx;
+}
+
+.status-text {
+  font-size: 24rpx;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+/* 添加按钮 */
+.add-btn-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: var(--color-bg);
+}
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 24rpx;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-add::after {
+  display: none;
+}
+
+.add-icon {
+  font-size: 36rpx;
+}
+
+/* 弹窗 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-content {
+  width: 100%;
+  max-height: 90vh;
+  background: var(--color-bg-card);
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 40rpx 32rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.modal-close {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: 50%;
+  font-size: 28rpx;
+  color: var(--color-text-secondary);
+}
+
+.modal-body {
+  flex: 1;
+  max-height: 60vh;
+  margin-bottom: 32rpx;
+}
+
+/* 表单 */
+.form-group {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--color-bg);
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: var(--color-text);
+  box-sizing: border-box;
+}
+
+/* 类型选择 */
+.type-selector {
+  display: flex;
+  gap: 16rpx;
+}
+
+.type-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background: var(--color-bg);
+  border-radius: 16rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.type-option.selected {
+  border-color: var(--color-primary);
+  background: rgba(91, 154, 111, 0.1);
+}
+
+.type-icon {
+  font-size: 32rpx;
+  margin-bottom: 8rpx;
+}
+
+.type-name {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 4rpx;
+}
+
+.type-desc {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* 模板列表 */
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx;
+  background: var(--color-bg);
+  border-radius: 12rpx;
+}
+
+.template-icon {
+  font-size: 32rpx;
+}
+
+.template-info {
+  flex: 1;
+}
+
+.template-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+}
+
+.template-desc {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 目标选择 */
+.goal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.goal-option {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  background: var(--color-bg);
+  border-radius: 24rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.goal-option.selected {
+  border-color: var(--color-primary);
+  background: rgba(91, 154, 111, 0.1);
+}
+
+.goal-option-icon {
+  font-size: 24rpx;
+}
+
+.goal-option-name {
+  font-size: 24rpx;
+  color: var(--color-text);
+}
+
+.btn-save {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 24rpx;
+  border: none;
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-save::after {
+  display: none;
+}
+
+.btn-save[disabled] {
+  opacity: 0.5;
+}
