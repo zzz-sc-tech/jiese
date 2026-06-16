@@ -578,11 +578,14 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20rpx;
+  position: relative;
+  overflow: hidden;
 }
 
 .pie-canvas {
   width: 400rpx;
   height: 400rpx;
+  display: block;
 }
 
 .pie-legend {
