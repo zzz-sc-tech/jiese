@@ -40,7 +40,20 @@ Page({
     heatmapData: [],
     heatmapMonths: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     heatmapTotalDays: 0,
-    heatmapMaxStreak: 0
+    heatmapMaxStreak: 0,
+    // 统计视图
+    statsView: 'week', // week | month | trend
+    weekRange: '',
+    weekCheckins: 0,
+    weekRate: 0,
+    // 趋势数据
+    trendData: [],
+    trendAvg: 0,
+    trendMax: 0,
+    trendTotal: 0,
+    // 时间分布
+    timeDistribution: [],
+    peakPeriod: ''
   },
 
   _barCtx: null,
