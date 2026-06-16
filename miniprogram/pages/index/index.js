@@ -288,10 +288,14 @@ Page({
     const goal = this.data.goals.find(g => g.id === goalId);
     if (!goal) return;
 
+    const isPaused = goal.paused;
+    const pauseText = isPaused ? '恢复目标' : '暂停目标';
+
     wx.showActionSheet({
-      itemList: ['编辑目标', '删除目标'],
+      itemList: ['编辑目标', pauseText, '删除目标'],
       success: (res) => {
         if (res.tapIndex === 0) {
+          // 编辑目标
           const presets = this.data.presetIcons;
           const presetIdx = presets.findIndex(p => p.icon === goal.icon);
           this.setData({
@@ -303,10 +307,27 @@ Page({
             targetCount: goal.targetCount || 3
           });
         } else if (res.tapIndex === 1) {
+          // 暂停/恢复目标
+          this.toggleGoalPause(goalId, !isPaused);
+        } else if (res.tapIndex === 2) {
+          // 删除目标
           this.deleteGoalConfirm(goalId);
         }
       }
     });
+  },
+
+  // 暂停/恢复目标
+  async toggleGoalPause(goalId, paused) {
+    try {
+      const res = await api.updateGoal(goalId, { paused });
+      if (res.code === 0) {
+        wx.showToast({ title: paused ? '已暂停' : '已恢复', icon: 'success' });
+        this.loadData();
+      }
+    } catch (err) {
+      wx.showToast({ title: '操作失败', icon: 'none' });
+    }
   },
 
   selectGoalType(e) {
