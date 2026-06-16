@@ -1,0 +1,129 @@
+@import "../../styles/theme.wxss";
+
+.page-templates {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 24rpx;
+}
+
+.templates-header {
+  margin-bottom: 24rpx;
+}
+
+.templates-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.templates-subtitle {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+/* 分类选择 */
+.category-scroll {
+  margin-bottom: 24rpx;
+  white-space: nowrap;
+}
+
+.category-list {
+  display: inline-flex;
+  gap: 16rpx;
+}
+
+.category-item {
+  display: inline-flex;
+  padding: 12rpx 24rpx;
+  background: var(--color-bg-card);
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.category-item.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* 模板列表 */
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx;
+  background: var(--color-bg-card);
+  border-radius: 16rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.template-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.template-icon {
+  font-size: 40rpx;
+}
+
+.template-info {
+  flex: 1;
+}
+
+.template-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.template-desc {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.template-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.template-type {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  background: rgba(91, 154, 111, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.template-target {
+  font-size: 20rpx;
+  color: var(--color-text-secondary);
+}
+
+.template-action {
+  flex-shrink: 0;
+}
+
+.action-text {
+  font-size: 26rpx;
+  color: var(--color-primary);
+  font-weight: 600;
+}
