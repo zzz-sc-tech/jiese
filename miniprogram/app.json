@@ -17,7 +17,8 @@
     "pages/reminder/index",
     "pages/insights/index",
     "pages/habit-chain/index",
-    "pages/diary/index"
+    "pages/diary/index",
+    "pages/share-card/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
