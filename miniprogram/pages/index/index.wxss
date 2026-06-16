@@ -554,13 +554,20 @@
 
 .goal-card.sortable {
   cursor: grab;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  border: 2rpx dashed transparent;
 }
 
 .goal-card.sortable:active {
   cursor: grabbing;
-  transform: scale(1.02);
-  box-shadow: var(--shadow-lg);
+}
+
+.goal-card.dragging {
+  transform: scale(1.05);
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+  z-index: 100;
+  border-color: var(--color-primary);
 }
 
 .template-btn {
