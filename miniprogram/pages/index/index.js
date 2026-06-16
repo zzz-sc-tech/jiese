@@ -100,10 +100,40 @@ Page({
       // 加载倒数日
       this.loadCountdown();
 
+      // 加载每日一问
+      this.loadDailyQuestion();
+
+      // 加载习惯小贴士
+      this.loadHabitTip();
+
       // 检查是否需要弹出昨日总结或周报
       this.checkReports();
     } catch (err) {
       console.error('加载数据失败:', err);
+    }
+  },
+
+  // 加载每日一问
+  async loadDailyQuestion() {
+    try {
+      const res = await api.getDailyQuestion();
+      if (res.code === 0) {
+        this.setData({ dailyQuestion: res.data });
+      }
+    } catch (err) {
+      console.error('加载每日一问失败:', err);
+    }
+  },
+
+  // 加载习惯小贴士
+  async loadHabitTip() {
+    try {
+      const res = await api.getHabitTip();
+      if (res.code === 0) {
+        this.setData({ habitTip: res.data });
+      }
+    } catch (err) {
+      console.error('加载习惯小贴士失败:', err);
     }
   },
 
