@@ -1,4 +1,13 @@
 <view class="page-history {{themeClass}}">
+  <!-- 年度报告入口 -->
+  <view class="report-entry" bindtap="goAnnualReport">
+    <view class="report-entry-left">
+      <text class="report-entry-icon">📊</text>
+      <text class="report-entry-text">查看年度报告</text>
+    </view>
+    <text class="report-entry-arrow">›</text>
+  </view>
+
   <!-- 目标筛选 -->
   <view class="goal-filter" wx:if="{{goals.length > 0}}">
     <scroll-view scroll-x class="filter-scroll">
