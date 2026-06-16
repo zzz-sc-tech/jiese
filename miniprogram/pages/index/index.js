@@ -311,7 +311,7 @@ Page({
 
   // 执行打卡
   async _doCheckin(goalId, type, goal, diary = '', mood = '') {
-    wx.showLoading({ title: '打卡中...' });
+    ui.showLoading('打卡中...');
 
     try {
       const res = type === 'count'
@@ -319,28 +319,37 @@ Page({
         : await api.checkin(goalId, diary, mood);
 
       if (res.code === 0) {
+        const currentStreak = res.data.currentStreak || 0;
+
         this.setData({
           currentQuote: res.data.quote,
           newAchievements: res.data.newAchievements || [],
           globalTotalDays: res.data.globalTotalDays,
-          showQuote: true
+          showQuote: true,
+          currentStreak
         });
 
+        // 显示打卡动画
+        ui.showCheckinAnimation(this);
+
+        // 成就解锁震动
         if (res.data.newAchievements && res.data.newAchievements.length > 0) {
-          wx.vibrateShort({ type: 'medium' });
+          ui.vibrate('medium');
         }
 
-        wx.hideLoading();
-        wx.showToast({ title: `${goal.name} 打卡成功`, icon: 'success' });
+        ui.hideLoading();
+        ui.showSuccess(`${goal.name} 打卡成功`);
 
         this.loadData();
       } else {
-        wx.hideLoading();
-        wx.showToast({ title: res.message || '打卡失败', icon: 'none' });
+        ui.hideLoading();
+        ui.showError(res.message || '打卡失败');
       }
     } catch (err) {
-      wx.hideLoading();
-      wx.showToast({ title: '打卡失败，请重试', icon: 'none' });
+      ui.hideLoading();
+      ui.showError('打卡失败，请重试', () => {
+        this._doCheckin(goalId, type, goal, diary, mood);
+      });
       console.error('打卡失败:', err);
     }
   },
