@@ -97,7 +97,7 @@
         <text wx:if="{{report.totalDays >= 300}}">这一年你展现了惊人的自律！几乎每天都在坚持打卡，你是真正的自律达人！</text>
         <text wx:elif="{{report.totalDays >= 200}}">这一年你非常努力！超过一半的时间都在坚持打卡，继续保持！</text>
         <text wx:elif="{{report.totalDays >= 100}}">这一年你有了不错的开始！100多天的坚持证明了你的决心，明年继续加油！</text>
-        <text wx:else">新的一年，新的开始！从现在开始坚持打卡，明年你会感谢今天的自己！</text>
+        <text wx:else>新的一年，新的开始！从现在开始坚持打卡，明年你会感谢今天的自己！</text>
       </view>
     </view>
 
