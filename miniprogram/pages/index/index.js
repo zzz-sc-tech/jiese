@@ -202,12 +202,67 @@ Page({
       return;
     }
 
+    // count 类型直接打卡，不弹日记
+    if (type === 'count') {
+      this._doCheckin(goalId, type, goal);
+      return;
+    }
+
+    // single 类型弹出日记输入
+    this.setData({
+      showDiary: true,
+      diaryGoalId: goalId,
+      diaryGoalName: goal.name,
+      diaryGoalIcon: goal.icon,
+      diaryText: '',
+      diaryMood: ''
+    });
+  },
+
+  // 隐藏日记弹窗
+  hideDiaryModal() {
+    this.setData({ showDiary: false });
+  },
+
+  // 输入日记
+  onDiaryInput(e) {
+    this.setData({ diaryText: e.detail.value });
+  },
+
+  // 选择心情
+  selectMood(e) {
+    const mood = e.currentTarget.dataset.mood;
+    this.setData({ diaryMood: mood });
+  },
+
+  // 提交日记并打卡
+  async submitDiary() {
+    const { diaryGoalId, diaryText, diaryMood } = this.data;
+    const goal = this.data.goals.find(g => g.id === diaryGoalId);
+    if (!goal) return;
+
+    this.setData({ showDiary: false });
+    this._doCheckin(diaryGoalId, 'single', goal, diaryText, diaryMood);
+  },
+
+  // 跳过日记直接打卡
+  async skipDiary() {
+    const { diaryGoalId } = this.data;
+    const goal = this.data.goals.find(g => g.id === diaryGoalId);
+    if (!goal) return;
+
+    this.setData({ showDiary: false });
+    this._doCheckin(diaryGoalId, 'single', goal);
+  },
+
+  // 执行打卡
+  async _doCheckin(goalId, type, goal, diary = '', mood = '') {
     wx.showLoading({ title: '打卡中...' });
 
     try {
       const res = type === 'count'
         ? await api.checkinCount(goalId)
-        : await api.checkin(goalId);
+        : await api.checkin(goalId, diary, mood);
 
       if (res.code === 0) {
         this.setData({
