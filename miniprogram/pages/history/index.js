@@ -238,6 +238,11 @@ Page({
     }
   },
 
+  // 跳转年度报告
+  goAnnualReport() {
+    wx.navigateTo({ url: '/pages/annual-report/index' });
+  },
+
   // 切换目标筛选
   selectGoal(e) {
     const goalId = e.currentTarget.dataset.goalId;
