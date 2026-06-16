@@ -705,6 +705,11 @@ const api = {
     return GOAL_PRESETS;
   },
 
+  // 获取打卡记录
+  getCheckins() {
+    return getCheckins();
+  },
+
   // 获取总打卡次数
   getTotalCheckins() {
     const checkins = getCheckins();
