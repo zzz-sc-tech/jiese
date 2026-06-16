@@ -13,7 +13,8 @@
     "pages/pet-costume/index",
     "pages/pet-background/index",
     "pages/goal-templates/index",
-    "pages/annual-report/index"
+    "pages/annual-report/index",
+    "pages/reminder/index"
   ],
   "window": {
     "backgroundColor": "#F5F9F7",
