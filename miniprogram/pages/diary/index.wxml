@@ -1,0 +1,53 @@
+<view class="page-diary {{themeClass}}">
+  <!-- 目标筛选 -->
+  <view class="goal-filter" wx:if="{{goals.length > 0}}">
+    <scroll-view scroll-x class="filter-scroll">
+      <view class="filter-item {{filterGoalId === '' ? 'active' : ''}}" bindtap="filterByGoal" data-goal-id="">
+        <text>全部</text>
+      </view>
+      <view
+        class="filter-item {{filterGoalId === item.id ? 'active' : ''}}"
+        wx:for="{{goals}}"
+        wx:key="id"
+        bindtap="filterByGoal"
+        data-goal-id="{{item.id}}"
+      >
+        <text class="filter-icon">{{item.icon}}</text>
+        <text>{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 日记列表 -->
+  <view class="diary-list" wx:if="{{!loading && diaries.length > 0}}">
+    <view class="diary-item card" wx:for="{{diaries}}" wx:key="id">
+      <view class="diary-header">
+        <view class="diary-goal">
+          <text class="diary-goal-icon">{{item.goalIcon}}</text>
+          <text class="diary-goal-name">{{item.goalName}}</text>
+        </view>
+        <text class="diary-date">{{item.date}}</text>
+      </view>
+
+      <view class="diary-mood" wx:if="{{item.mood}}">
+        <text class="mood-icon">{{item.mood === 'happy' ? '😊' : item.mood === 'good' ? '😌' : item.mood === 'normal' ? '😐' : item.mood === 'tired' ? '😮‍💨' : '😔'}}</text>
+      </view>
+
+      <view class="diary-content" wx:if="{{item.diary}}">
+        <text class="diary-text">{{item.diary}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && diaries.length === 0}}">
+    <text class="empty-icon">📖</text>
+    <text class="empty-title">还没有打卡日记</text>
+    <text class="empty-desc">开启打卡日记功能，记录每天的心情</text>
+  </view>
+</view>
