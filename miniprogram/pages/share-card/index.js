@@ -139,9 +139,25 @@ Page({
 
           cardData.topGoals.forEach((goal, i) => {
             const y = listY + 40 + i * 50;
+            const rx = 60;
+            const ry = y - 16;
+            const rw = width - 120;
+            const rh = 40;
+            const radius = 8;
+
+            // 绘制圆角矩形
             ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
             ctx.beginPath();
-            ctx.roundRect(60, y - 16, width - 120, 40, 8);
+            ctx.moveTo(rx + radius, ry);
+            ctx.lineTo(rx + rw - radius, ry);
+            ctx.arcTo(rx + rw, ry, rx + rw, ry + radius, radius);
+            ctx.lineTo(rx + rw, ry + rh - radius);
+            ctx.arcTo(rx + rw, ry + rh, rx + rw - radius, ry + rh, radius);
+            ctx.lineTo(rx + radius, ry + rh);
+            ctx.arcTo(rx, ry + rh, rx, ry + rh - radius, radius);
+            ctx.lineTo(rx, ry + radius);
+            ctx.arcTo(rx, ry, rx + radius, ry, radius);
+            ctx.closePath();
             ctx.fill();
 
             ctx.fillStyle = '#fff';
