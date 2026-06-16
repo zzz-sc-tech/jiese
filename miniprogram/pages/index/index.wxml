@@ -491,6 +491,57 @@
     </view>
   </view>
 
+  <!-- 打卡日记弹窗 -->
+  <view class="diary-overlay" wx:if="{{showDiary}}" bindtap="hideDiaryModal">
+    <view class="diary-modal" catchtap>
+      <view class="diary-header">
+        <text class="diary-icon">{{diaryGoalIcon}}</text>
+        <text class="diary-title">{{diaryGoalName}} 打卡成功</text>
+      </view>
+
+      <view class="diary-body">
+        <!-- 心情选择 -->
+        <view class="mood-section">
+          <text class="mood-label">今天心情</text>
+          <view class="mood-grid">
+            <view class="mood-item {{diaryMood === 'happy' ? 'selected' : ''}}" bindtap="selectMood" data-mood="happy">
+              <text class="mood-emoji">😊</text>
+            </view>
+            <view class="mood-item {{diaryMood === 'good' ? 'selected' : ''}}" bindtap="selectMood" data-mood="good">
+              <text class="mood-emoji">😌</text>
+            </view>
+            <view class="mood-item {{diaryMood === 'normal' ? 'selected' : ''}}" bindtap="selectMood" data-mood="normal">
+              <text class="mood-emoji">😐</text>
+            </view>
+            <view class="mood-item {{diaryMood === 'tired' ? 'selected' : ''}}" bindtap="selectMood" data-mood="tired">
+              <text class="mood-emoji">😮‍💨</text>
+            </view>
+            <view class="mood-item {{diaryMood === 'sad' ? 'selected' : ''}}" bindtap="selectMood" data-mood="sad">
+              <text class="mood-emoji">😔</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 日记输入 -->
+        <view class="diary-input-section">
+          <textarea
+            class="diary-input"
+            placeholder="记录今天的感受...（可选）"
+            value="{{diaryText}}"
+            bindinput="onDiaryInput"
+            maxlength="200"
+            auto-height
+          />
+        </view>
+      </view>
+
+      <view class="diary-footer">
+        <button class="btn-skip" bindtap="skipDiary">跳过</button>
+        <button class="btn-submit" bindtap="submitDiary">记录</button>
+      </view>
+    </view>
+  </view>
+
   <!-- 自定义TabBar -->
   <tab-bar selected="{{0}}" />
 </view>
