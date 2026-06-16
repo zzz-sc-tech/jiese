@@ -30,8 +30,8 @@ Page({
     this.loadData();
   },
 
-  loadData() {
-    const goalsRes = api.getGoals();
+  async loadData() {
+    const goalsRes = await api.getGoals();
     const goals = goalsRes.code === 0 ? goalsRes.data : [];
 
     // 加载习惯链
