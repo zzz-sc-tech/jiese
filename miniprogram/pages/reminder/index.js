@@ -23,8 +23,8 @@ Page({
     this.loadGoals();
   },
 
-  loadGoals() {
-    const goalsRes = api.getGoals();
+  async loadGoals() {
+    const goalsRes = await api.getGoals();
     if (goalsRes.code === 0) {
       const goals = goalsRes.data;
       this.setData({ goals });
