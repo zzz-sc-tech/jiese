@@ -228,7 +228,7 @@ const statsService = {
         days,
         dailyTotals,
         goalDistribution,
-        showPie: !goalId && goalDistribution.length > 1,
+        showPie: goalDistribution.length > 0,
         analysis
       }
     };
