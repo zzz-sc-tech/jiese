@@ -96,7 +96,7 @@
 .progress-track {
   flex: 1;
   height: 12rpx;
-  background: #E8F5E9;
+  background: var(--color-border);
   border-radius: 6rpx;
   overflow: hidden;
 }
@@ -109,7 +109,7 @@
 
 .progress-text {
   font-size: 22rpx;
-  color: #5B9A6F;
+  color: var(--color-primary);
   font-weight: 600;
   min-width: 60rpx;
   text-align: right;
