@@ -190,20 +190,27 @@ const GOAL_TEMPLATES = [
   { id: 'tpl_exercise', name: '运动', icon: '🏃', color: '#5B9A6F', type: 'single', category: '健康生活', desc: '坚持运动，强身健体' },
   { id: 'tpl_water', name: '喝水', icon: '💧', color: '#5BAEBF', type: 'count', targetCount: 8, category: '健康生活', desc: '每天8杯水，保持健康' },
   { id: 'tpl_meal', name: '三餐', icon: '🍽️', color: '#E8B86D', type: 'count', targetCount: 3, category: '健康生活', desc: '按时吃饭，规律饮食' },
+  { id: 'tpl_yoga', name: '瑜伽', icon: '🧘‍♀️', color: '#9B72CF', type: 'single', category: '健康生活', desc: '每天瑜伽，身心平衡' },
+  { id: 'tpl_walk', name: '散步', icon: '🚶', color: '#7BC47F', type: 'single', category: '健康生活', desc: '饭后散步，促进消化' },
   // 学习成长
   { id: 'tpl_read', name: '阅读', icon: '📖', color: '#6B8DD6', type: 'single', category: '学习成长', desc: '每天阅读30分钟' },
   { id: 'tpl_study', name: '学习', icon: '📚', color: '#9B72CF', type: 'single', category: '学习成长', desc: '坚持学习，不断进步' },
   { id: 'tpl_english', name: '背单词', icon: '🔤', color: '#5BAEBF', type: 'single', category: '学习成长', desc: '每天背单词，日积月累' },
   { id: 'tpl_practice', name: '练字', icon: '✍️', color: '#2C3E2D', type: 'single', category: '学习成长', desc: '静心练字，修身养性' },
+  { id: 'tpl_code', name: '编程', icon: '💻', color: '#5BAEBF', type: 'single', category: '学习成长', desc: '每天写代码，提升技能' },
+  { id: 'tpl_skill', name: '学技能', icon: '🎯', color: '#E87461', type: 'single', category: '学习成长', desc: '学习新技能，拓展能力' },
   // 心灵修养
   { id: 'tpl_meditate', name: '冥想', icon: '🧘', color: '#9B72CF', type: 'single', category: '心灵修养', desc: '静心冥想，放松身心' },
   { id: 'tpl_journal', name: '写日记', icon: '📝', color: '#D4A04A', type: 'single', category: '心灵修养', desc: '记录生活，反思成长' },
   { id: 'tpl_grateful', name: '感恩', icon: '🙏', color: '#E8B86D', type: 'single', category: '心灵修养', desc: '每天记录3件感恩的事' },
+  { id: 'tpl_breathe', name: '深呼吸', icon: '🌬️', color: '#5BAEBF', type: 'single', category: '心灵修养', desc: '每天深呼吸，放松身心' },
   // 兴趣爱好
   { id: 'tpl_music', name: '练琴', icon: '🎵', color: '#D46B8C', type: 'single', category: '兴趣爱好', desc: '坚持练习，享受音乐' },
   { id: 'tpl_draw', name: '画画', icon: '🎨', color: '#B8A0D4', type: 'single', category: '兴趣爱好', desc: '发挥创意，艺术表达' },
   { id: 'tpl_cook', name: '做饭', icon: '👨‍🍳', color: '#E8B86D', type: 'single', category: '兴趣爱好', desc: '自己动手，享受美食' },
-  { id: 'tpl_clean', name: '整理', icon: '🧹', color: '#5BAEBF', type: 'single', category: '兴趣爱好', desc: '整洁环境，清爽心情' }
+  { id: 'tpl_clean', name: '整理', icon: '🧹', color: '#5BAEBF', type: 'single', category: '兴趣爱好', desc: '整洁环境，清爽心情' },
+  { id: 'tpl_photo', name: '摄影', icon: '📷', color: '#6B8DD6', type: 'single', category: '兴趣爱好', desc: '记录美好瞬间' },
+  { id: 'tpl_garden', name: '养花', icon: '🌱', color: '#7BC47F', type: 'single', category: '兴趣爱好', desc: '照料花草，亲近自然' }
 ];
 
 // 成就定义
