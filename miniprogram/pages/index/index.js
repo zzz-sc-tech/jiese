@@ -708,20 +708,15 @@ Page({
     wx.showToast({ title: '已保存', icon: 'success' });
   },
 
-  deleteCountdown() {
-    wx.showModal({
-      title: '删除倒数日',
-      content: '确定删除倒数日？',
-      success: (res) => {
-        if (res.confirm) {
-          const settings = storage.getSettings();
-          settings.countdowns = [];
-          storage.saveSettings(settings);
-          this.setData({ countdown: null });
-          wx.showToast({ title: '已删除', icon: 'success' });
-        }
-      }
-    });
+  async deleteCountdown() {
+    const confirmed = await ui.confirm('删除倒数日', '确定删除倒数日？');
+    if (confirmed) {
+      const settings = storage.getSettings();
+      settings.countdowns = [];
+      storage.saveSettings(settings);
+      this.setData({ countdown: null });
+      ui.showSuccess('已删除');
+    }
   },
 
   // 隐藏语录弹窗
