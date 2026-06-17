@@ -339,37 +339,43 @@ Page({
           ui.vibrate('medium');
         }
 
-        // 只更新当前目标的状态，不刷新整个页面
-        const goals = this.data.goals.map(g => {
-          if (g.id === goalId) {
-            if (type === 'count') {
-              const todayCount = (g.todayCount || 0) + 1;
-              return {
-                ...g,
-                checked: true,
-                todayCount,
-                countDone: g.targetCount > 0 && todayCount >= g.targetCount
-              };
-            }
-            return { ...g, checked: true };
-          }
-          return g;
-        });
+        // 找到目标索引
+        const goalIndex = this.data.goals.findIndex(g => g.id === goalId);
+        if (goalIndex === -1) return;
 
-        const anyChecked = goals.some(g => g.checked);
-        const allChecked = goals.every(g => {
+        // 计算新的目标状态
+        const goal = this.data.goals[goalIndex];
+        let newGoal;
+        if (type === 'count') {
+          const todayCount = (goal.todayCount || 0) + 1;
+          newGoal = {
+            ...goal,
+            checked: true,
+            todayCount,
+            countDone: goal.targetCount > 0 && todayCount >= goal.targetCount
+          };
+        } else {
+          newGoal = { ...goal, checked: true };
+        }
+
+        // 使用路径更新，避免整个数组重新渲染
+        const goalPath = `goals[${goalIndex}]`;
+        const updateData = {
+          [goalPath]: newGoal,
+          globalTotalDays: res.data.globalTotalDays,
+          currentStreak
+        };
+
+        // 检查是否需要更新 anyChecked 和 allChecked
+        const goals = [...this.data.goals];
+        goals[goalIndex] = newGoal;
+        updateData.anyChecked = goals.some(g => g.checked);
+        updateData.allChecked = goals.every(g => {
           if (g.type === 'count') return g.countDone;
           return g.checked;
         });
 
-        // 一次性更新所有数据
-        this.setData({
-          goals,
-          anyChecked,
-          allChecked,
-          globalTotalDays: res.data.globalTotalDays,
-          currentStreak
-        });
+        this.setData(updateData);
 
         // 延迟显示动画，避免页面刷新
         setTimeout(() => {
