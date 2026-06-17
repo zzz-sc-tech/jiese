@@ -217,6 +217,8 @@ const statsService = {
         const goal = allGoals.find(g => g.id === longest.goalId);
         analysis.push(`最长单次 ${formatDuration(longest.duration)}（${goal ? goal.name : ''}）`);
       }
+    } else {
+      analysis.push('还没有时长记录，开始你的第一次专注吧！');
     }
 
     return {
