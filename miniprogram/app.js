@@ -32,6 +32,23 @@ App({
 
     // 应用导航栏颜色
     this.applyNavBarColor(this.globalData.theme);
+
+    // 检查数据备份提醒
+    this.checkBackupReminder();
+  },
+
+  // 检查数据备份提醒
+  checkBackupReminder() {
+    const storage = require('./utils/storage');
+    const settings = storage.getSettings();
+    const lastBackup = settings.lastBackupTime || 0;
+    const now = Date.now();
+    const daysSinceBackup = (now - lastBackup) / (1000 * 60 * 60 * 24);
+
+    // 如果超过7天没有备份，设置提醒标记
+    if (daysSinceBackup >= 7) {
+      this.globalData.showBackupReminder = true;
+    }
   },
 
   // 切换主题
