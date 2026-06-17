@@ -366,18 +366,21 @@ Page({
     }
 
     // 批量投喂
+    let lastRes = null;
     for (let i = 0; i < feedCount; i++) {
-      await api.feedPet(selectedItemId, currentPetIndex);
+      lastRes = await api.feedPet(selectedItemId, currentPetIndex);
+      if (lastRes.code !== 0) break;
     }
-    if (res.code === 0) {
-      const { leveledUp, evolved } = res.data;
+
+    if (lastRes && lastRes.code === 0) {
+      const { leveledUp, evolved } = lastRes.data;
 
       // 播放吃东西动画
       this.setData({
         showFeed: false,
         petAnimation: 'eat',
         showBubble: true,
-        bubbleText: '好吃~',
+        bubbleText: feedCount > 1 ? `吃了${feedCount}个~` : '好吃~',
         showStars: true
       });
 
