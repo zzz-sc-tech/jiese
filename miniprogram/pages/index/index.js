@@ -48,6 +48,8 @@ Page({
     dailyQuestion: null,
     // 习惯小贴士
     habitTip: null,
+    // 加载状态
+    loading: true,
     // 动画状态
     showConfetti: false,
     showStreakBadge: false,
