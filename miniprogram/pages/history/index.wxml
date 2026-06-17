@@ -191,8 +191,8 @@
         </view>
       </view>
 
-      <!-- 扇形图（多目标时显示） -->
-      <view class="dur-chart card" wx:if="{{durationStats.goalDistribution.length > 1}}">
+      <!-- 扇形图 -->
+      <view class="dur-chart card" wx:if="{{durationStats.goalDistribution.length > 0}}">
         <text class="dur-chart-title">时长分布</text>
         <view class="pie-chart-wrap">
           <canvas type="2d" id="pieCanvas" class="pie-canvas"></canvas>
