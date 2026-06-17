@@ -258,6 +258,62 @@
 }
 
 /* ========================================
+   骨架屏
+   ======================================== */
+
+.skeleton {
+  animation: skeletonFadeIn 0.3s ease;
+}
+
+@keyframes skeletonFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.skeleton-overview {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.skeleton-card {
+  flex: 1;
+  height: 180rpx;
+  background: linear-gradient(90deg, var(--color-border) 25%, rgba(255,255,255,0.5) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  border-radius: 24rpx;
+  animation: skeletonShimmer 1.5s infinite;
+}
+
+.skeleton-quote {
+  height: 120rpx;
+  background: linear-gradient(90deg, var(--color-border) 25%, rgba(255,255,255,0.5) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  animation: skeletonShimmer 1.5s infinite 0.1s;
+}
+
+.skeleton-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.skeleton-goal {
+  height: 100rpx;
+  background: linear-gradient(90deg, var(--color-border) 25%, rgba(255,255,255,0.5) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  border-radius: 24rpx;
+  animation: skeletonShimmer 1.5s infinite 0.2s;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========================================
    主内容区域
    ======================================== */
 
