@@ -623,21 +623,20 @@ Page({
   },
 
   // 删除目标
-  deleteGoalConfirm(goalId) {
+  async deleteGoalConfirm(goalId) {
     const goal = this.data.goals.find(g => g.id === goalId);
     if (!goal) return;
 
-    wx.showModal({
-      title: '删除目标',
-      content: `确定删除「${goal.name}」？该目标的所有打卡记录也将被删除。`,
-      success: async (res) => {
-        if (res.confirm) {
-          await api.deleteGoal(goalId);
-          wx.showToast({ title: '已删除', icon: 'success' });
-          this.loadData();
-        }
-      }
-    });
+    const confirmed = await ui.confirm(
+      '删除目标',
+      `确定删除「${goal.name}」？该目标的所有打卡记录也将被删除。`
+    );
+
+    if (confirmed) {
+      await api.deleteGoal(goalId);
+      ui.showSuccess('已删除');
+      this.loadData();
+    }
   },
 
   // 倒数日相关
