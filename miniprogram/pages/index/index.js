@@ -350,7 +350,30 @@ Page({
           ui.vibrate('medium');
         }
 
-        this.loadData();
+        // 只更新当前目标的状态，不刷新整个页面
+        const goals = this.data.goals.map(g => {
+          if (g.id === goalId) {
+            if (type === 'count') {
+              const todayCount = (g.todayCount || 0) + 1;
+              return {
+                ...g,
+                checked: true,
+                todayCount,
+                countDone: g.targetCount > 0 && todayCount >= g.targetCount
+              };
+            }
+            return { ...g, checked: true };
+          }
+          return g;
+        });
+
+        const anyChecked = goals.some(g => g.checked);
+        const allChecked = goals.every(g => {
+          if (g.type === 'count') return g.countDone;
+          return g.checked;
+        });
+
+        this.setData({ goals, anyChecked, allChecked });
       } else {
         ui.hideLoading();
         ui.showError(res.message || '打卡失败');
