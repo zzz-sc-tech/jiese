@@ -51,6 +51,17 @@ App({
     }
   },
 
+  // 监听系统深色模式变化
+  watchSystemTheme() {
+    wx.onThemeChange((res) => {
+      const settings = require('./utils/storage').getSettings();
+      if (settings.followSystemTheme) {
+        const theme = res.theme === 'dark' ? 'dark' : 'green';
+        this.applyTheme(theme);
+      }
+    });
+  },
+
   // 切换主题
   applyTheme(theme) {
     this.globalData.theme = theme;
