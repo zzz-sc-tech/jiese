@@ -215,6 +215,7 @@ const GOAL_TEMPLATES = [
 
 // 成就定义
 const ACHIEVEMENTS = [
+  // 连续打卡成就
   { id: 'first_day', name: '初出茅庐', desc: '完成第一次打卡', days: 1, type: 'streak' },
   { id: 'three_days', name: '三日之约', desc: '连续打卡3天', days: 3, type: 'streak' },
   { id: 'one_week', name: '一周坚持', desc: '连续打卡7天', days: 7, type: 'streak' },
@@ -226,11 +227,19 @@ const ACHIEVEMENTS = [
   { id: 'century', name: '百日征程', desc: '连续打卡100天', days: 100, type: 'streak' },
   { id: 'half_year', name: '半载坚守', desc: '连续打卡180天', days: 180, type: 'streak' },
   { id: 'one_year', name: '年度传奇', desc: '连续打卡365天', days: 365, type: 'streak' },
+  // 累计打卡成就
   { id: 'total_10', name: '十日积累', desc: '累计打卡10天', days: 10, type: 'total' },
   { id: 'total_50', name: '半百之志', desc: '累计打卡50天', days: 50, type: 'total' },
   { id: 'total_100', name: '百日修行', desc: '累计打卡100天', days: 100, type: 'total' },
   { id: 'total_200', name: '二百里程', desc: '累计打卡200天', days: 200, type: 'total' },
-  { id: 'total_365', name: '一年有成', desc: '累计打卡365天', days: 365, type: 'total' }
+  { id: 'total_365', name: '一年有成', desc: '累计打卡365天', days: 365, type: 'total' },
+  // 多目标成就
+  { id: 'multi_2', name: '双管齐下', desc: '同时进行2个目标', days: 2, type: 'goals' },
+  { id: 'multi_3', name: '三心二意', desc: '同时进行3个目标', days: 3, type: 'goals' },
+  { id: 'multi_5', name: '多才多艺', desc: '同时进行5个目标', days: 5, type: 'goals' },
+  // 时段成就
+  { id: 'early_bird', name: '早起鸟儿', desc: '在早晨6点前打卡', days: 1, type: 'time' },
+  { id: 'night_owl', name: '夜猫子', desc: '在晚上11点后打卡', days: 1, type: 'time' }
 ];
 
 // 挑战勋章定义
