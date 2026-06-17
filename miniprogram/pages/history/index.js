@@ -522,8 +522,8 @@ Page({
     if (data && data.dailyTotals) {
       this.initBarCanvas(data.dailyTotals);
     }
-    // 当有多个时长目标时绘制扇形图
-    if (data && data.goalDistribution && data.goalDistribution.length > 1) {
+    // 当有时长目标时绘制扇形图
+    if (data && data.goalDistribution && data.goalDistribution.length > 0) {
       this.initPieCanvas(data.goalDistribution);
     }
 
