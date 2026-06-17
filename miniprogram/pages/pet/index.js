@@ -344,18 +344,31 @@ Page({
   // 选择道具
   selectItem(e) {
     const itemId = e.currentTarget.dataset.id;
-    this.setData({ selectedItemId: itemId });
+    this.setData({ selectedItemId: itemId, feedCount: 1 });
+  },
+
+  // 修改投喂数量
+  changeFeedCount(e) {
+    const delta = parseInt(e.currentTarget.dataset.delta);
+    const { feedCount, selectedItemId, items } = this.data;
+    const item = items.find(i => i.id === selectedItemId);
+    const maxCount = item ? item.count : 1;
+    const newCount = Math.max(1, Math.min(maxCount, feedCount + delta));
+    this.setData({ feedCount: newCount });
   },
 
   // 确认投喂
   async feedPet() {
-    const { selectedItemId, currentPetIndex } = this.data;
+    const { selectedItemId, currentPetIndex, feedCount } = this.data;
     if (!selectedItemId) {
       wx.showToast({ title: '请选择道具', icon: 'none' });
       return;
     }
 
-    const res = await api.feedPet(selectedItemId, currentPetIndex);
+    // 批量投喂
+    for (let i = 0; i < feedCount; i++) {
+      await api.feedPet(selectedItemId, currentPetIndex);
+    }
     if (res.code === 0) {
       const { leveledUp, evolved } = res.data;
 
