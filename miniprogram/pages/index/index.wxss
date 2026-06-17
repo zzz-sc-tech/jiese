@@ -1,11 +1,20 @@
 @import "../../styles/theme.wxss";
 
+/* ========================================
+   守心小程序 - 首页样式
+   ======================================== */
+
+/* 页面基础 */
 .page-index {
   min-height: 100vh;
   background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-bg) 40%, var(--color-bg) 100%);
   position: relative;
   overflow: hidden;
 }
+
+/* ========================================
+   背景装饰与动画
+   ======================================== */
 
 /* 背景装饰 */
 .bg-decoration {
