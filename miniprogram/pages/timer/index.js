@@ -276,11 +276,11 @@ Page({
     this.triggerPomodoroAlert();
 
     if (isWork) {
-      if (used > 10) {
-        const startAt = Date.now() - used * 1000;
-        this.saveDuration(used, 'pomodoro', startAt, true);
-      }
-      if (used > 10) {
+      // 记录专注时长（跳过时只记录实际使用时间，正常结束记录完整时间）
+      const durationToSave = skipped ? used : workSec;
+      if (durationToSave > 10) {
+        const startAt = Date.now() - durationToSave * 1000;
+        this.saveDuration(durationToSave, 'pomodoro', startAt, true);
         api.grantItem('candy', 1);
       }
       if (nextSession >= 4) {
