@@ -87,6 +87,7 @@ const api = {
   getHabitHealth: statsService.getHabitHealth.bind(statsService),
   getPersonalizedQuote: statsService.getPersonalizedQuote.bind(statsService),
   getMonthlyReport: statsService.getMonthlyReport.bind(statsService),
+  getCompletionTrend: statsService.getCompletionTrend.bind(statsService),
 
   // ========== 数据导出 ==========
   exportCheckinsCSV: exportService.exportCheckinsCSV.bind(exportService),
