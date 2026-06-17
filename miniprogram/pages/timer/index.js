@@ -263,9 +263,10 @@ Page({
       this.setPomodoroSession(nextSession);
     }
 
+    // 强制更新UI
     this.setData({
       pomodoroRemaining: 0,
-      pomodoroDisplay: this.formatTime(0),
+      pomodoroDisplay: '00:00',
       pomodoroState: 'paused',
       pomodoroSession: nextSession,
       showVibrateAlert: true,
