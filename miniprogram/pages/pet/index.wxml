@@ -242,6 +242,20 @@
         <view class="feed-empty" wx:if="{{!hasItems}}">
           <text class="feed-empty-text">暂无道具，坚持打卡会获得哦~</text>
         </view>
+
+        <!-- 数量选择 -->
+        <view class="feed-count" wx:if="{{selectedItemId}}">
+          <text class="count-label">投喂数量</text>
+          <view class="count-control">
+            <view class="count-btn" bindtap="changeFeedCount" data-delta="-1">
+              <text>-</text>
+            </view>
+            <text class="count-value">{{feedCount}}</text>
+            <view class="count-btn" bindtap="changeFeedCount" data-delta="1">
+              <text>+</text>
+            </view>
+          </view>
+        </view>
       </view>
 
       <view class="modal-footer">
