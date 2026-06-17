@@ -433,7 +433,23 @@ Page({
       const res = await api.checkinCount(goalId);
       if (res.code === 0) {
         wx.vibrateShort({ type: 'light' });
-        this.loadData();
+
+        // 找到目标索引并更新
+        const goalIndex = this.data.goals.findIndex(g => g.id === goalId);
+        if (goalIndex === -1) return;
+
+        const todayCount = (goal.todayCount || 0) + 1;
+        const newGoal = {
+          ...goal,
+          checked: true,
+          todayCount,
+          countDone: goal.targetCount > 0 && todayCount >= goal.targetCount
+        };
+
+        // 使用路径更新，避免整个数组重新渲染
+        this.setData({
+          [`goals[${goalIndex}]`]: newGoal
+        });
       } else {
         wx.showToast({ title: res.message, icon: 'none' });
       }
