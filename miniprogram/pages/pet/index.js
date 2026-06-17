@@ -332,7 +332,8 @@ Page({
   showFeedModal() {
     this.setData({
       showFeed: true,
-      selectedItemId: ''
+      selectedItemId: '',
+      feedCount: 1
     });
   },
 
