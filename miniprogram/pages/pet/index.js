@@ -24,6 +24,7 @@ Page({
     // 投喂弹窗
     showFeed: false,
     selectedItemId: '',
+    feedCount: 1,
     // 升级/进化提示
     showLevelUp: false,
     levelUpData: null,
