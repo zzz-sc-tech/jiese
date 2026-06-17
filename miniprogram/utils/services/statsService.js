@@ -1038,6 +1038,49 @@ const statsService = {
         totalCheckins: monthCheckins.length
       }
     };
+  },
+
+  // 获取完成率趋势数据
+  async getCompletionTrend(days = 30) {
+    const checkins = getCheckins();
+    const goals = getGoals();
+    const now = new Date();
+
+    const trendData = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+      const dayCheckins = checkins.filter(c => c.date === dateStr);
+      const uniqueGoals = new Set(dayCheckins.map(c => c.goalId));
+      const completionRate = goals.length > 0 ? Math.round((uniqueGoals.size / goals.length) * 100) : 0;
+
+      trendData.push({
+        date: dateStr,
+        day: d.getDate(),
+        completionRate,
+        checkinCount: dayCheckins.length
+      });
+    }
+
+    // 计算平均完成率
+    const avgRate = Math.round(trendData.reduce((sum, d) => sum + d.completionRate, 0) / days);
+
+    // 找出最佳和最差的一天
+    const bestDay = trendData.reduce((a, b) => a.completionRate > b.completionRate ? a : b);
+    const worstDay = trendData.reduce((a, b) => a.completionRate < b.completionRate ? a : b);
+
+    return {
+      code: 0,
+      data: {
+        trendData,
+        avgRate,
+        bestDay,
+        worstDay,
+        days
+      }
+    };
   }
 };
 
