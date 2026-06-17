@@ -157,18 +157,18 @@
   width: 24rpx;
   height: 24rpx;
   border-radius: 50%;
-  background: #E8F5E9;
+  background: var(--color-border);
   transition: all 0.3s ease;
 }
 
 .pc-dot.done {
-  background: #E88D67;
-  box-shadow: 0 0 0 4rpx rgba(232, 141, 103, 0.2);
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4rpx rgba(232, 184, 109, 0.2);
 }
 
 .pc-num {
   font-size: 24rpx;
-  color: #7A8F7C;
+  color: var(--color-text-secondary);
 }
 
 /* 阶段切换提示 */
