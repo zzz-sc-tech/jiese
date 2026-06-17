@@ -78,6 +78,7 @@ Page({
   },
 
   async loadData() {
+    this.setData({ loading: true });
     try {
       const [statusRes, statsRes, quoteRes] = await Promise.all([
         api.getTodayStatus(),
