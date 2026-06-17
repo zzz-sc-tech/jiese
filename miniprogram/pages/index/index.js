@@ -323,8 +323,6 @@ Page({
 
   // 执行打卡
   async _doCheckin(goalId, type, goal, diary = '', mood = '') {
-    ui.showLoading('打卡中...');
-
     try {
       const res = type === 'count'
         ? await api.checkinCount(goalId)
@@ -332,7 +330,6 @@ Page({
 
       if (res.code === 0) {
         const currentStreak = res.data.currentStreak || 0;
-        ui.hideLoading();
 
         // 成就解锁震动
         if (res.data.newAchievements && res.data.newAchievements.length > 0) {
@@ -360,36 +357,24 @@ Page({
 
         // 使用路径更新，避免整个数组重新渲染
         const goalPath = `goals[${goalIndex}]`;
-        const updateData = {
+        this.setData({
           [goalPath]: newGoal,
           globalTotalDays: res.data.globalTotalDays,
           currentStreak
-        };
-
-        // 检查是否需要更新 anyChecked 和 allChecked
-        const goals = [...this.data.goals];
-        goals[goalIndex] = newGoal;
-        updateData.anyChecked = goals.some(g => g.checked);
-        updateData.allChecked = goals.every(g => {
-          if (g.type === 'count') return g.countDone;
-          return g.checked;
         });
 
-        this.setData(updateData);
+        // 显示成功提示
+        wx.showToast({ title: `${goal.name} 打卡成功`, icon: 'success', duration: 1500 });
 
-        // 延迟显示动画，避免页面刷新
+        // 延迟显示动画
         setTimeout(() => {
           this.showCheckinAnimation(goal.name, currentStreak);
-        }, 100);
+        }, 200);
       } else {
-        ui.hideLoading();
-        ui.showError(res.message || '打卡失败');
+        wx.showToast({ title: res.message || '打卡失败', icon: 'none' });
       }
     } catch (err) {
-      ui.hideLoading();
-      ui.showError('打卡失败，请重试', () => {
-        this._doCheckin(goalId, type, goal, diary, mood);
-      });
+      wx.showToast({ title: '打卡失败，请重试', icon: 'none' });
       console.error('打卡失败:', err);
     }
   },
