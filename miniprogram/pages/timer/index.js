@@ -280,7 +280,7 @@ Page({
       const durationToSave = skipped ? used : workSec;
       if (durationToSave > 10) {
         const startAt = Date.now() - durationToSave * 1000;
-        this.saveDuration(durationToSave, 'pomodoro', startAt, true);
+        await this.saveDuration(durationToSave, 'pomodoro', startAt, true);
         api.grantItem('candy', 1);
       }
       if (nextSession >= 4) {
