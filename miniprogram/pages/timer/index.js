@@ -244,7 +244,7 @@ Page({
     });
   },
 
-  finishPomodoroPhase(options) {
+  async finishPomodoroPhase(options) {
     const skipped = !!(options && options.skipped);
     const phase = this.data.pomodoroPhase;
     const workSec = this.data.workMin * 60;
