@@ -397,14 +397,14 @@ Page({
         setTimeout(() => {
           this.setData({
             showLevelUp: true,
-            levelUpData: res.data
+            levelUpData: lastRes.data
           });
         }, 800);
       }
 
       this.loadData();
     } else {
-      wx.showToast({ title: res.message, icon: 'none' });
+      wx.showToast({ title: lastRes ? lastRes.message : '投喂失败', icon: 'none' });
     }
   },
 
