@@ -332,18 +332,7 @@ Page({
 
       if (res.code === 0) {
         const currentStreak = res.data.currentStreak || 0;
-
-        this.setData({
-          currentQuote: res.data.quote,
-          newAchievements: res.data.newAchievements || [],
-          globalTotalDays: res.data.globalTotalDays,
-          currentStreak
-        });
-
         ui.hideLoading();
-
-        // 显示打卡成功动画
-        this.showCheckinAnimation(goal.name, currentStreak);
 
         // 成就解锁震动
         if (res.data.newAchievements && res.data.newAchievements.length > 0) {
@@ -373,7 +362,19 @@ Page({
           return g.checked;
         });
 
-        this.setData({ goals, anyChecked, allChecked });
+        // 一次性更新所有数据
+        this.setData({
+          goals,
+          anyChecked,
+          allChecked,
+          globalTotalDays: res.data.globalTotalDays,
+          currentStreak
+        });
+
+        // 延迟显示动画，避免页面刷新
+        setTimeout(() => {
+          this.showCheckinAnimation(goal.name, currentStreak);
+        }, 100);
       } else {
         ui.hideLoading();
         ui.showError(res.message || '打卡失败');
