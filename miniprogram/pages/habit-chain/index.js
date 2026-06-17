@@ -176,21 +176,16 @@ Page({
   },
 
   // 删除习惯链
-  deleteChain(e) {
+  async deleteChain(e) {
     const chainId = e.currentTarget.dataset.id;
-    wx.showModal({
-      title: '删除习惯链',
-      content: '确定删除这个习惯链吗？',
-      success: (res) => {
-        if (res.confirm) {
-          let chains = storage.get('jiese_habit_chains', []);
-          chains = chains.filter(c => c.id !== chainId);
-          storage.set('jiese_habit_chains', chains);
-          this.loadData();
-          wx.showToast({ title: '已删除', icon: 'success' });
-        }
-      }
-    });
+    const confirmed = await ui.confirm('删除习惯链', '确定删除这个习惯链吗？');
+    if (confirmed) {
+      let chains = storage.get('jiese_habit_chains', []);
+      chains = chains.filter(c => c.id !== chainId);
+      storage.set('jiese_habit_chains', chains);
+      this.loadData();
+      ui.showSuccess('已删除');
+    }
   },
 
   // 阻止冒泡
