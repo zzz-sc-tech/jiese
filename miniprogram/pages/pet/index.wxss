@@ -617,6 +617,52 @@
   color: var(--color-text-secondary);
 }
 
+/* 数量选择 */
+.feed-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid var(--color-border);
+}
+
+.count-label {
+  font-size: 28rpx;
+  color: var(--color-text);
+}
+
+.count-control {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.count-btn {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  border-radius: 50%;
+  font-size: 32rpx;
+  color: var(--color-text);
+  border: 2rpx solid var(--color-border);
+}
+
+.count-btn:active {
+  background: var(--color-border);
+}
+
+.count-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 60rpx;
+  text-align: center;
+}
+
 /* 弹窗样式 */
 .modal-overlay {
   position: fixed;
