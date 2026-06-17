@@ -524,12 +524,15 @@ Page({
     }
     // 当有时长目标时绘制扇形图
     if (data && data.goalDistribution && data.goalDistribution.length > 0) {
-      this.initPieCanvas(data.goalDistribution);
+      // 延迟绘制，确保页面完全渲染
+      setTimeout(() => {
+        this.initPieCanvas(data.goalDistribution);
+      }, 500);
     }
 
     setTimeout(() => {
       this._drawing = false;
-    }, 500);
+    }, 1000);
   },
 
   initBarCanvas(dailyTotals) {
