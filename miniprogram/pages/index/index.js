@@ -122,8 +122,11 @@ Page({
 
       // 检查是否需要弹出昨日总结或周报
       this.checkReports();
+
+      this.setData({ loading: false });
     } catch (err) {
       console.error('加载数据失败:', err);
+      this.setData({ loading: false });
     }
   },
 
