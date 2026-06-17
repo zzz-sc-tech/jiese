@@ -262,6 +262,7 @@
         <text class="shortcut-text">分享</text>
       </view>
     </view>
+    </block>
   </view>
 
   <!-- 添加/编辑目标弹窗 -->
