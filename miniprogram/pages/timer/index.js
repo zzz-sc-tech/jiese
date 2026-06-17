@@ -276,13 +276,11 @@ Page({
     this.triggerPomodoroAlert();
 
     if (isWork) {
-      // 记录专注时长（跳过时只记录实际使用时间，正常结束记录完整时间）
-      const durationToSave = skipped ? used : workSec;
-      if (durationToSave > 10) {
-        const startAt = Date.now() - durationToSave * 1000;
-        await this.saveDuration(durationToSave, 'pomodoro', startAt, true);
-        api.grantItem('candy', 1);
-      }
+      // 记录专注时长（无论是否跳过，都记录完整专注时间）
+      const startAt = Date.now() - workSec * 1000;
+      await this.saveDuration(workSec, 'pomodoro', startAt, true);
+      api.grantItem('candy', 1);
+
       if (nextSession >= 4) {
         api.grantItem('crystal', 1);
         wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
