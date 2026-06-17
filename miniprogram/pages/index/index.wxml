@@ -52,6 +52,23 @@
 
   <!-- 主内容区 -->
   <view class="main-content" style="padding-top: {{statusBarHeight + 44}}px;">
+
+    <!-- 骨架屏 -->
+    <view class="skeleton" wx:if="{{loading}}">
+      <view class="skeleton-overview">
+        <view class="skeleton-card"></view>
+        <view class="skeleton-card"></view>
+      </view>
+      <view class="skeleton-quote"></view>
+      <view class="skeleton-goals">
+        <view class="skeleton-goal"></view>
+        <view class="skeleton-goal"></view>
+        <view class="skeleton-goal"></view>
+      </view>
+    </view>
+
+    <!-- 实际内容 -->
+    <block wx:if="{{!loading}}">
     <!-- 总览统计 -->
     <view class="overview-section">
       <!-- 连续打卡 -->
