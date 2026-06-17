@@ -282,6 +282,9 @@ Page({
       await this.saveDuration(workSec, 'pomodoro', startAt, true);
       api.grantItem('candy', 1);
 
+      // 更新今日专注时长显示
+      this.loadSessions(this.data.goalId);
+
       if (nextSession >= 4) {
         api.grantItem('crystal', 1);
         wx.showToast({ title: '完成4个番茄！休息一下', icon: 'success' });
